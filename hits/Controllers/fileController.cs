@@ -17,8 +17,6 @@ namespace hits_server.Controllers
             var file = Request.Files[0];
             var path = HttpContext.Current.Server.MapPath(string.Format("~/temp"));
             file.SaveAs(path + "/" + Request["num"] + ".mp3");
-
-            Models
             return Ok(true);
 
         }  
