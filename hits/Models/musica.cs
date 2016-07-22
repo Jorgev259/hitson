@@ -6,7 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 
-namespace Interno.Models
+namespace hits.Models
 {
     public class musica
     {
