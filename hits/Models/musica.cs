@@ -1,7 +1,9 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.GridFS;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -34,6 +36,17 @@ namespace hits.Models
             //var server = MongoServer.Create("mongodb://localhost:27017");
             var client = new MongoClient("mongodb://localhost:27017");
             var db = client.GetDatabase("hitson");
+
+            var bucket = new GridFSBucket(db, new GridFSBucketOptions
+            {
+                BucketName = "canciones",
+                ChunkSizeBytes = 1048576,
+                WriteConcern = WriteConcern.WMajority,
+                ReadPreference = ReadPreference.Secondary,
+            });
+
+            byte[] file = File.ReadAllBytes( AppDomain.CurrentDomain.BaseDirectory + "temp\\" + num_cancion + ".mp3");
+            var id = bucket.UploadFromBytes(num_cancion.ToString(), file);
 
             var collection = db.GetCollection<BsonDocument>("musica");
 
