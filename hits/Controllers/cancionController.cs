@@ -10,7 +10,7 @@ using System.Web.Http;
 
 namespace hits_server.Controllers
 {
-    public class fileController : ApiController
+    public class cancionController : ApiController
     {
         [HttpPost]
         public IHttpActionResult Post()
@@ -28,7 +28,7 @@ namespace hits_server.Controllers
             var path = HttpContext.Current.Server.MapPath(string.Format("~/temp"));
             file.SaveAs(path + "/" + numero + ".mp3");
 
-            hits.Models.musica.insertarCancion(numero, Request["nombre"], Request["genero"],Request["artista"],Request["album"],Request["com"],Convert.ToInt32(Request["rating"]),client,db);
+            hits.Models.cancion.insertarCancion(numero, Request["nombre"], Request["genero"],Request["artista"],Request["album"],Request["com"],client,db);
 
             return Ok(true);
 

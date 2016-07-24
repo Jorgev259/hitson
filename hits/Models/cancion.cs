@@ -10,7 +10,7 @@ using System.Web;
 
 namespace hits.Models
 {
-    public class musica
+    public class cancion
     {
         private int num_cancion ;
         private string nombre ;
@@ -20,7 +20,7 @@ namespace hits.Models
         private string comentario ;
         private int rating ;
 
-        musica(){}
+        cancion(){}
 
         public int _num_cancion {  get {return num_cancion;} set {num_cancion=value;} }
         public string _nombre {  get {return nombre;} set {nombre=value;} }
@@ -30,7 +30,7 @@ namespace hits.Models
         public string _comentario {  get {return comentario;} set {comentario=value;} }
         public int _rating {  get {return rating;} set {rating=value;} }
 
-        public static int insertarCancion(int num_cancion,string nombre,string genero,string artista,string album,string comentario,int rating,MongoClient client,IMongoDatabase db){
+        public static int insertarCancion(int num_cancion,string nombre,string genero,string artista,string album,string comentario,MongoClient client,IMongoDatabase db){
             int respuesta = 0;
             
             //var server = MongoServer.Create("mongodb://localhost:27017");
@@ -57,7 +57,7 @@ namespace hits.Models
                 {"artista",artista},
                 {"album",album},
                 {"comentario",comentario},
-                {"rating",rating},
+                {"rating", "0"},
             };
 
             collection.InsertOne(document);
