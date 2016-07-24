@@ -15,22 +15,33 @@ namespace hits_server.Controllers
         [HttpPost]
         public IHttpActionResult Post()
         {
-            //Crea un objeto con lo enviado
             var Request = HttpContext.Current.Request;
 
             var client = new MongoClient("mongodb://localhost:27017");
             var db = client.GetDatabase("hitson");
             var collection = db.GetCollection<BsonDocument>("musica");
 
-            int numero = unchecked((int)collection.Count(new BsonDocument()));
-            
-            var file = Request.Files[0];
-            var path = HttpContext.Current.Server.MapPath(string.Format("~/temp"));
-            file.SaveAs(path + "/" + numero + ".mp3");
+            switch (Request["op"]) {
+                case "agregar":
+                    int numero = unchecked((int)collection.Count(new BsonDocument()));
 
-            hits.Models.cancion.insertarCancion(numero, Request["nombre"], Request["genero"],Request["artista"],Request["album"],Request["com"],client,db);
+                    var file = Request.Files[0];
+                    var path = HttpContext.Current.Server.MapPath(string.Format("~/temp"));
+                    file.SaveAs(path + "/" + numero + ".mp3");
 
-            return Ok(true);
+                    hits.Models.cancion.insertarCancion(numero, Request["nombre"], Request["genero"], Request["artista"], Request["album"], Request["com"], client, db);
+
+                    return Ok(true);
+                    break;
+
+                case "play":
+
+                    break;
+
+                default:
+                    return Ok(true);
+                    break;
+            }
 
         }  
     }

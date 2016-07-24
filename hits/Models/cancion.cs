@@ -62,6 +62,8 @@ namespace hits.Models
 
             collection.InsertOne(document);
 
+            File.Delete(AppDomain.CurrentDomain.BaseDirectory + "temp\\" + num_cancion + ".mp3");
+
             respuesta = 1;
             return respuesta;
         }

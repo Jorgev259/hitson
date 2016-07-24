@@ -23,6 +23,7 @@ function subirCancion() {
     data.append('artista', artista);
     data.append('album', album);
     data.append('com', com);
+    data.append('op', 'agregar');
 
     $.ajax({
         url: '/Api/cancion',
@@ -37,4 +38,27 @@ function subirCancion() {
         console.log(a, b, c);
         mostrarCancion();
     });
+}
+
+function reproducir(id) {
+    var data = new FormData();
+    data.append('op', 'play');
+    data.append('id', id);
+
+    $.ajax({
+        url: 'http://localhost:4684/api/Cliente',
+        type: 'POST',
+        processData: false,
+        contentType: false,
+        data: data,
+        success: function (data, textStatus, xhr) {
+            for (var ele in data) {
+                var algo = data[ele]._id;
+            }
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            alert(xhr);
+        }
+    });
+
 }
