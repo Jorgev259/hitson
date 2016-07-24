@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -15,12 +17,18 @@ namespace hits_server.Controllers
         {
             //Crea un objeto con lo enviado
             var Request = HttpContext.Current.Request;
+
+            var client = new MongoClient("mongodb://localhost:27017");
+            var db = client.GetDatabase("hitson");
+            var collection = db.GetCollection<BsonDocument>("musica");
+
+            int numero = unchecked((int)collection.Count(new BsonDocument()));
             
             var file = Request.Files[0];
             var path = HttpContext.Current.Server.MapPath(string.Format("~/temp"));
-            file.SaveAs(path + "/" + Request["num"] + ".mp3");
+            file.SaveAs(path + "/" + numero + ".mp3");
 
-            hits.Models.musica.insertarCancion(Convert.ToInt32(Request["num"]), Request["nombre"], Request["genero"],Request["artista"],Request["album"],Request["com"],Convert.ToInt32(Request["rating"]));
+            hits.Models.musica.insertarCancion(numero, Request["nombre"], Request["genero"],Request["artista"],Request["album"],Request["com"],Convert.ToInt32(Request["rating"]),client,db);
 
             return Ok(true);
 

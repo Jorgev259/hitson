@@ -30,12 +30,13 @@ namespace hits.Models
         public string _comentario {  get {return comentario;} set {comentario=value;} }
         public int _rating {  get {return rating;} set {rating=value;} }
 
-        public static int insertarCancion(int num_cancion,string nombre,string genero,string artista,string album,string comentario,int rating){
+        public static int insertarCancion(int num_cancion,string nombre,string genero,string artista,string album,string comentario,int rating,MongoClient client,IMongoDatabase db){
             int respuesta = 0;
             
             //var server = MongoServer.Create("mongodb://localhost:27017");
-            var client = new MongoClient("mongodb://localhost:27017");
-            var db = client.GetDatabase("hitson");
+            var collection = db.GetCollection<BsonDocument>("musica");
+
+            var numero = collection.Count(new BsonDocument());
 
             var bucket = new GridFSBucket(db, new GridFSBucketOptions
             {
@@ -45,10 +46,8 @@ namespace hits.Models
                 ReadPreference = ReadPreference.Secondary,
             });
 
-            byte[] file = File.ReadAllBytes( AppDomain.CurrentDomain.BaseDirectory + "temp\\" + num_cancion + ".mp3");
+            byte[] file = File.ReadAllBytes(AppDomain.CurrentDomain.BaseDirectory + "temp\\" + num_cancion + ".mp3");
             var id = bucket.UploadFromBytes(num_cancion.ToString(), file);
-
-            var collection = db.GetCollection<BsonDocument>("musica");
 
             var document = new BsonDocument
             {
