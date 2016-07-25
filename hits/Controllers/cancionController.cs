@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.GridFS;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,13 @@ namespace hits_server.Controllers
             var client = new MongoClient("mongodb://localhost:27017");
             var db = client.GetDatabase("hitson");
             var collection = db.GetCollection<BsonDocument>("musica");
+            var bucket = new GridFSBucket(db, new GridFSBucketOptions
+            {
+                BucketName = "canciones",
+                ChunkSizeBytes = 1048576,
+                WriteConcern = WriteConcern.WMajority,
+                ReadPreference = ReadPreference.Secondary,
+            });
 
             switch (Request["op"]) {
                 case "agregar":
@@ -35,7 +43,9 @@ namespace hits_server.Controllers
                     break;
 
                 case "play":
-
+                    var array = bucket.DownloadAsBytesByName(Request["id"]);
+                    String cancion = "data:audio/mp3;base64," + Convert.ToBase64String(array);
+                    return Ok(cancion);
                     break;
 
                 default:

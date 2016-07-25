@@ -46,19 +46,16 @@ function reproducir(id) {
     data.append('id', id);
 
     $.ajax({
-        url: 'http://localhost:4684/api/Cliente',
-        type: 'POST',
+        url: '/Api/cancion',
         processData: false,
         contentType: false,
         data: data,
-        success: function (data, textStatus, xhr) {
-            for (var ele in data) {
-                var algo = data[ele]._id;
-            }
-        },
-        error: function (xhr, textStatus, errorThrown) {
-            alert(xhr);
-        }
+        type: 'POST'
+    }).done(function (result) {
+        alert(result);
+        document.getElementById("repro").src = result;
+    }).fail(function (a, b, c) {
+        console.log(a, b, c);
     });
 
 }
