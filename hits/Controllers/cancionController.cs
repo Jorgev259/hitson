@@ -20,7 +20,7 @@ namespace hits_server.Controllers
 
             var client = new MongoClient("mongodb://localhost:27017");
             var db = client.GetDatabase("hitson");
-            var collection = db.GetCollection<BsonDocument>("musica");
+            var collection = db.GetCollection<BsonDocument>("canciones.files");
             var bucket = new GridFSBucket(db, new GridFSBucketOptions
             {
                 BucketName = "canciones",
