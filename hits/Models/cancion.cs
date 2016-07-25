@@ -34,7 +34,7 @@ namespace hits.Models
             int respuesta = 0;
             
             //var server = MongoServer.Create("mongodb://localhost:27017");
-            var collection = db.GetCollection<BsonDocument>("musica");
+            var collection = db.GetCollection<BsonDocument>("canciones.files");
 
             var numero = collection.Count(new BsonDocument());
 
@@ -49,23 +49,16 @@ namespace hits.Models
             byte[] file = File.ReadAllBytes(AppDomain.CurrentDomain.BaseDirectory + "temp\\" + num_cancion + ".mp3");
             var id = bucket.UploadFromBytes(num_cancion.ToString(), file);
 
-            var document = new BsonDocument
-            {
-                { "num_cancion", num_cancion },
-                {"nombre",nombre},
-                {"genero",genero},
-                {"artista",artista},
-                {"album",album},
-                {"comentario",comentario},
-                {"rating", "0"},
-            };
+            var filter = Builders<BsonDocument>.Filter.Eq("filename", num_cancion.ToString());
+            var update = Builders<BsonDocument>.Update.Set("nombre", nombre).Set("genero",genero).Set("artista",artista).Set("album",album).Set("comentario",comentario).Set("rating", 0);
 
-            collection.InsertOne(document);
+            var update2 = collection.UpdateOne(filter, update);
 
             File.Delete(AppDomain.CurrentDomain.BaseDirectory + "temp\\" + num_cancion + ".mp3");
 
             respuesta = 1;
             return respuesta;
         }
+
     }
 }
