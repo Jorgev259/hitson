@@ -30,9 +30,8 @@ namespace hits.Models
         public string _comentario {  get {return comentario;} set {comentario=value;} }
         public int _rating {  get {return rating;} set {rating=value;} }
 
-        public static int insertarCancion(int num_cancion,string nombre,string genero,string artista,string album,string comentario,MongoClient client,IMongoDatabase db){
-            int respuesta = 0;
-            
+        public static String insertarCancion(int num_cancion, string nombre, string genero, string artista, string album, string comentario, MongoClient client, IMongoDatabase db) {
+
             //var server = MongoServer.Create("mongodb://localhost:27017");
             var collection = db.GetCollection<BsonDocument>("canciones.files");
 
@@ -50,15 +49,24 @@ namespace hits.Models
             var id = bucket.UploadFromBytes(num_cancion.ToString(), file);
 
             var filter = Builders<BsonDocument>.Filter.Eq("filename", num_cancion.ToString());
-            var update = Builders<BsonDocument>.Update.Set("nombre", nombre).Set("genero",genero).Set("artista",artista).Set("album",album).Set("comentario",comentario).Set("rating", 0);
+            var update = Builders<BsonDocument>.Update.Set("nombre", nombre).Set("genero", genero).Set("artista", artista).Set("album", album).Set("comentario", comentario).Set("rating", 0);
 
             var update2 = collection.UpdateOne(filter, update);
 
             File.Delete(AppDomain.CurrentDomain.BaseDirectory + "temp\\" + num_cancion + ".mp3");
 
-            respuesta = 1;
-            return respuesta;
+
+            return "Subida Completada";
         }
 
+        public static object reproducir()
+        {
+            Object prueba = new Object
+            {
+
+            };
+
+            return prueba;
+        }
     }
 }

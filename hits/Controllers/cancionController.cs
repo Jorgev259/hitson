@@ -14,7 +14,7 @@ namespace hits_server.Controllers
     public class cancionController : ApiController
     {
         [HttpPost]
-        public IHttpActionResult Post()
+        public Object Post()
         {
             var Request = HttpContext.Current.Request;
 
@@ -37,14 +37,21 @@ namespace hits_server.Controllers
                     var path = HttpContext.Current.Server.MapPath(string.Format("~/temp"));
                     file.SaveAs(path + "/" + numero + ".mp3");
 
-                    hits.Models.cancion.insertarCancion(numero, Request["nombre"], Request["genero"], Request["artista"], Request["album"], Request["com"], client, db);
+                    var valor = hits.Models.cancion.insertarCancion(numero, Request["nombre"], Request["genero"], Request["artista"], Request["album"], Request["com"], client, db);
 
-                    return Ok(true);
+                    hits.Models.respuesta final = new hits.Models.respuesta
+                    {
+                        _respuesta2 = valor,
+                    };
+
+                    return final;
                     break;
 
                 case "play":
                     var array = bucket.DownloadAsBytesByName(Request["id"]);
                     String cancion = "data:audio/mp3;base64," + Convert.ToBase64String(array);
+
+                    
                     return Ok(cancion);
                     break;
 
