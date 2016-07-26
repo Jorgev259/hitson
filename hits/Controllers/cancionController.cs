@@ -21,7 +21,7 @@ namespace hits_server.Controllers
 
             var client = new MongoClient("mongodb://localhost:27017");
             var db = client.GetDatabase("hitson");
-            var collection = db.GetCollection<BsonDocument>("canciones.files");
+            var collectionCanciones = db.GetCollection<BsonDocument>("canciones.files");
             var bucket = new GridFSBucket(db, new GridFSBucketOptions
             {
                 BucketName = "canciones",
@@ -32,22 +32,20 @@ namespace hits_server.Controllers
 
             switch (Request["op"]) {
                 case "agregar":
-                    int numero = unchecked((int)collection.Count(new BsonDocument()));
+                    int numero = unchecked((int)collectionCanciones.Count(new BsonDocument()));
 
                     var file = Request.Files[0];
                     var path = HttpContext.Current.Server.MapPath(string.Format("~/temp"));
                     file.SaveAs(path + "/" + numero + ".mp3");
 
-                    var valor = hits.Models.cancion.insertarCancion(numero, Request["nombre"], Request["genero"], Request["artista"], Request["album"], Request["com"], client, db);
+                    var valor = hits.Models.cancion.insertarCancion(numero, Request["nombre"], Request["genero"], Request["artista"], Request["album"], Request["com"], client, db, collectionCanciones, bucket);
 
                     return valor;
                     break;
 
                 case "play":
-                    var array = bucket.DownloadAsBytesByName(Request["id"]);
-                    String cancion = "data:audio/mp3;base64," + Convert.ToBase64String(array);
-                    var cancionSend = new JavaScriptSerializer().Serialize(hits.Models.cancion.reproducir(Convert.ToInt32(Request["id"])));
-                    
+                    var cancionSend =hits.Models.cancion.reproducir(Convert.ToInt32(Request["id"]), client, db, collectionCanciones, bucket).ToBsonDocument().ToJson();
+
                     return cancionSend;
                     break;
 

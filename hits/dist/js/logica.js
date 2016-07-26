@@ -32,8 +32,7 @@ function subirCancion() {
         data: data,
         type: 'POST'
     }).done(function (result) {
-        var respuesta = JSON.parse(result);
-        alert(respuesta._respuesta2);
+        alert(result);
         mostrarCancion();
     }).fail(function (a, b, c) {
         console.log(a, b, c);
@@ -53,9 +52,8 @@ function reproducir(id) {
         data: data,
         type: 'POST'
     }).done(function (result) {
-        alert(result);
         var cancion = JSON.parse(result);
-        document.getElementById("repro").src = cancion.url;
+        document.getElementById("repro").src = cancion.cancion;
     }).fail(function (a, b, c) {
         console.log(a, b, c);
     });

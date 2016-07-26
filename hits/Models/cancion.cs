@@ -31,20 +31,11 @@ namespace hits.Models
         public string _comentario {  get {return comentario;} set {comentario=value;} }
         public int _rating {  get {return rating;} set {rating=value;} }
 
-        public static String insertarCancion(int num_cancion, string nombre, string genero, string artista, string album, string comentario, MongoClient client, IMongoDatabase db) {
+        public static String insertarCancion(int num_cancion, string nombre, string genero, string artista, string album, string comentario, MongoClient client, IMongoDatabase db, IMongoCollection<BsonDocument> collection, GridFSBucket bucket) {
 
             //var server = MongoServer.Create("mongodb://localhost:27017");
-            var collection = db.GetCollection<BsonDocument>("canciones.files");
 
             var numero = collection.Count(new BsonDocument());
-
-            var bucket = new GridFSBucket(db, new GridFSBucketOptions
-            {
-                BucketName = "canciones",
-                ChunkSizeBytes = 1048576,
-                WriteConcern = WriteConcern.WMajority,
-                ReadPreference = ReadPreference.Secondary,
-            });
 
             byte[] file = File.ReadAllBytes(AppDomain.CurrentDomain.BaseDirectory + "temp\\" + num_cancion + ".mp3");
             var id = bucket.UploadFromBytes(num_cancion.ToString(), file);
@@ -60,17 +51,18 @@ namespace hits.Models
             return "Subida Completada";
         }
 
-        public static object reproducir(int id)
+        public static object reproducir(int id, MongoClient client, IMongoDatabase db, IMongoCollection<BsonDocument> collection, GridFSBucket bucket)
         {
+            var array = bucket.DownloadAsBytesByName(id.ToString());
+            String cancion = "data:audio/mp3;base64," + Convert.ToBase64String(array);
+
             dynamic prueba = new ExpandoObject();
             prueba.id = id;
+            prueba.cancion = cancion;
 
-            var filtro = Builders<BsonDocument>.Filter.Eq("filename", id.ToString());
-            var client = new MongoClient("mongodb://localhost:27017");
-            var db = client.GetDatabase("hitson");
-            var collection = db.GetCollection<BsonDocument>("canciones.files");
+            var filter = Builders<BsonDocument>.Filter.Eq("filename", id.ToString());
+            var result = collection.Find(filter).ToListAsync();
 
-            var documento = collection.Find(filtro).First
             return prueba;
         }
     }
