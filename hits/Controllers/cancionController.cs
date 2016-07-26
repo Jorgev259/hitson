@@ -8,13 +8,14 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+using System.Web.Script.Serialization;
 
 namespace hits_server.Controllers
 {
     public class cancionController : ApiController
     {
         [HttpPost]
-        public Object Post()
+        public String Post()
         {
             var Request = HttpContext.Current.Request;
 
@@ -39,24 +40,19 @@ namespace hits_server.Controllers
 
                     var valor = hits.Models.cancion.insertarCancion(numero, Request["nombre"], Request["genero"], Request["artista"], Request["album"], Request["com"], client, db);
 
-                    hits.Models.respuesta final = new hits.Models.respuesta
-                    {
-                        _respuesta2 = valor,
-                    };
-
-                    return final;
+                    return valor;
                     break;
 
                 case "play":
                     var array = bucket.DownloadAsBytesByName(Request["id"]);
                     String cancion = "data:audio/mp3;base64," + Convert.ToBase64String(array);
-
+                    var cancionSend = new JavaScriptSerializer().Serialize(hits.Models.cancion.reproducir(Convert.ToInt32(Request["id"])));
                     
-                    return Ok(cancion);
+                    return cancionSend;
                     break;
 
                 default:
-                    return Ok(true);
+                    return "opa";
                     break;
             }
 

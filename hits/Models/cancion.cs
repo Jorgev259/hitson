@@ -3,6 +3,7 @@ using MongoDB.Driver;
 using MongoDB.Driver.GridFS;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -59,13 +60,17 @@ namespace hits.Models
             return "Subida Completada";
         }
 
-        public static object reproducir()
+        public static object reproducir(int id)
         {
-            Object prueba = new Object
-            {
+            dynamic prueba = new ExpandoObject();
+            prueba.id = id;
 
-            };
+            var filtro = Builders<BsonDocument>.Filter.Eq("filename", id.ToString());
+            var client = new MongoClient("mongodb://localhost:27017");
+            var db = client.GetDatabase("hitson");
+            var collection = db.GetCollection<BsonDocument>("canciones.files");
 
+            var documento = collection.Find(filtro).First
             return prueba;
         }
     }
