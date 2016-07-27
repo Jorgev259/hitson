@@ -20,8 +20,6 @@ namespace hits.Models
         private string contraseña ;
         private string nick ;
         private string email ;
-        private string comentario ;
-        private int rating ;
 
         usuario(){}
 
@@ -30,8 +28,6 @@ namespace hits.Models
         public string _contraseña {  get {return contraseña;} set {contraseña=value;} }
         public string _nick {  get {return nick;} set {nick=value;} }
         public string _email {  get {return email;} set {email=value;} }
-        public string _comentario {  get {return comentario;} set {comentario=value;} }
-        public int _rating {  get {return rating;} set {rating=value;} }
 
         public static String insertarUsuario(int num_usuario, string usuario, string contraseña, string nick, string email, MongoClient client, IMongoDatabase db, IMongoCollection<BsonDocument> collection, GridFSBucket bucket) {
             var numero = collection.Count(new BsonDocument());
