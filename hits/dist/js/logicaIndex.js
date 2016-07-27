@@ -11,7 +11,8 @@
         data.append('pass',pass);
         data.append('nick',nick);
         data.append('email',email);
-        data.append('foto', foto);
+        data.append('foto', foto[0]);
+        data.append('op', 'agregar');
 
         $.ajax({
             url: '/Api/usuario',

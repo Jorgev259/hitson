@@ -16,10 +16,10 @@ namespace hits_server.Controllers
 
             var client = new MongoClient("mongodb://localhost:27017");
             var db = client.GetDatabase("hitson");
-            var collectionCanciones = db.GetCollection<BsonDocument>("canciones.files");
+            var collectionUsuarios = db.GetCollection<BsonDocument>("usuarios");
             var bucket = new GridFSBucket(db, new GridFSBucketOptions
             {
-                BucketName = "canciones",
+                BucketName = "perfiles",
                 ChunkSizeBytes = 1048576,
                 WriteConcern = WriteConcern.WMajority,
                 ReadPreference = ReadPreference.Secondary,
@@ -27,25 +27,25 @@ namespace hits_server.Controllers
 
             switch (Request["op"]) {
                 case "agregar":
-                    int numero = unchecked((int)collectionCanciones.Count(new BsonDocument()));
+                    int numero = unchecked((int)collectionUsuarios.Count(new BsonDocument()));
 
                     var file = Request.Files[0];
                     var path = HttpContext.Current.Server.MapPath(string.Format("~/temp"));
-                    file.SaveAs(path + "/" + numero + ".mp3");
+                    file.SaveAs(path + "/" + numero + ".jpg");
 
-                    var valor = hits.Models.cancion.insertarCancion(numero, Request["nombre"], Request["genero"], Request["artista"], Request["album"], Request["com"], client, db, collectionCanciones, bucket);
+                    var valor = hits.Models.usuario.insertarUsuario(numero, Request["user"], Request["pass"], Request["nick"], Request["email"], client, db, collectionUsuarios, bucket);
 
                     return valor;
                     break;
 
-                case "play":
-                    var cancionSend =hits.Models.cancion.reproducir(Convert.ToInt32(Request["id"]), client, db, collectionCanciones, bucket);
+                case "login":
+                    var cancionSend =hits.Models.cancion.reproducir(Convert.ToInt32(Request["id"]), client, db, collectionUsuarios, bucket);
 
                     return cancionSend;
                     break;
 
                 case "busqueda":
-                    var listaCanciones = hits.Models.cancion.listaCanciones(collectionCanciones);
+                    var listaCanciones = hits.Models.cancion.listaCanciones(collectionUsuarios);
                     var enviar = String.Join(">", listaCanciones.ToArray());
                     return enviar;
                     break;
