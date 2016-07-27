@@ -7,7 +7,7 @@ using System.Web.Http;
 
 namespace hits_server.Controllers
 {
-    public class cancionController : ApiController
+    public class usuarioController : ApiController
     {
         [HttpPost]
         public String Post()

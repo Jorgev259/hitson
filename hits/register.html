@@ -16,7 +16,6 @@
   <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
   <!-- iCheck -->
   <link rel="stylesheet" href="plugins/iCheck/square/blue.css">
-    <script src="dist/js/logicaIndex.js"></script>
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -34,7 +33,7 @@
   <div class="register-box-body">
     <p class="login-box-msg">Crear una nueva cuenta</p>
 
-    <form>
+    <form action="javascript:registro();">
       <div class="form-group has-feedback">
         <input type="text" class="form-control" placeholder="Usuario" id="user" required>
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
@@ -59,8 +58,6 @@
         <div class="form-group">
                   <label for="exampleInputFile">Foto de perfil</label>
                   <input type="file" id="perfil">
-
-                 
                 </div>
       <div class="row">
         <div class="col-xs-8">
@@ -72,7 +69,7 @@
         </div>
         <!-- /.col -->
         <div class="col-xs-4">
-          <button type="submit" onclick="registro()" class="btn btn-primary btn-block btn-flat">Registrar</button>
+          <button type="submit" class="btn btn-primary btn-block btn-flat">Registrar</button>
         </div>
         <!-- /.col -->
       </div>
@@ -92,6 +89,7 @@
 <script src="bootstrap/js/bootstrap.min.js"></script>
 <!-- iCheck -->
 <script src="plugins/iCheck/icheck.min.js"></script>
+        <script src="dist/js/logicaIndex.js"></script>
 <script>
   $(function () {
     $('input').iCheck({
