@@ -51,7 +51,8 @@ namespace hits_server.Controllers
 
                 case "busqueda":
                     var listaCanciones = hits.Models.cancion.listaCanciones(collectionCanciones);
-                    return listaCanciones.ToJson();
+                    var enviar = String.Join(">", listaCanciones.ToArray());
+                    return enviar;
                     break;
                 
                 default:

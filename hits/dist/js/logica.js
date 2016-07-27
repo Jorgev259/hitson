@@ -1,4 +1,7 @@
-﻿function mostrarCancion() {
+﻿var canciones;
+var numCanciones;
+
+function mostrarCancion() {
     if (document.getElementById("gamer").style.display == "none" || document.getElementById("gamer").style.display == "") {
         document.getElementById("gamer").style.display = "block";
         document.getElementById("transparencia").style.display = "block";
@@ -70,8 +73,19 @@ function lista() {
         data: data,
         type: 'POST'
     }).done(function (result) {
-        var cancion = JSON.parse(result);
+        canciones = result.split(">");
+        numCanciones = canciones[0];
+        for (i = 1; i <= numCanciones; i++) {
+            canciones[i-1]=JSON.parse(canciones[i]);
+        }
+        yolo();
     }).fail(function (a, b, c) {
         console.log(a, b, c);
     });
+}
+
+function yolo() {
+    for(i=0;i<numCanciones;i++){
+        document.getElementById("prueba").innerHTML = document.getElementById("prueba").innerHTML + canciones[i].nombre + "<br>";
+    }
 }

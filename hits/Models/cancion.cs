@@ -75,11 +75,13 @@ namespace hits.Models
             BsonDocument place = new BsonDocument();
             var filtro = new BsonDocument();
             var lista = coleccion.Find(filtro).ToList();
-            var algo = lista.Count();
 
-            List<String> canciones = new List<String>();
+            List<String> canciones = new List<string>();
+            var cuenta = lista.Count();
 
-            for(int i = 0; i < lista.Count();)
+            canciones.Add(cuenta.ToString());
+
+            for(int i = 0; i < lista.Count();i++)
             {
                 lista[i].Remove("_id");
                 lista[i].Remove("length");
