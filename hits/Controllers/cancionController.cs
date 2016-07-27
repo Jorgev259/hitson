@@ -44,11 +44,16 @@ namespace hits_server.Controllers
                     break;
 
                 case "play":
-                    var cancionSend =hits.Models.cancion.reproducir(Convert.ToInt32(Request["id"]), client, db, collectionCanciones, bucket).ToBsonDocument().ToJson();
+                    var cancionSend =hits.Models.cancion.reproducir(Convert.ToInt32(Request["id"]), client, db, collectionCanciones, bucket);
 
                     return cancionSend;
                     break;
 
+                case "busqueda":
+                    var listaCanciones = hits.Models.cancion.listaCanciones(collectionCanciones);
+                    return listaCanciones.ToJson();
+                    break;
+                
                 default:
                     return "opa";
                     break;

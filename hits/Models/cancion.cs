@@ -8,6 +8,8 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
+using System.Web.Helpers;
+using System.Web.Script.Serialization;
 
 namespace hits.Models
 {
@@ -51,19 +53,41 @@ namespace hits.Models
             return "Subida Completada";
         }
 
-        public static object reproducir(int id, MongoClient client, IMongoDatabase db, IMongoCollection<BsonDocument> collection, GridFSBucket bucket)
+        public static String reproducir(int id, MongoClient client, IMongoDatabase db, IMongoCollection<BsonDocument> collection, GridFSBucket bucket)
         {
             var array = bucket.DownloadAsBytesByName(id.ToString());
             String cancion = "data:audio/mp3;base64," + Convert.ToBase64String(array);
 
-            dynamic prueba = new ExpandoObject();
-            prueba.id = id;
-            prueba.cancion = cancion;
-
             var filter = Builders<BsonDocument>.Filter.Eq("filename", id.ToString());
-            var result = collection.Find(filter).ToListAsync();
+            var documento = collection.Find(filter).ToList()[0].ToBsonDocument();
+            documento.Remove("_id");
+            documento.Remove("length");
+            documento.Remove("uploadDate");
+            documento.Add("cancion", cancion);
 
-            return prueba;
+            var final = documento.ToJson();
+
+            return final;
+        }
+
+        public static List<String> listaCanciones(IMongoCollection<BsonDocument> coleccion)
+        {
+            BsonDocument place = new BsonDocument();
+            var filtro = new BsonDocument();
+            var lista = coleccion.Find(filtro).ToList();
+            var algo = lista.Count();
+
+            List<String> canciones = new List<String>();
+
+            for(int i = 0; i < lista.Count();)
+            {
+                lista[i].Remove("_id");
+                lista[i].Remove("length");
+                lista[i].Remove("uploadDate");
+                canciones.Add(lista[i].ToJson());
+            }
+              
+            return canciones;
         }
     }
 }

@@ -58,3 +58,20 @@ function reproducir(id) {
         console.log(a, b, c);
     });
 }
+
+function lista() {
+    var data = new FormData();
+    data.append('op', 'busqueda');
+
+    $.ajax({
+        url: '/Api/cancion',
+        processData: false,
+        contentType: false,
+        data: data,
+        type: 'POST'
+    }).done(function (result) {
+        var cancion = JSON.parse(result);
+    }).fail(function (a, b, c) {
+        console.log(a, b, c);
+    });
+}
