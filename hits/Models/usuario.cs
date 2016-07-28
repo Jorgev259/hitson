@@ -3,6 +3,9 @@ using MongoDB.Driver;
 using MongoDB.Driver.GridFS;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
@@ -41,9 +44,41 @@ namespace hits.Models
 
             if (dUser == 0 && dNick == 0)
             {
-                byte[] file = File.ReadAllBytes(AppDomain.CurrentDomain.BaseDirectory + "temp\\" + num_usuario + ".jpg");
+                byte[] file = File.ReadAllBytes(AppDomain.CurrentDomain.BaseDirectory + "temp\\" + num_usuario + ".png");
+
+                var destRect = new Rectangle(0, 0,400, 400);
+                var destImage = new Bitmap(400, 400);
+
+                Bitmap image;
+                using (var ms = new MemoryStream(file))
+                {
+                    image = new Bitmap(ms);
+                }
+
+                destImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
+
+                using (var graphics = Graphics.FromImage(destImage))
+                {
+                    graphics.CompositingMode = CompositingMode.SourceCopy;
+                    graphics.CompositingQuality = CompositingQuality.HighQuality;
+                    graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                    graphics.SmoothingMode = SmoothingMode.HighQuality;
+                    graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+
+                    using (var wrapMode = new ImageAttributes())
+                    {
+                        wrapMode.SetWrapMode(WrapMode.TileFlipXY);
+                        graphics.DrawImage(image, destRect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);
+                    }
+                }
+
+                ImageConverter convertidor = new ImageConverter();
+                file = (byte[])convertidor.ConvertTo(destImage, typeof(byte[]));
+
                 var id = bucket.UploadFromBytes(num_usuario.ToString(), file);
-                File.Delete(AppDomain.CurrentDomain.BaseDirectory + "temp\\" + num_usuario + ".jpg");
+                File.Delete(AppDomain.CurrentDomain.BaseDirectory + "temp\\" + num_usuario + ".png");
+
+
 
                 var UploadUser = new BsonDocument
                 {
@@ -68,43 +103,46 @@ namespace hits.Models
             return respuesta;
         }
 
-        public static String reproducir(int id, MongoClient client, IMongoDatabase db, IMongoCollection<BsonDocument> collection, GridFSBucket bucket)
+        public static String login(String user,String pass,IMongoCollection<BsonDocument> collection)
         {
-            var array = bucket.DownloadAsBytesByName(id.ToString());
-            String cancion = "data:audio/mp3;base64," + Convert.ToBase64String(array);
+            var filter1 = Builders<BsonDocument>.Filter.Eq("usuario", user);
+            var dUser = collection.Find(filter1).ToList();
 
-            var filter = Builders<BsonDocument>.Filter.Eq("filename", id.ToString());
-            var documento = collection.Find(filter).ToList()[0].ToBsonDocument();
-            documento.Remove("_id");
-            documento.Remove("length");
-            documento.Remove("uploadDate");
-            documento.Add("cancion", cancion);
+            BsonDocument usuarioC = new BsonDocument();
 
-            var final = documento.ToJson();
+            if (dUser.Count() == 0)
+            {
+                usuarioC.Add("estado", "Ese usuario no existe");
+            }else
+            {
+                usuarioC = dUser[0];
+                var id= usuarioC["usuario"];
+                var passC = usuarioC["contraseña"];
 
-            return final;
+                usuarioC.Remove("_id");
+                usuarioC.Remove("length");
+                usuarioC.Remove("uploadDate");
+
+                if (pass == passC)
+                {
+                    usuarioC.Remove("contraseña");
+                    usuarioC.Add("estado","Login exitoso");
+                }
+                else
+                {
+                    usuarioC.Add("estado", "Contraseña Incorrecta");
+                }
+            }
+
+            return usuarioC.ToJson();
         }
 
-        public static List<String> listaCanciones(IMongoCollection<BsonDocument> coleccion)
+        public static String imagen(String id, IGridFSBucket bucket)
         {
-            BsonDocument place = new BsonDocument();
-            var filtro = new BsonDocument();
-            var lista = coleccion.Find(filtro).ToList();
+            var array = bucket.DownloadAsBytesByName(id);
+            String foto = "data:image/png;base64," + Convert.ToBase64String(array);
 
-            List<String> canciones = new List<string>();
-            var cuenta = lista.Count();
-
-            canciones.Add(cuenta.ToString());
-
-            for(int i = 0; i < lista.Count();i++)
-            {
-                lista[i].Remove("_id");
-                lista[i].Remove("length");
-                lista[i].Remove("uploadDate");
-                canciones.Add(lista[i].ToJson());
-            }
-              
-            return canciones;
+            return foto;
         }
     }
 }

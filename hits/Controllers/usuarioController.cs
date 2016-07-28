@@ -2,6 +2,7 @@
 using MongoDB.Driver;
 using MongoDB.Driver.GridFS;
 using System;
+using System.IO;
 using System.Web;
 using System.Web.Http;
 
@@ -27,11 +28,19 @@ namespace hits_server.Controllers
 
             switch (Request["op"]) {
                 case "agregar":
+                    var path = HttpContext.Current.Server.MapPath(string.Format("~/temp"));
                     int numero = unchecked((int)collectionUsuarios.Count(new BsonDocument()));
 
-                    var file = Request.Files[0];
-                    var path = HttpContext.Current.Server.MapPath(string.Format("~/temp"));
-                    file.SaveAs(path + "/" + numero + ".jpg");
+                    if (Request["foto"] == "vacio")
+                    {
+                        File.Copy(path + "/default.png", path + "/" + numero + ".png");
+                    }
+                    else
+                    {
+                        var file = Request.Files[0];
+                        
+                        file.SaveAs(path + "/" + numero + ".png");
+                    }
 
                     var valor = hits.Models.usuario.insertarUsuario(numero, Request["user"], Request["pass"], Request["nick"], Request["email"], client, db, collectionUsuarios, bucket);
 
@@ -39,15 +48,15 @@ namespace hits_server.Controllers
                     break;
 
                 case "login":
-                    var cancionSend =hits.Models.cancion.reproducir(Convert.ToInt32(Request["id"]), client, db, collectionUsuarios, bucket);
+                    var usuarioSend =hits.Models.usuario.login(Request["user"],Request["pass"],collectionUsuarios);
 
-                    return cancionSend;
+                    return usuarioSend;
                     break;
 
-                case "busqueda":
-                    var listaCanciones = hits.Models.cancion.listaCanciones(collectionUsuarios);
-                    var enviar = String.Join(">", listaCanciones.ToArray());
-                    return enviar;
+                case "imagen":
+                    var foto = hits.Models.usuario.imagen(Request["id"],bucket);
+
+                    return foto;
                     break;
                 
                 default:
