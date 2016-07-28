@@ -62,21 +62,38 @@ namespace hits.Models
             return respuesta;
         }
 
-        public static String reproducir(int id, MongoClient client, IMongoDatabase db, IMongoCollection<BsonDocument> collection, GridFSBucket bucket)
+        public static String login(String user,String pass,IMongoCollection<BsonDocument> collection)
         {
-            var array = bucket.DownloadAsBytesByName(id.ToString());
-            String cancion = "data:audio/mp3;base64," + Convert.ToBase64String(array);
+            var filter1 = Builders<BsonDocument>.Filter.Eq("usuario", user);
+            var dUser = collection.Find(filter1).ToList();
 
-            var filter = Builders<BsonDocument>.Filter.Eq("filename", id.ToString());
-            var documento = collection.Find(filter).ToList()[0].ToBsonDocument();
-            documento.Remove("_id");
-            documento.Remove("length");
-            documento.Remove("uploadDate");
-            documento.Add("cancion", cancion);
+            BsonDocument usuarioC = new BsonDocument();
 
-            var final = documento.ToJson();
+            if (dUser.Count() == 0)
+            {
+                usuarioC.Add("estado", "Ese usuario no existe");
+            }else
+            {
+                usuarioC = dUser[0];
+                var id= usuarioC["usuario"];
+                var passC = usuarioC["contraseña"];
 
-            return final;
+                usuarioC.Remove("_id");
+                usuarioC.Remove("length");
+                usuarioC.Remove("uploadDate");
+
+                if (pass == passC)
+                {
+                    usuarioC.Remove("contraseña");
+                    usuarioC.Add("estado","Login exitoso");
+                }
+                else
+                {
+                    usuarioC.Add("estado", "Contraseña Incorrecta");
+                }
+            }
+
+            return usuarioC.ToJson();
         }
 
         public static List<String> listaCanciones(IMongoCollection<BsonDocument> coleccion)

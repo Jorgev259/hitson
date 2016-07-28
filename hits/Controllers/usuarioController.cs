@@ -39,9 +39,9 @@ namespace hits_server.Controllers
                     break;
 
                 case "login":
-                    var cancionSend =hits.Models.cancion.reproducir(Convert.ToInt32(Request["id"]), client, db, collectionUsuarios, bucket);
+                    var usuarioSend =hits.Models.usuario.login(Request["user"],Request["pass"],collectionUsuarios);
 
-                    return cancionSend;
+                    return usuarioSend;
                     break;
 
                 case "busqueda":
