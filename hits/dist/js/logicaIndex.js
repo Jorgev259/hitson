@@ -7,11 +7,17 @@
         var email = $("#email").val();
         var foto = $("#perfil").get(0).files;
 
+        if (document.getElementById("perfil").files[0] == undefined) {
+            foto = "vacio";
+        } else {
+            foto = $("#perfil").get(0).files[0];
+        }
+
         data.append('user', user);
         data.append('pass', pass);
         data.append('nick', nick);
         data.append('email', email);
-        data.append('foto', foto[0]);
+        data.append('foto', foto);
         data.append('op', 'agregar');
 
         $.ajax({

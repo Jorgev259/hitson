@@ -33,13 +33,13 @@
   <div class="login-box-body">
     <p class="login-box-msg">Incia sesión</p>
 
-    <form action="javacript:login();">
+    <form action="javascript:login();">
       <div class="form-group has-feedback">
-        <input type="email" class="form-control" placeholder="Nombre de usuario">
+        <input class="form-control" placeholder="Nombre de usuario" id="user">
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input type="password" class="form-control" placeholder="Contraseña">
+        <input type="password" class="form-control" id="pass" placeholder="Contraseña">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="row">
@@ -64,6 +64,7 @@
 
 <!-- jQuery 2.2.0 -->
 <script src="plugins/jQuery/jQuery-2.2.0.min.js"></script>
+<script src="dist/js/logicaIndex.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="bootstrap/js/bootstrap.min.js"></script>
 <!-- iCheck -->

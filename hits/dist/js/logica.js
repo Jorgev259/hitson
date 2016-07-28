@@ -84,6 +84,24 @@ function lista() {
     });
 }
 
+function pedirImagen(id) {
+    var data = new FormData();
+    data.append('op', 'imagen');
+    data.append('id', id);
+
+    $.ajax({
+        url: '/Api/usuario',
+        processData: false,
+        contentType: false,
+        data: data,
+        type: 'POST'
+    }).done(function (result) {
+        alert(result);
+    }).fail(function (a, b, c) {
+        console.log(a, b, c);
+    });
+}
+
 function yolo() {
     for(i=0;i<numCanciones;i++){
         document.getElementById("prueba").innerHTML = document.getElementById("prueba").innerHTML + canciones[i].nombre + "<br>";

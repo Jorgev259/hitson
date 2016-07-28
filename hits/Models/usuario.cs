@@ -38,9 +38,9 @@ namespace hits.Models
 
             if (dUser == 0)
             {
-                byte[] file = File.ReadAllBytes(AppDomain.CurrentDomain.BaseDirectory + "temp\\" + num_usuario + ".jpg");
+                byte[] file = File.ReadAllBytes(AppDomain.CurrentDomain.BaseDirectory + "temp\\" + num_usuario + ".png");
                 var id = bucket.UploadFromBytes(num_usuario.ToString(), file);
-                File.Delete(AppDomain.CurrentDomain.BaseDirectory + "temp\\" + num_usuario + ".jpg");
+                File.Delete(AppDomain.CurrentDomain.BaseDirectory + "temp\\" + num_usuario + ".png");
 
                 var UploadUser = new BsonDocument
                 {
@@ -96,26 +96,12 @@ namespace hits.Models
             return usuarioC.ToJson();
         }
 
-        public static List<String> listaCanciones(IMongoCollection<BsonDocument> coleccion)
+        public static String imagen(String id, IGridFSBucket bucket)
         {
-            BsonDocument place = new BsonDocument();
-            var filtro = new BsonDocument();
-            var lista = coleccion.Find(filtro).ToList();
+            var array = bucket.DownloadAsBytesByName(id);
+            String foto = "data:audio/mp3;base64," + Convert.ToBase64String(array);
 
-            List<String> canciones = new List<string>();
-            var cuenta = lista.Count();
-
-            canciones.Add(cuenta.ToString());
-
-            for(int i = 0; i < lista.Count();i++)
-            {
-                lista[i].Remove("_id");
-                lista[i].Remove("length");
-                lista[i].Remove("uploadDate");
-                canciones.Add(lista[i].ToJson());
-            }
-              
-            return canciones;
+            return foto;
         }
     }
 }
