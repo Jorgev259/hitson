@@ -96,7 +96,7 @@ function pedirImagen(id) {
         data: data,
         type: 'POST'
     }).done(function (result) {
-        alert(result);
+        document.getElementById("imagenPerfil").src = result
     }).fail(function (a, b, c) {
         console.log(a, b, c);
     });
