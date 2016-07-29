@@ -65,6 +65,7 @@ function reproducir(id) {
 }
 
 function lista() {
+    //canciones[i].nombre
     var data = new FormData();
     data.append('op', 'busqueda');
 
@@ -73,6 +74,7 @@ function lista() {
         processData: false,
         contentType: false,
         data: data,
+        async: false,
         type: 'POST'
     }).done(function (result) {
         canciones = result.split(">");
@@ -80,10 +82,44 @@ function lista() {
         for (i = 1; i <= numCanciones; i++) {
             canciones[i-1]=JSON.parse(canciones[i]);
         }
-        yolo();
+        canciones.pop();
+        return canciones;
     }).fail(function (a, b, c) {
         console.log(a, b, c);
     });
+}
+
+function busqueda() {
+    lista();
+
+    var cajaBusqueda = document.getElementById("busquedaMusica").value;
+    var listaBusqueda = [];
+    var num = 0;
+    var num2 = 0;
+    var existe;
+
+    canciones.forEach(function(s) {
+        existe = false;
+        num2 = 0;
+        listaBusqueda.forEach(function (s) {
+            if (s.filename === listaBusqueda[num2]) {
+                existe = true;
+            }
+            num2++;
+        })
+
+        var nombre = s.nombre.indexOf(cajaBusqueda);
+        var genero = s.genero.indexOf(cajaBusqueda);
+        var artista = s.artista.indexOf(cajaBusqueda);
+        var album = s.album.indexOf(cajaBusqueda);
+
+        if (existe == false && (nombre !== -1 || genero !== -1 || artista !== -1 || album !== -1)) {
+            listaBusqueda[num] = s;
+            num++;
+        }
+    })
+
+    console.log(listaBusqueda);
 }
 
 function pedirImagen(id) {
@@ -107,12 +143,6 @@ function pedirImagen(id) {
     });
 
     return respuesta;
-}
-
-function yolo() {
-    for(i=0;i<numCanciones;i++){
-        document.getElementById("prueba").innerHTML = document.getElementById("prueba").innerHTML + canciones[i].nombre + "<br>";
-    }
 }
 
 function asignarImagen(id) {
