@@ -96,7 +96,7 @@ function pedirImagen(id) {
         data: data,
         type: 'POST'
     }).done(function (result) {
-        document.getElementById("imagenPerfil").src = result
+        document.getElementById('imagenPerfil').src = result;
     }).fail(function (a, b, c) {
         console.log(a, b, c);
     });
@@ -107,3 +107,7 @@ function yolo() {
         document.getElementById("prueba").innerHTML = document.getElementById("prueba").innerHTML + canciones[i].nombre + "<br>";
     }
 }
+
+var objeto = JSON.parse(sessionStorage.datosUsuario);
+console.log(objeto);
+document.getElementById('imagenPerfil').src = pedirImagen(objeto.num_usuario);
