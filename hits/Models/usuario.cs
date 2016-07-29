@@ -39,7 +39,10 @@ namespace hits.Models
             var filter1 = Builders<BsonDocument>.Filter.Eq("usuario", usuario);
             var dUser = collection.Find(filter1).ToList().Count();
 
-            if (dUser == 0)
+            var filter2 = Builders<BsonDocument>.Filter.Eq("nickname", nick);
+            var dNick = collection.Find(filter2).ToList().Count();
+
+            if (dUser == 0 && dNick == 0)
             {
                 byte[] file = File.ReadAllBytes(AppDomain.CurrentDomain.BaseDirectory + "temp\\" + num_usuario + ".png");
 
@@ -89,9 +92,12 @@ namespace hits.Models
                 collection.InsertOne(UploadUser);
                 respuesta = "Registrado Completo";
             }
-            else
+            else if(dUser > 0)
             {
                 respuesta = "Usuario ya existe";
+            }else
+            {
+                respuesta = "Nickname ya utilizado";
             }
 
             return respuesta;
