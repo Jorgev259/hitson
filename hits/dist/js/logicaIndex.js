@@ -56,7 +56,6 @@ function login() {
         if (usuario.estado == "Login exitoso") {
             console.log(usuario.estado);
             sessionStorage.datosUsuario = JSON.stringify(usuario);
-            window.location = "localhost:1657/index.html";
             console.log(sessionStorage.datosUsuario);
             document.location.href = "index.html";
         } else {
@@ -67,3 +66,9 @@ function login() {
         console.log(a, b, c);
     });
 };
+
+$(document).ready(function () {
+    if (sessionStorage.datosUsuario != undefined) {
+        document.location.href = "index.html";
+    }
+})
