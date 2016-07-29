@@ -1,5 +1,8 @@
 ﻿var canciones;
 var numCanciones;
+var reproductor;
+var cont;
+var contA;
 
 function mostrarCancion() {
     if (document.getElementById("gamer").style.display == "none" || document.getElementById("gamer").style.display == "") {
@@ -49,19 +52,22 @@ function reproducir(id) {
     var data = new FormData();
     data.append('op', 'play');
     data.append('id', id);
+    var cancion;
 
     $.ajax({
         url: '/Api/cancion',
         processData: false,
         contentType: false,
         data: data,
-        type: 'POST'
+        type: 'POST',
+        async:false
     }).done(function (result) {
-        var cancion = JSON.parse(result);
-        document.getElementById("repro").src = cancion.cancion;
+        cancion = JSON.parse(result);
     }).fail(function (a, b, c) {
         console.log(a, b, c);
     });
+
+    return cancion;
 }
 
 function lista() {
@@ -143,6 +149,29 @@ function pedirImagen(id) {
     });
 
     return respuesta;
+}
+
+function miMusica() {
+    lista();
+
+    var id = pedirCampo("num_usuario");
+
+    contA = -1;
+    cont = 0;
+    reproductor = [];
+
+    canciones.forEach(function (c) {
+        alert("boi" + c.filename);
+        if (c.usuario == id) {
+            reproductor[cont] = reproducir(c.filename)["cancion"];
+            cont++;
+        }
+    })
+}
+
+function nextC() {
+    contA++;
+    document.getElementById("player").src = reproductor[contA];
 }
 
 function asignarImagen(id) {

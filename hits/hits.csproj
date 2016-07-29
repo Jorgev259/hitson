@@ -198,6 +198,7 @@
     <Content Include="dist\css\skins\skin-yellow.min.css" />
     <Content Include="dist\css\skins\_all-skins.css" />
     <Content Include="dist\css\skins\_all-skins.min.css" />
+    <Content Include="dist\css\style.css" />
     <Content Include="dist\img\avatar.png" />
     <Content Include="dist\img\avatar04.png" />
     <Content Include="dist\img\avatar2.png" />
