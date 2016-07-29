@@ -142,7 +142,12 @@ namespace hits.Models
             var array = bucket.DownloadAsBytesByName(id);
             String foto = "data:image/png;base64," + Convert.ToBase64String(array);
 
-            return foto;
+            var document = new BsonDocument();
+            document.Add("datoFoto", foto);
+
+            var documentF = document.ToJson();
+
+            return documentF;
         }
     }
 }

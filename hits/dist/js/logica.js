@@ -85,6 +85,7 @@ function lista() {
 }
 
 function pedirImagen(id) {
+    var respuesta;
     var data = new FormData();
     data.append('op', 'imagen');
     data.append('id', id);
@@ -93,13 +94,17 @@ function pedirImagen(id) {
         url: '/Api/usuario',
         processData: false,
         contentType: false,
+        async:false,
         data: data,
         type: 'POST'
     }).done(function (result) {
-        document.getElementById('imagenPerfil').src = result;
+        var foto = JSON.parse(result);
+        respuesta = foto.datoFoto;
     }).fail(function (a, b, c) {
         console.log(a, b, c);
     });
+
+    return respuesta;
 }
 
 function yolo() {
@@ -108,6 +113,7 @@ function yolo() {
     }
 }
 
-var objeto = JSON.parse(sessionStorage.datosUsuario);
-console.log(objeto);
-document.getElementById('imagenPerfil').src = pedirImagen(objeto.num_usuario);
+function asignarImagen(){
+    var objeto = JSON.parse(sessionStorage.datosUsuario);
+    document.getElementById("imagenPerfil").src = pedirImagen(objeto.num_usuario);
+}
