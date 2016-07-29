@@ -60,16 +60,12 @@ namespace hits.Models
             var array = bucket.DownloadAsBytesByName(id.ToString());
             String cancion = "data:audio/mp3;base64," + Convert.ToBase64String(array);
 
-            var filter = Builders<BsonDocument>.Filter.Eq("filename", id.ToString());
-            var documento = collection.Find(filter).ToList()[0].ToBsonDocument();
-            documento.Remove("_id");
-            documento.Remove("length");
-            documento.Remove("uploadDate");
-            documento.Add("cancion", cancion);
+            //var documento = new BsonDocument();
+            //documento.Add("cancion", cancion);
 
-            var final = documento.ToJson();
+            //var final = documento.ToJson();
 
-            return final;
+            return cancion;
         }
 
         public static List<String> listaCanciones(IMongoCollection<BsonDocument> coleccion)

@@ -2,7 +2,7 @@
 var numCanciones;
 var reproductor;
 var cont;
-var contA;
+var contA =-1;
 
 function mostrarCancion() {
     if (document.getElementById("gamer").style.display == "none" || document.getElementById("gamer").style.display == "") {
@@ -52,7 +52,6 @@ function reproducir(id) {
     var data = new FormData();
     data.append('op', 'play');
     data.append('id', id);
-    var cancion;
 
     $.ajax({
         url: '/Api/cancion',
@@ -60,14 +59,11 @@ function reproducir(id) {
         contentType: false,
         data: data,
         type: 'POST',
-        async:false
     }).done(function (result) {
-        cancion = JSON.parse(result);
+        document.getElementById("player").src = result;
     }).fail(function (a, b, c) {
         console.log(a, b, c);
     });
-
-    return cancion;
 }
 
 function lista() {
@@ -161,9 +157,8 @@ function miMusica() {
     reproductor = [];
 
     canciones.forEach(function (c) {
-        alert("boi" + c.filename);
         if (c.usuario == id) {
-            reproductor[cont] = reproducir(c.filename)["cancion"];
+            reproductor[cont] = c.filename;
             cont++;
         }
     })
@@ -171,7 +166,7 @@ function miMusica() {
 
 function nextC() {
     contA++;
-    document.getElementById("player").src = reproductor[contA];
+    reproducir(reproductor[contA]);
 }
 
 function asignarImagen(id) {
@@ -190,4 +185,5 @@ $(document).ready(function () {
     document.getElementById("nick1").innerHTML = campo;
     document.getElementById("nick2").innerHTML = campo;
     document.getElementById("user1").innerHTML = pedirCampo('usuario');
+    miMusica();
 });
