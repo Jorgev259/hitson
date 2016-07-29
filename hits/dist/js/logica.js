@@ -19,6 +19,7 @@ function subirCancion() {
     var album = document.getElementById('albumCancion').value;
     var artista = document.getElementById('artistaCancion').value;
     var com = document.getElementById('comentarioCancion').value;
+    var user = pedirCampo("num_usuario");
 
     data.append('Files', Files[0]);
     data.append('nombre', nombre);
@@ -26,6 +27,7 @@ function subirCancion() {
     data.append('artista', artista);
     data.append('album', album);
     data.append('com', com);
+    data.append('usuario', user);
     data.append('op', 'agregar');
 
     $.ajax({
@@ -113,7 +115,20 @@ function yolo() {
     }
 }
 
-function asignarImagen(){
+function asignarImagen(id) {
     var objeto = JSON.parse(sessionStorage.datosUsuario);
-    document.getElementById("imagenPerfil").src = pedirImagen(objeto.num_usuario);
+    var imagen = pedirImagen(objeto.num_usuario);
+    document.getElementById(id).src = imagen;
 }
+
+function pedirCampo(campo) {
+    var dato = JSON.parse(sessionStorage.datosUsuario)[campo];
+    return dato;
+}
+
+$(document).ready(function () {
+    var campo = pedirCampo('nickname');
+    document.getElementById("nick1").innerHTML = campo;
+    document.getElementById("nick2").innerHTML = campo;
+    document.getElementById("user1").innerHTML = pedirCampo('usuario');
+});

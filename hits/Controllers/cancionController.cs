@@ -33,7 +33,7 @@ namespace hits_server.Controllers
                     var path = HttpContext.Current.Server.MapPath(string.Format("~/temp"));
                     file.SaveAs(path + "/" + numero + ".mp3");
 
-                    var valor = hits.Models.cancion.insertarCancion(numero, Request["nombre"], Request["genero"], Request["artista"], Request["album"], Request["com"], client, db, collectionCanciones, bucket);
+                    var valor = hits.Models.cancion.insertarCancion(numero, Request["nombre"], Request["genero"], Request["artista"], Request["album"], Request["com"], Request["usuario"], client, db, collectionCanciones, bucket);
 
                     return valor;
                     break;
