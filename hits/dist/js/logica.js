@@ -82,6 +82,7 @@ function reproducir(id) {
     var data = new FormData();
     data.append('op', 'play');
     data.append('id', id);
+    console.log(id);
 
     $.ajax({
         url: '/Api/cancion',
@@ -123,12 +124,12 @@ function busqueda() {
             num++;
         }
     })
-
+    document.getElementById("transparencia").style.display = "block";
+    document.getElementById("listaMusica").style.display = "block";
     console.log(listaBusqueda);
 }
 
 function pedirImagen(id,src) {
-    var respuesta;
     var data = new FormData();
     data.append('op', 'imagen');
     data.append('id', id);
@@ -145,8 +146,6 @@ function pedirImagen(id,src) {
     }).fail(function (a, b, c) {
         console.log(a, b, c);
     });
-
-    return respuesta;
 }
 
 function miMusica() {
