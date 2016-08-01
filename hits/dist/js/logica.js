@@ -4,6 +4,36 @@ var reproductor;
 var cont;
 var contA =-1;
 
+function lista() {
+    //canciones[i].nombre
+    var data = new FormData();
+    data.append('op', 'busqueda');
+
+    $.ajax({
+        url: '/Api/cancion',
+        processData: false,
+        contentType: false,
+        data: data,
+        type: 'POST'
+    }).done(function (result) {
+        canciones = result.split(">");
+        numCanciones = canciones[0];
+        for (i = 1; i <= numCanciones; i++) {
+            canciones[i-1]=JSON.parse(canciones[i]);
+        }
+        canciones.pop();
+        return canciones;
+    }).fail(function (a, b, c) {
+        console.log(a, b, c);
+    });
+}
+
+function inicio() {
+    lista();
+}
+
+inicio();
+
 function mostrarCancion() {
     if (document.getElementById("gamer").style.display == "none" || document.getElementById("gamer").style.display == "") {
         document.getElementById("gamer").style.display = "block";
@@ -66,34 +96,7 @@ function reproducir(id) {
     });
 }
 
-function lista() {
-    //canciones[i].nombre
-    var data = new FormData();
-    data.append('op', 'busqueda');
-
-    $.ajax({
-        url: '/Api/cancion',
-        processData: false,
-        contentType: false,
-        data: data,
-        async: false,
-        type: 'POST'
-    }).done(function (result) {
-        canciones = result.split(">");
-        numCanciones = canciones[0];
-        for (i = 1; i <= numCanciones; i++) {
-            canciones[i-1]=JSON.parse(canciones[i]);
-        }
-        canciones.pop();
-        return canciones;
-    }).fail(function (a, b, c) {
-        console.log(a, b, c);
-    });
-}
-
 function busqueda() {
-    lista();
-
     var cajaBusqueda = document.getElementById("busquedaMusica").value;
     var listaBusqueda = [];
     var num = 0;
@@ -124,7 +127,7 @@ function busqueda() {
     console.log(listaBusqueda);
 }
 
-function pedirImagen(id) {
+function pedirImagen(id,src) {
     var respuesta;
     var data = new FormData();
     data.append('op', 'imagen');
@@ -134,12 +137,11 @@ function pedirImagen(id) {
         url: '/Api/usuario',
         processData: false,
         contentType: false,
-        async:false,
         data: data,
         type: 'POST'
     }).done(function (result) {
         var foto = JSON.parse(result);
-        respuesta = foto.datoFoto;
+        document.getElementById(src).src = foto.datoFoto;
     }).fail(function (a, b, c) {
         console.log(a, b, c);
     });
@@ -148,8 +150,6 @@ function pedirImagen(id) {
 }
 
 function miMusica() {
-    lista();
-
     var id = pedirCampo("num_usuario");
 
     contA = -1;
@@ -171,7 +171,7 @@ function nextC() {
 
 function asignarImagen(id) {
     var objeto = JSON.parse(sessionStorage.datosUsuario);
-    var imagen = pedirImagen(objeto.num_usuario);
+    pedirImagen(objeto.num_usuario,id);
     document.getElementById(id).src = imagen;
 }
 

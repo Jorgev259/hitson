@@ -28,6 +28,7 @@
             type: 'POST'
         }).done(function (result) {
             alert(result);
+            document.location.href = "login.html";
         }).fail(function (a, b, c) {
             console.log(a, b, c);
         });
