@@ -4,6 +4,7 @@
     bottom:0;
     left:0;
 }
+
 #listaMusica{
     z-index:1900;
     display:none;
@@ -12,6 +13,7 @@
     left:100px;
     background-color:white;
 }
+
 #player{
     height:100px;
     width:400px;
