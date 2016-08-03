@@ -1,5 +1,7 @@
 ﻿var canciones;
+var cancionesU;
 var numCanciones;
+var numCanciones2;
 var reproductor;
 var contA =-1;
 
@@ -7,6 +9,9 @@ function lista() {
     //canciones[i].nombre
     var data = new FormData();
     data.append('op', 'busqueda');
+
+    var data2 = new FormData();
+    data2.append('op', 'busqueda2');
 
     $.ajax({
         url: '/Api/cancion',
@@ -21,8 +26,25 @@ function lista() {
             canciones[i-1]=JSON.parse(canciones[i]);
         }
         canciones.pop();
-        alert("base de datos de canciones actualizada");
-        miMusica();
+
+        $.ajax({
+            url: '/Api/cancion',
+            processData: false,
+            contentType: false,
+            data: data2,
+            type: 'POST'
+        }).done(function (result) {
+            cancionesU = result.split(">");
+            numCanciones2 = cancionesU[0];
+            for (i = 1; i <= numCanciones2; i++) {
+                cancionesU[i - 1] = JSON.parse(cancionesU[i]);
+            }
+            cancionesU.pop();
+            alert("base de datos de canciones actualizada");
+            miMusica();
+        }).fail(function (a, b, c) {
+            console.log(a, b, c);
+        });
     }).fail(function (a, b, c) {
         console.log(a, b, c);
     });
@@ -37,6 +59,13 @@ function mostrarCancion() {
         document.getElementById("transparencia").style.display = "none";
     }
 }
+
+function ocultarBusqueda(){
+    if ($("#listaMusica").css("display") == "block") {
+        $("#listaMusica").css("display", "none");
+        $("#transparencia").css("display", "none");
+    }
+};
 
 function subirCancion() {
     var data = new FormData();
@@ -76,7 +105,6 @@ function reproducir(id) {
     var data = new FormData();
     data.append('op', 'play');
     data.append('id', id);
-    console.log(id);
 
     $.ajax({
         url: '/Api/cancion',
@@ -122,9 +150,8 @@ function busqueda() {
     document.getElementById("transparencia").style.display = "block";
     document.getElementById("listaMusica").style.display = "block";
     listaBusqueda.forEach(function (cancion) {
-        $("#listaMusica").append("<div>Nombre: " + cancion.nombre + "</div><br>");
+        $("#listaMusica").append("<div id=" + cancion.filename +" onclick='agregarMiMusica(this)'>Nombre: " + cancion.nombre + "</div><br>");
     })
-    console.log(listaBusqueda);
 }
 
 function pedirImagen(id,src) {
@@ -160,6 +187,15 @@ function miMusica() {
         }
     })
 
+    cont = 0;
+
+    cancionesU.forEach(function (cU) {
+        if (cU.usuario == id) {
+            reproductor[cont] = cU.cancion;
+            cont++;
+        }
+    })
+
     alert("Canciones del usuario cargadas al reproductor");
 }
 
@@ -180,6 +216,30 @@ function asignarImagen(id) {
 function pedirCampo(campo) {
     var dato = JSON.parse(sessionStorage.datosUsuario)[campo];
     return dato;
+}
+
+function agregarMiMusica(objeto) {
+    var data = new FormData();
+    data.append('cancion', objeto.id);
+    data.append('id', pedirCampo("num_usuario"));
+    data.append('op', 'agregarMiMusica');
+
+    $.ajax({
+        url: '/Api/cancion',
+        processData: false,
+        contentType: false,
+        data: data,
+        type: 'POST',
+    }).done(function (result) {
+        alert(result);
+        lista();
+    }).fail(function (a, b, c) {
+        console.log(a, b, c);
+    });
+}
+
+function agregarPlaylist() {
+
 }
 
 $(document).ready(function () {

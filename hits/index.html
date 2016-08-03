@@ -38,7 +38,7 @@
 <script src="dist/js/demo.js"></script>
 </head>
 <body class="hold-transition skin-green sidebar-mini">
-     <div id="transparencia"></div>
+     <div id="transparencia" onclick="ocultarBusqueda()"></div>
     <div id="listaMusica"></div>
     <div id="reproductor"><audio id="player" controls autoplay></audio><button onclick="nextC()">Next</button></div>
 
@@ -159,7 +159,7 @@
       <ul class="sidebar-menu">
         <li class="header">Playllists</li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Colegio</span></a></li>
+        <li class="active" onclick="crearPlaylist()"><a href="#"><i class="fa fa-link"></i> <span>Crear playlist</span></a></li>
         <li><a href="#"><i class="fa fa-link"></i> <span>Ranked</span></a></li>
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Albums</span> <i class="fa fa-angle-left pull-right"></i></a>
@@ -318,7 +318,7 @@
                    <div class="col-md-12">
                       <div class="box box-success">
                         <div class="box-header with-border">
-                          <h3 class="box-title">Subir canción</h3>
+                          <h3 class="box-title">Crear playlist</h3>
 
                           <div class="box-tools pull-right">
                             <button type="button" class="btn btn-box-tool"  onclick="mostrarCancion()"><i class="fa fa-times"></i></button>
@@ -329,31 +329,14 @@
                         <div class="box-body">
                             <div class="form-group">
                               <label for="exampleInputPassword1">Nombre</label>
-                              <input type="text" class="form-control" id="nombreCancion" placeholder="Nombre">
+                              <input type="text" class="form-control" id="nombrePlaylist" placeholder="Nombre">
                             </div>
                             <div class="form-group">
-                              <label for="exampleInputPassword1">Género</label>
-                                <input type="text" class="form-control" id="generoCancion" placeholder="Género">
-                            </div>
-                            <div class="form-group">
-                              <label for="exampleInputPassword1">Artista</label>
-                                <input type="text" class="form-control" id="artistaCancion" placeholder="Artista">
-                            </div>
-                            <div class="form-group">
-                              <label for="exampleInputPassword1">Album</label>
-                                <input type="text" class="form-control" id="albumCancion" placeholder="Album">
-                            </div>
-                            <div class="form-group">
-                              <label>Comentario</label>
-                                <textarea class="form-control" id="comentarioCancion" rows="1" placeholder="Comentario"></textarea>
-                            </div>
-                            <div class="form-group">
-                              <label for="exampleInputFile">Elegir archivo</label>
-                              <input type="file" id="archivoCancion">
-                                
+                              <label>Descripcion</label>
+                                <textarea class="form-control" id="descripcionPlaylist" rows="1" placeholder="Comentario"></textarea>
                             </div>
                             <br />
-                            <a href="#" class="btn btn-default btn-flat" onclick="subirCancion()">Subir canción</a>
+                            <a href="#" class="btn btn-default btn-flat" onclick="subirPlaylist()">Crear playlist</a>
                            
                         </div>
                           
@@ -363,7 +346,63 @@
                 </div>
             </div>
         </section>        
-    </div>               
+    </div>
+      
+      <div id="crearPlaylist">
+          <!--Div formulario subir cancion-->
+          <!-- Main content -->
+          <section class="content">
+
+              <div class="row">
+                  <div class="col-md-12">
+                      <div class="box box-success">
+                          <div class="box-header with-border">
+                              <h3 class="box-title">Subir canción</h3>
+
+                              <div class="box-tools pull-right">
+                                  <button type="button" class="btn btn-box-tool" onclick="mostrarCancion()"><i class="fa fa-times"></i></button>
+                              </div>
+                              <!-- /.box-tools -->
+                          </div>
+                          <!-- /.box-header -->
+                          <div class="box-body">
+                              <div class="form-group">
+                                  <label for="exampleInputPassword1">Nombre</label>
+                                  <input type="text" class="form-control" id="nombreCancion" placeholder="Nombre">
+                              </div>
+                              <div class="form-group">
+                                  <label for="exampleInputPassword1">Género</label>
+                                  <input type="text" class="form-control" id="generoCancion" placeholder="Género">
+                              </div>
+                              <div class="form-group">
+                                  <label for="exampleInputPassword1">Artista</label>
+                                  <input type="text" class="form-control" id="artistaCancion" placeholder="Artista">
+                              </div>
+                              <div class="form-group">
+                                  <label for="exampleInputPassword1">Album</label>
+                                  <input type="text" class="form-control" id="albumCancion" placeholder="Album">
+                              </div>
+                              <div class="form-group">
+                                  <label>Comentario</label>
+                                  <textarea class="form-control" id="comentarioCancion" rows="1" placeholder="Comentario"></textarea>
+                              </div>
+                              <div class="form-group">
+                                  <label for="exampleInputFile">Elegir archivo</label>
+                                  <input type="file" id="archivoCancion">
+
+                              </div>
+                              <br />
+                              <a href="#" class="btn btn-default btn-flat" onclick="subirCancion()">Subir canción</a>
+
+                          </div>
+
+                          <!-- /.box-body -->
+                      </div>
+                      <!-- /.box -->
+                  </div>
+              </div>
+          </section>
+      </div>                  
   </div>
         
    

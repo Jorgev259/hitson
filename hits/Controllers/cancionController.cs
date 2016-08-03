@@ -49,6 +49,17 @@ namespace hits_server.Controllers
                     var enviar = String.Join(">", listaCanciones.ToArray());
                     return enviar;
                     break;
+
+                case "busqueda2":
+                    var listaCanciones2 = hits.Models.cancion.listaCanciones2(db);
+                    var enviar2 = String.Join(">", listaCanciones2.ToArray());
+                    return enviar2;
+                    break;
+
+                case "agregarMiMusica":
+                    var resp = hits.Models.cancion.agregarCancionUsuario(Request["id"], Request["cancion"], db);
+                    return resp;
+                    break;
                 
                 default:
                     return "opa";

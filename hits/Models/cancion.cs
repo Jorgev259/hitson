@@ -64,9 +64,23 @@ namespace hits.Models
             return cancion;
         }
 
+        public static String agregarCancionUsuario(string usuario,string cancion, IMongoDatabase db)
+        {
+            var collection = db.GetCollection<BsonDocument>("canciones.usuario");
+
+            var cancionUsuario = new BsonDocument
+                {
+                    {"cancion", cancion },
+                    {"usuario", usuario},
+                };
+
+            collection.InsertOne(cancionUsuario);
+
+            return "Cancion agregada a Mi Musica";
+        }
+
         public static List<String> listaCanciones(IMongoCollection<BsonDocument> coleccion)
         {
-            BsonDocument place = new BsonDocument();
             var filtro = new BsonDocument();
             var lista = coleccion.Find(filtro).ToList();
 
@@ -83,6 +97,27 @@ namespace hits.Models
                 canciones.Add(lista[i].ToJson());
             }
               
+            return canciones;
+        }
+
+        public static List<String> listaCanciones2(IMongoDatabase db)
+        {
+            var coleccion = db.GetCollection<BsonDocument>("canciones.usuario");
+
+            var filtro = new BsonDocument();
+            var lista = coleccion.Find(filtro).ToList();
+
+            List<String> canciones = new List<string>();
+            var cuenta = lista.Count();
+
+            canciones.Add(cuenta.ToString());
+
+            for (int i = 0; i < lista.Count(); i++)
+            {
+                lista[i].Remove("_id");
+                canciones.Add(lista[i].ToJson());
+            }
+
             return canciones;
         }
     }
