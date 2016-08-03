@@ -1,7 +1,6 @@
 ﻿var canciones;
 var numCanciones;
 var reproductor;
-var cont;
 var contA =-1;
 
 function lista() {
@@ -22,17 +21,12 @@ function lista() {
             canciones[i-1]=JSON.parse(canciones[i]);
         }
         canciones.pop();
-        return canciones;
+        alert("base de datos de canciones actualizada");
+        miMusica();
     }).fail(function (a, b, c) {
         console.log(a, b, c);
     });
 }
-
-function inicio() {
-    lista();
-}
-
-inicio();
 
 function mostrarCancion() {
     if (document.getElementById("gamer").style.display == "none" || document.getElementById("gamer").style.display == "") {
@@ -124,8 +118,12 @@ function busqueda() {
             num++;
         }
     })
+
     document.getElementById("transparencia").style.display = "block";
     document.getElementById("listaMusica").style.display = "block";
+    listaBusqueda.forEach(function (cancion) {
+        $("#listaMusica").append("<div>Nombre: " + cancion.nombre + "</div><br>");
+    })
     console.log(listaBusqueda);
 }
 
@@ -152,7 +150,7 @@ function miMusica() {
     var id = pedirCampo("num_usuario");
 
     contA = -1;
-    cont = 0;
+    var cont = 0;
     reproductor = [];
 
     canciones.forEach(function (c) {
@@ -161,17 +159,22 @@ function miMusica() {
             cont++;
         }
     })
+
+    alert("Canciones del usuario cargadas al reproductor");
 }
 
 function nextC() {
     contA++;
+    if (contA == reproductor.length) {
+        contA = 0;
+        alert("la lista se reinicio porque llego a su final");
+    };
     reproducir(reproductor[contA]);
 }
 
 function asignarImagen(id) {
     var objeto = JSON.parse(sessionStorage.datosUsuario);
     pedirImagen(objeto.num_usuario,id);
-    document.getElementById(id).src = imagen;
 }
 
 function pedirCampo(campo) {
@@ -184,5 +187,5 @@ $(document).ready(function () {
     document.getElementById("nick1").innerHTML = campo;
     document.getElementById("nick2").innerHTML = campo;
     document.getElementById("user1").innerHTML = pedirCampo('usuario');
-    miMusica();
+    lista();
 });

@@ -5,7 +5,6 @@
         var pass = $("#password").val();
         var nick = $("#nickname").val();
         var email = $("#email").val();
-        var foto = $("#perfil").get(0).files;
 
         if (document.getElementById("perfil").files[0] == undefined) {
             foto = "vacio";

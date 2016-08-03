@@ -7,6 +7,10 @@
 #listaMusica{
     z-index:1900;
     display:none;
+    position:absolute;
+    top:100px;
+    left:100px;
+    background-color:white;
 }
 #player{
     height:100px;
