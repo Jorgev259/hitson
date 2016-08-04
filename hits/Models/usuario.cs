@@ -2,17 +2,11 @@
 using MongoDB.Driver;
 using MongoDB.Driver.GridFS;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.Dynamic;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Web;
-using System.Web.Helpers;
-using System.Web.Script.Serialization;
 
 namespace hits.Models
 {

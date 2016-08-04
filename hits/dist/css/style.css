@@ -18,3 +18,25 @@
     height:100px;
     width:400px;
 }
+
+#gamer,#crearPlaylist{
+    display: none;
+    z-index: 2000;
+    position: absolute;
+    width: 60%;
+    height: 100px;
+    left: 20%; /*(100%-60%)/2*/
+top: 0px;
+    
+}
+
+#transparencia{
+     display: none;
+    z-index: 1900;
+    position: absolute;
+    background: #000; 
+   opacity: .70;  
+    width: 100%;
+    height: 100%;
+    
+}

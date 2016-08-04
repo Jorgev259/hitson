@@ -33,10 +33,6 @@ namespace hits.Models
 
         public static String insertarCancion(int num_cancion, string nombre, string genero, string artista, string album, string comentario, string usuario, MongoClient client, IMongoDatabase db, IMongoCollection<BsonDocument> collection, GridFSBucket bucket) {
 
-            //var server = MongoServer.Create("mongodb://localhost:27017");
-
-            var numero = collection.Count(new BsonDocument());
-
             byte[] file = File.ReadAllBytes(AppDomain.CurrentDomain.BaseDirectory + "temp\\" + num_cancion + ".mp3");
             var id = bucket.UploadFromBytes(num_cancion.ToString(), file);
 

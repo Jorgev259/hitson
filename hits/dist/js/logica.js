@@ -2,8 +2,10 @@
 var cancionesU;
 var numCanciones;
 var numCanciones2;
+var numPlay;
 var reproductor;
-var contA =-1;
+var contA = -1;
+var playlists;
 
 function lista() {
     //canciones[i].nombre
@@ -48,14 +50,38 @@ function lista() {
     }).fail(function (a, b, c) {
         console.log(a, b, c);
     });
+
+    $.ajax({
+        url: '/Api/playlist',
+        processData: false,
+        contentType: false,
+        data: data,
+        type: 'POST'
+    }).done(function (result) {
+        playlists = result.split(">");
+        numPlay = playlists[0];
+        for (i = 1; i <= numPlay; i++) {
+            playlists[i - 1] = JSON.parse(playlists[i]);
+        }
+        playlists.pop();
+        alert("playlists cargadas");
+
+        playlists.forEach(function (play) {
+            if (pedirCampo("num_usuario") == play.usuario) {
+                $("#sidebarPlaylist").append("<li onclick='cargarPlaylist(" + play.numero + ")'><a href='#'><i class='fa fa-link'></i><span>" + play.nombre + "</span></a></li>");
+            }
+        });
+    }).fail(function (a, b, c) {
+        console.log(a, b, c);
+    });
 }
 
-function mostrarCancion() {
-    if (document.getElementById("gamer").style.display == "none" || document.getElementById("gamer").style.display == "") {
-        document.getElementById("gamer").style.display = "block";
+function mostrarCancion(id) {
+    if (document.getElementById(id).style.display == "none" || document.getElementById(id).style.display == "") {
+        document.getElementById(id).style.display = "block";
         document.getElementById("transparencia").style.display = "block";
     } else {
-        document.getElementById("gamer").style.display = "none";
+        document.getElementById(id).style.display = "none";
         document.getElementById("transparencia").style.display = "none";
     }
 }
@@ -101,6 +127,32 @@ function subirCancion() {
     });
 }
 
+function subirPlaylist() {
+    var data = new FormData();
+    var nombre = document.getElementById('nombrePlaylist').value;
+    var com = document.getElementById('comentarioPlaylist').value;
+    var user = pedirCampo("num_usuario");
+
+    data.append('nombre', nombre);
+    data.append('com', com);
+    data.append('usuario', user);
+    data.append('op', 'agregar');
+
+    $.ajax({
+        url: '/Api/playlist',
+        data: data,
+        type: 'POST',
+        processData: false,
+        contentType: false
+    }).done(function (result) {
+        alert(result);
+        mostrarCancion('crearPlaylist');
+        $("#sidebarPlaylist").append("<li><a href='#'><i class='fa fa-link'></i><span>" + nombre + "</span></a></li>");
+    }).fail(function (a, b, c) {
+        console.log(a, b, c);
+    });
+}
+
 function reproducir(id) {
     var data = new FormData();
     data.append('op', 'play');
@@ -125,6 +177,7 @@ function busqueda() {
     var num = 0;
     var num2 = 0;
     var existe;
+    $("#listaMusica").html("");
 
     canciones.forEach(function(s) {
         existe = false;
@@ -147,10 +200,19 @@ function busqueda() {
         }
     })
 
+    playlists.forEach(function(s) {
+        num = 0;
+
+        if (s.nombre.indexOf(cajaBusqueda) !== -1) {
+            listaBusqueda[num] = s;
+            num++;
+        }
+    })
+
     document.getElementById("transparencia").style.display = "block";
     document.getElementById("listaMusica").style.display = "block";
     listaBusqueda.forEach(function (cancion) {
-        $("#listaMusica").append("<div id=" + cancion.filename +" onclick='agregarMiMusica(this)'>Nombre: " + cancion.nombre + "</div><br>");
+        $("#listaMusica").append("<div id=" + cancion.filename +" onclick='agregarMiMusica(this)'>Nombre: " + cancion.nombre + "</div><button onclick='uniraPlaylist(" + cancion.filename + ")'>Playlist</button><br>");
     })
 }
 
@@ -238,8 +300,59 @@ function agregarMiMusica(objeto) {
     });
 }
 
-function agregarPlaylist() {
+function uniraPlaylist(id_cancion) {
+    $("#listaMusica").html("");
 
+    playlists.forEach(function (playl) {
+        if (playl.usuario == pedirCampo("num_usuario")) {
+            $("#listaMusica").append("<div onclick='uniraPlaylist2(" + id_cancion + "," + playl.numero + ")'>" + playl.nombre + "</div>")
+        };
+    });
+}
+
+function uniraPlaylist2(id_cancion,id_playlist) {
+    var data = new FormData();
+    data.append("op", "unir");
+    data.append("id_cancion", id_cancion);
+    data.append("id_playlist", id_playlist);
+
+    $.ajax({
+        url: '/Api/playlist',
+        processData: false,
+        contentType: false,
+        data: data,
+        type: 'POST'
+    }).done(function (result) {
+        alert(result);
+        mostrarCancion("listaMusica");
+    });
+}
+
+function cargarPlaylist(id_playlist) {
+    var data = new FormData();
+    data.append("op", "reproducir");
+    data.append("id_playlist", id_playlist);
+
+    $.ajax({
+        url: '/Api/playlist',
+        processData: false,
+        contentType: false,
+        data: data,
+        type: 'POST'
+    }).done(function (result) {
+        var lista = result.split(">");
+        console.log(lista);
+        var cancionesP;
+        reproductor = "";
+
+        for (i = 0; i < lista.length; i++) {
+            cancionesP[i] = JSON.parse(lista[i]);
+            console.log(cancionesP[i]);
+            reproductor[i] = cancionesP[i].cancion;
+        }
+
+        alert("playlists cargada al reproductor");
+    });
 }
 
 $(document).ready(function () {
