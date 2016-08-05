@@ -20,11 +20,11 @@ function lista() {
         type: 'POST'
     }).done(function (result) {
         canciones = result.split(">");
-        var numCanciones = canciones[0];
-        for (i = 1; i <= numCanciones; i++) {
-            canciones[i-1]=JSON.parse(canciones[i]);
+
+        for (i = 0; i < canciones.length; i++) {
+            canciones[i] = JSON.parse(canciones[i]);
+            console.log(canciones[i]);
         }
-        canciones.pop();
 
         $.ajax({
             url: '/Api/cancion',
@@ -34,11 +34,11 @@ function lista() {
             type: 'POST'
         }).done(function (result) {
             cancionesU = result.split(">");
-            var numCanciones2 = cancionesU[0];
-            for (i = 1; i <= numCanciones2; i++) {
-                cancionesU[i - 1] = JSON.parse(cancionesU[i]);
+
+            for (i = 0; i < cancionesU.length; i++) {
+                cancionesU[i] = JSON.parse(cancionesU[i]);
             }
-            cancionesU.pop();
+
             alert("base de datos de canciones actualizada");
             miMusica();
         }).fail(function (a, b, c) {
@@ -56,11 +56,11 @@ function lista() {
         type: 'POST'
     }).done(function (result) {
         playlists = result.split(">");
-        numPlay = playlists[0];
-        for (i = 1; i <= numPlay; i++) {
-            playlists[i - 1] = JSON.parse(playlists[i]);
+
+        for (i = 0; i < playlists.length; i++) {
+            playlists[i] = JSON.parse(playlists[i]);
         }
-        playlists.pop();
+
         alert("playlists cargadas");
 
         playlists.forEach(function (play) {
@@ -254,7 +254,7 @@ function miMusica() {
             cont++;
         }
     })
-    next();
+    nextC();
     alert("Canciones del usuario cargadas al reproductor");
 }
 
@@ -348,7 +348,7 @@ function cargarPlaylist(id_playlist) {
             console.log(cancionesP[i]);
             reproductor[i] = cancionesP[i].cancion;
         }
-        next();
+        nextC();
         alert("playlists cargada al reproductor");
     });
 }

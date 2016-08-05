@@ -81,9 +81,6 @@ namespace hits.Models
             var lista = coleccion.Find(filtro).ToList();
 
             List<String> canciones = new List<string>();
-            var cuenta = lista.Count();
-
-            canciones.Add(cuenta.ToString());
 
             for(int i = 0; i < lista.Count();i++)
             {
