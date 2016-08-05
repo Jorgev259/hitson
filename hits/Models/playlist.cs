@@ -48,8 +48,8 @@ namespace hits.Models
 
             var playlist = new BsonDocument
                 {
-                    {"playlist", id_cancion.ToString() },
-                    {"cancion", id_playlist.ToString()},
+                    {"cancion", id_cancion.ToString() },
+                    {"playlist", id_playlist.ToString()},
                 };
 
             coleccion.InsertOne(playlist);
