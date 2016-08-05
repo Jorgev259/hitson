@@ -1,14 +1,11 @@
 ﻿var canciones;
 var cancionesU;
-var numCanciones;
-var numCanciones2;
 var numPlay;
 var reproductor;
 var contA = -1;
 var playlists;
 
 function lista() {
-    //canciones[i].nombre
     var data = new FormData();
     data.append('op', 'busqueda');
 
@@ -23,7 +20,7 @@ function lista() {
         type: 'POST'
     }).done(function (result) {
         canciones = result.split(">");
-        numCanciones = canciones[0];
+        var numCanciones = canciones[0];
         for (i = 1; i <= numCanciones; i++) {
             canciones[i-1]=JSON.parse(canciones[i]);
         }
@@ -37,7 +34,7 @@ function lista() {
             type: 'POST'
         }).done(function (result) {
             cancionesU = result.split(">");
-            numCanciones2 = cancionesU[0];
+            var numCanciones2 = cancionesU[0];
             for (i = 1; i <= numCanciones2; i++) {
                 cancionesU[i - 1] = JSON.parse(cancionesU[i]);
             }
@@ -341,11 +338,12 @@ function cargarPlaylist(id_playlist) {
         type: 'POST'
     }).done(function (result) {
         var lista = result.split(">");
-        console.log(lista);
-        var cancionesP;
-        reproductor = "";
+        var cancionesP = [];
+        reproductor = [];
 
         for (i = 0; i < lista.length; i++) {
+            console.log(lista[i]);
+            console.log(JSON.parse(lista[i]));
             cancionesP[i] = JSON.parse(lista[i]);
             console.log(cancionesP[i]);
             reproductor[i] = cancionesP[i].cancion;

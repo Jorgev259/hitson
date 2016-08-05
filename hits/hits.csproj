@@ -234,6 +234,7 @@
     <Content Include="dist\js\demo.js" />
     <Content Include="dist\js\logica.js" />
     <Content Include="dist\js\logicaIndex.js" />
+    <Content Include="dist\js\musica.js" />
     <Content Include="dist\js\pages\dashboard.js" />
     <Content Include="dist\js\pages\dashboard2.js" />
     <Content Include="favicon.ico" />
