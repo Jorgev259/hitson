@@ -254,7 +254,7 @@ function miMusica() {
             cont++;
         }
     })
-
+    next();
     alert("Canciones del usuario cargadas al reproductor");
 }
 
@@ -348,7 +348,7 @@ function cargarPlaylist(id_playlist) {
             console.log(cancionesP[i]);
             reproductor[i] = cancionesP[i].cancion;
         }
-
+        next();
         alert("playlists cargada al reproductor");
     });
 }
