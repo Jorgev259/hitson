@@ -40,7 +40,30 @@
 <body class="hold-transition skin-green sidebar-mini">
      <div id="transparencia" onclick="ocultarBusqueda()"></div>
     <div id="listaMusica"></div>
-    <div id="reproductor"><audio id="player" controls autoplay></audio><button onclick="nextC()">Next</button></div>
+    <!--nextC() "avanza a la asiguiente cancion"-->
+    <div id="reproductor"><audio id="player"autoplay></audio><section class="music-player">
+    <header class="music-player--banner"></header>
+    <main class="music-player--main">
+        <div class="music-player--progress">
+            <progress class="progress--progress-bar" value="43" max="100"></progress>
+            <div class="progress--time">1:37</div>
+            <div class="progress--time progress--time__end">3:52</div>
+        </div>
+        <div class="music-player--controls">
+            <i class="fa fa-pause controls--play-button"></i>
+
+            <div class="song-info">
+                <div class="song-info--title">Is This Love</div>
+                <div class="song-info--artist">Bob Marley</div>
+            </div>
+            <div class="controls--actions">
+                <i class="fa fa-retweet actions--repeat"></i>
+                <i class="fa fa-backward actions--back"></i>
+                <i class="fa fa-forward actions--forward" onclick="nextC()"></i>
+            </div>
+        </div>
+    </main>
+</section></div>
 
   <header class="main-header">
 
