@@ -23,7 +23,6 @@ function lista() {
 
         for (i = 0; i < canciones.length; i++) {
             canciones[i] = JSON.parse(canciones[i]);
-            console.log(canciones[i]);
         }
 
         $.ajax({
@@ -148,6 +147,7 @@ function subirPlaylist() {
     }).fail(function (a, b, c) {
         console.log(a, b, c);
     });
+    lista();
 }
 
 function reproducir(id) {
@@ -255,6 +255,7 @@ function miMusica() {
         }
     })
     nextC();
+    contA = 0;
     alert("Canciones del usuario cargadas al reproductor");
 }
 
@@ -342,13 +343,11 @@ function cargarPlaylist(id_playlist) {
         reproductor = [];
 
         for (i = 0; i < lista.length; i++) {
-            console.log(lista[i]);
-            console.log(JSON.parse(lista[i]));
             cancionesP[i] = JSON.parse(lista[i]);
-            console.log(cancionesP[i]);
             reproductor[i] = cancionesP[i].cancion;
         }
         nextC();
+        contA = 0;
         alert("playlists cargada al reproductor");
     });
 }
