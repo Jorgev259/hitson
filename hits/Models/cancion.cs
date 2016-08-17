@@ -31,33 +31,28 @@ namespace hits.Models
         public int _rating {  get {return rating;} set {rating=value;} }
         public int _usario { get { return usuario; } set { usuario = value; } }
 
-        public static String insertarCancion(int num_cancion, string nombre, string genero, string artista, string album, string comentario, string usuario, MongoClient client, IMongoDatabase db, IMongoCollection<BsonDocument> collection, GridFSBucket bucket) {
+        public static String insertarCancion(int num_cancion, string nombre, string genero, string artista, string album, string comentario, string usuario, MongoClient client, IMongoDatabase db, IMongoCollection<BsonDocument> collection) {
 
             byte[] file = File.ReadAllBytes(AppDomain.CurrentDomain.BaseDirectory + "temp\\" + num_cancion + ".mp3");
-            var id = bucket.UploadFromBytes(num_cancion.ToString(), file);
 
-            var filter = Builders<BsonDocument>.Filter.Eq("filename", num_cancion.ToString());
-            var update = Builders<BsonDocument>.Update.Set("nombre", nombre).Set("genero", genero).Set("artista", artista).Set("album", album).Set("comentario", comentario).Set("rating", 0).Set("usuario",usuario);
+            var documento = new BsonDocument
+            {
+                { "filename", num_cancion },
+                {"nombre",nombre },
+                { "genero", genero },
+                { "artista", artista },
+                { "album", album },
+                { "comentario", comentario },
+                { "rating", 0 },
+                { "usuario", usuario }
+            };
 
-            var update2 = collection.UpdateOne(filter, update);
+            collection.InsertOne(documento);
 
-            File.Delete(AppDomain.CurrentDomain.BaseDirectory + "temp\\" + num_cancion + ".mp3");
+            //File.Delete(AppDomain.CurrentDomain.BaseDirectory + "temp\\" + num_cancion + ".mp3");
 
 
             return "Subida Completada";
-        }
-
-        public static String reproducir(int id, MongoClient client, IMongoDatabase db, IMongoCollection<BsonDocument> collection, GridFSBucket bucket)
-        {
-            var array = bucket.DownloadAsBytesByName(id.ToString());
-            String cancion = "data:audio/mp3;base64," + Convert.ToBase64String(array);
-
-            //var documento = new BsonDocument();
-            //documento.Add("cancion", cancion);
-
-            //var final = documento.ToJson();
-
-            return cancion;
         }
 
         public static String agregarCancionUsuario(string usuario,string cancion, IMongoDatabase db)
@@ -80,14 +75,21 @@ namespace hits.Models
             var filtro = new BsonDocument();
             var lista = coleccion.Find(filtro).ToList();
 
-            List<String> canciones = new List<string>();
+            var objeto = new BsonDocument
+            {
+            };
 
+            List<String> canciones = new List<string>();
             for(int i = 0; i < lista.Count();i++)
             {
-                lista[i].Remove("_id");
-                lista[i].Remove("length");
-                lista[i].Remove("uploadDate");
-                canciones.Add(lista[i].ToJson());
+                objeto = new BsonDocument { };
+                var id_c = lista[i]["filename"];
+                var id_user = lista[i]["usuario"];
+
+                objeto.Add("cancion", id_c);
+                objeto.Add("user", id_user);
+
+                canciones.Add(objeto.ToJson());
             }
               
             return canciones;
@@ -103,12 +105,18 @@ namespace hits.Models
             List<String> canciones = new List<string>();
             var cuenta = lista.Count();
 
-            canciones.Add(cuenta.ToString());
+            var objeto = new BsonDocument { };
 
             for (int i = 0; i < lista.Count(); i++)
             {
-                lista[i].Remove("_id");
-                canciones.Add(lista[i].ToJson());
+                objeto = new BsonDocument { };
+                var id_c = lista[i]["cancion"];
+                var id_user = lista[i]["usuario"];
+
+                objeto.Add("cancion", id_c);
+                objeto.Add("user", id_user);
+
+                canciones.Add(objeto.ToJson());
             }
 
             return canciones;

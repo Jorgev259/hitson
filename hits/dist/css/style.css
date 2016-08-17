@@ -14,10 +14,6 @@
     background-color:white;
 }
 
-#player{
-    display:none;
-}
-
 #gamer,#crearPlaylist{
     display: none;
     z-index: 2000;

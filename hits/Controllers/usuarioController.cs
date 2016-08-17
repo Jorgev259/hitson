@@ -52,12 +52,6 @@ namespace hits_server.Controllers
 
                     return usuarioSend;
                     break;
-
-                case "imagen":
-                    var foto = hits.Models.usuario.imagen(Request["id"],bucket);
-
-                    return foto;
-                    break;
                 
                 default:
                     return "opa";

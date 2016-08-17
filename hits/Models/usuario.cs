@@ -40,40 +40,6 @@ namespace hits.Models
             {
                 byte[] file = File.ReadAllBytes(AppDomain.CurrentDomain.BaseDirectory + "temp\\" + num_usuario + ".png");
 
-                var destRect = new Rectangle(0, 0,400, 400);
-                var destImage = new Bitmap(400, 400);
-
-                Bitmap image;
-                using (var ms = new MemoryStream(file))
-                {
-                    image = new Bitmap(ms);
-                }
-
-                destImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
-
-                using (var graphics = Graphics.FromImage(destImage))
-                {
-                    graphics.CompositingMode = CompositingMode.SourceCopy;
-                    graphics.CompositingQuality = CompositingQuality.HighQuality;
-                    graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                    graphics.SmoothingMode = SmoothingMode.HighQuality;
-                    graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-
-                    using (var wrapMode = new ImageAttributes())
-                    {
-                        wrapMode.SetWrapMode(WrapMode.TileFlipXY);
-                        graphics.DrawImage(image, destRect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);
-                    }
-                }
-
-                ImageConverter convertidor = new ImageConverter();
-                file = (byte[])convertidor.ConvertTo(destImage, typeof(byte[]));
-
-                var id = bucket.UploadFromBytes(num_usuario.ToString(), file);
-                File.Delete(AppDomain.CurrentDomain.BaseDirectory + "temp\\" + num_usuario + ".png");
-
-
-
                 var UploadUser = new BsonDocument
                 {
                     {"num_usuario", num_usuario },
@@ -129,19 +95,6 @@ namespace hits.Models
             }
 
             return usuarioC.ToJson();
-        }
-
-        public static String imagen(String id, IGridFSBucket bucket)
-        {
-            var array = bucket.DownloadAsBytesByName(id);
-            String foto = "data:image/png;base64," + Convert.ToBase64String(array);
-
-            var document = new BsonDocument();
-            document.Add("datoFoto", foto);
-
-            var documentF = document.ToJson();
-
-            return documentF;
         }
     }
 }

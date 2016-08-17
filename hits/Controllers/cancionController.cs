@@ -16,7 +16,7 @@ namespace hits_server.Controllers
 
             var client = new MongoClient("mongodb://localhost:27017");
             var db = client.GetDatabase("hitson");
-            var collectionCanciones = db.GetCollection<BsonDocument>("canciones.files");
+            var collectionCanciones = db.GetCollection<BsonDocument>("canciones");
             var bucket = new GridFSBucket(db, new GridFSBucketOptions
             {
                 BucketName = "canciones",
@@ -33,16 +33,11 @@ namespace hits_server.Controllers
                     var path = HttpContext.Current.Server.MapPath(string.Format("~/temp"));
                     file.SaveAs(path + "/" + numero + ".mp3");
 
-                    var valor = hits.Models.cancion.insertarCancion(numero, Request["nombre"], Request["genero"], Request["artista"], Request["album"], Request["com"], Request["usuario"], client, db, collectionCanciones, bucket);
+                    var valor = hits.Models.cancion.insertarCancion(numero, Request["nombre"], Request["genero"], Request["artista"], Request["album"], Request["com"], Request["usuario"], client, db, collectionCanciones);
 
                     return valor;
                     break;
 
-                case "play":
-                    var cancionSend =hits.Models.cancion.reproducir(Convert.ToInt32(Request["id"]), client, db, collectionCanciones, bucket);
-
-                    return cancionSend;
-                    break;
 
                 case "busqueda":
                     var listaCanciones = hits.Models.cancion.listaCanciones(collectionCanciones);

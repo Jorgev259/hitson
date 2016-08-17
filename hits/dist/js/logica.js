@@ -4,6 +4,7 @@ var numPlay;
 var reproductor;
 var contA = -1;
 var playlists;
+var url = "localhost:1657/temp/";
 
 function lista() {
     var data = new FormData();
@@ -32,12 +33,14 @@ function lista() {
             data: data2,
             type: 'POST'
         }).done(function (result) {
+            console.log(result);
             cancionesU = result.split(">");
-
-            for (i = 0; i < cancionesU.length; i++) {
-                cancionesU[i] = JSON.parse(cancionesU[i]);
+            if (cancionesU[0] = "") {
+                console.log(cancionesU);
+                for (i = 0; i < cancionesU.length; i++) {
+                    cancionesU[i] = JSON.parse(cancionesU[i]);
+                }
             }
-
             alert("base de datos de canciones actualizada");
             miMusica();
         }).fail(function (a, b, c) {
@@ -151,21 +154,7 @@ function subirPlaylist() {
 }
 
 function reproducir(id) {
-    var data = new FormData();
-    data.append('op', 'play');
-    data.append('id', id);
-
-    $.ajax({
-        url: '/Api/cancion',
-        processData: false,
-        contentType: false,
-        data: data,
-        type: 'POST',
-    }).done(function (result) {
-        document.getElementById("player").src = result;
-    }).fail(function (a, b, c) {
-        console.log(a, b, c);
-    });
+    document.getElementById("player").src = url + id + ".mp3"
 }
 
 function busqueda() {
@@ -213,23 +202,8 @@ function busqueda() {
     })
 }
 
-function pedirImagen(id,src) {
-    var data = new FormData();
-    data.append('op', 'imagen');
-    data.append('id', id);
-
-    $.ajax({
-        url: '/Api/usuario',
-        processData: false,
-        contentType: false,
-        data: data,
-        type: 'POST'
-    }).done(function (result) {
-        var foto = JSON.parse(result);
-        document.getElementById(src).src = foto.datoFoto;
-    }).fail(function (a, b, c) {
-        console.log(a, b, c);
-    });
+function pedirImagen(id, src) {
+    document.getElementById(src).src = "temp/" + id + ".png";
 }
 
 function miMusica() {
@@ -240,8 +214,8 @@ function miMusica() {
     reproductor = [];
 
     canciones.forEach(function (c) {
-        if (c.usuario == id) {
-            reproductor[cont] = c.filename;
+        if (c.user == id) {
+            reproductor[cont] = c.cancion;
             cont++;
         }
     })
@@ -254,6 +228,7 @@ function miMusica() {
             cont++;
         }
     })
+
     nextC();
     contA = 0;
     alert("Canciones del usuario cargadas al reproductor");
