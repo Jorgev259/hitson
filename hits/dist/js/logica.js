@@ -215,7 +215,11 @@ function busqueda() {
     $("#inicio").html("");
     listaBusqueda.forEach(function (cancion) {
         //agregar nuevo elemento dentro de un div
-        $("#inicio").append("<div id=" + cancion.filename +" onclick='agregarMiMusica(this)'>Nombre: " + cancion.nombre + "</div><button onclick='uniraPlaylist(" + cancion.filename + ")'>Playlist</button><br>");
+        //$("#inicio").append("<div id=" + cancion.filename +" onclick='agregarMiMusica(this)'>Nombre: " + cancion.nombre + "</div><button onclick='uniraPlaylist(" + cancion.filename + ")'>Playlist</button><br>");
+        $("#inicio").append(" <div class='row' id='" + cancion.filename + "' onclick='agregarMiMusica(this)'><div class='col-xs-12'><div class='box'><div class='box-body table-responsive no-padding'><table class='table table-hove'><tr><td>" + cancion.nombre + "</td><td>" + cancion.artista + "</td><td>" + cancion.album + "</td><td>"+ cancion.genero+ "</td></tr></table></div></div></div></div><button class='btn btn-lg btn-success' onclick='uniraPlaylist(" + cancion.filename + ")'>Playlist</button><br><br>");
+       
+
+
     })
 }
 
