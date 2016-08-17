@@ -197,7 +197,9 @@ function busqueda() {
 
     document.getElementById("transparencia").style.display = "block";
     document.getElementById("listaMusica").style.display = "block";
+    //limpiar y poner nueva vista
     listaBusqueda.forEach(function (cancion) {
+        //agregar nuevo elemento dentro de un div
         $("#listaMusica").append("<div id=" + cancion.filename +" onclick='agregarMiMusica(this)'>Nombre: " + cancion.nombre + "</div><button onclick='uniraPlaylist(" + cancion.filename + ")'>Playlist</button><br>");
     })
 }
