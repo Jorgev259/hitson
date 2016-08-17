@@ -132,6 +132,26 @@ function subirCancion() {
     });
 }
 
+function datosCancion(listaId) {
+    var listaEnviar = JSON.stringify(listaId);
+    var data = new FormData;
+
+    data.append("lista", listaEnviar);
+    data.append("op", "datos");
+
+    $.ajax({
+        url: '/Api/cancion',
+        processData: false,
+        contentType: false,
+        data: data,
+        type: 'POST'
+    }).done(function (result) {
+        alert(result);
+    }).fail(function (a, b, c) {
+        console.log(a, b, c);
+    });
+}
+
 function subirPlaylist() {
     var data = new FormData();
     var nombre = document.getElementById('nombrePlaylist').value;
