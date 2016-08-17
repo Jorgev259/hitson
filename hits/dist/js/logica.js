@@ -4,9 +4,14 @@ var numPlay;
 var reproductor;
 var contA = -1;
 var playlists;
-var url = "localhost:1657/temp/";
+divPlay = "";
 
 function lista() {
+    if (divPlay == "") {
+        divPlay = $("#sidebarPlaylist").clone();
+        console.log(divPlay);
+    }
+
     var data = new FormData();
     data.append('op', 'busqueda');
 
@@ -42,7 +47,6 @@ function lista() {
                 }
             }
             alert("base de datos de canciones actualizada");
-            miMusica();
         }).fail(function (a, b, c) {
             console.log(a, b, c);
         });
@@ -64,6 +68,8 @@ function lista() {
         }
 
         alert("playlists cargadas");
+
+        $("#sidebarPlaylist").replaceWith(divPlay.clone());
 
         playlists.forEach(function (play) {
             if (pedirCampo("num_usuario") == play.usuario) {
@@ -146,7 +152,6 @@ function subirPlaylist() {
     }).done(function (result) {
         alert(result);
         mostrarCancion('crearPlaylist');
-        $("#sidebarPlaylist").append("<li><a href='#'><i class='fa fa-link'></i><span>" + nombre + "</span></a></li>");
     }).fail(function (a, b, c) {
         console.log(a, b, c);
     });
@@ -154,7 +159,7 @@ function subirPlaylist() {
 }
 
 function reproducir(id) {
-    document.getElementById("player").src = url + id + ".mp3"
+    document.getElementById("player").src = "temp/" + id + ".mp3"
 }
 
 function busqueda() {
