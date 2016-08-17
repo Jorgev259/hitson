@@ -4,8 +4,14 @@ var numPlay;
 var reproductor;
 var contA = -1;
 var playlists;
+divPlay = "";
 
 function lista() {
+    if (divPlay == "") {
+        divPlay = $("#sidebarPlaylist").clone();
+        console.log(divPlay);
+    }
+
     var data = new FormData();
     data.append('op', 'busqueda');
 
@@ -63,7 +69,7 @@ function lista() {
 
         alert("playlists cargadas");
 
-        $("#sidebarPlaylist").html("<li class='header'>Playlists</li><li class='active' onclick='mostrarCancion('crearPlaylist')'><a href='#'><i class='fa fa-link'></i> <span>Crear playlist</span></a></li>");
+        $("#sidebarPlaylist").replaceWith(divPlay.clone());
 
         playlists.forEach(function (play) {
             if (pedirCampo("num_usuario") == play.usuario) {
@@ -330,7 +336,7 @@ function cargarPlaylist(id_playlist) {
 }
 
 $(document).ready(function () {
-    var campo = pedirCampo('nickname');
+    var campo = pedirCampo('nickname');    
     document.getElementById("nick1").innerHTML = campo;
     document.getElementById("nick2").innerHTML = campo;
     document.getElementById("user1").innerHTML = pedirCampo('usuario');
