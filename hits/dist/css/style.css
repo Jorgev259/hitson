@@ -1,4 +1,8 @@
-﻿#reproductor{
+﻿#inicio{
+    display:none;
+}
+
+#reproductor{
     position:absolute;
     z-index:1800;
     bottom:0;

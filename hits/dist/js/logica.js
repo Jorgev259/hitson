@@ -158,6 +158,7 @@ function reproducir(id) {
 }
 
 function busqueda() {
+    document.getElementById("inicio").style.display = none;
     var cajaBusqueda = document.getElementById("busquedaMusica").value;
     var listaBusqueda = [];
     var num = 0;
