@@ -3,6 +3,7 @@ using MongoDB.Driver;
 using System;
 using System.Web;
 using System.Web.Http;
+using System.Linq;
 
 namespace hits_server.Controllers
 {
@@ -53,7 +54,11 @@ namespace hits_server.Controllers
                     char[] corchetes = { '[', ']'};
                     lista1 = lista1.Trim(corchetes);
 
-                    var lista2 = lista1.Split(',');
+                    var lista2 = lista1.Split(',').ToList();
+
+                    var datoscanciones = hits.Models.cancion.datoCancion(collectionCanciones,lista2);
+                    var enviardatos = String.Join(">", datoscanciones.ToArray());
+
                     return "hola";
                     break;
                 
