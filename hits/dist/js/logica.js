@@ -236,7 +236,7 @@ function busqueda() {
     listaBusqueda.forEach(function (cancion) {
         //agregar nuevo elemento dentro de un div
         //$("#inicio").append("<div id=" + cancion.filename +" onclick='agregarMiMusica(this)'>Nombre: " + cancion.nombre + "</div><button onclick='uniraPlaylist(" + cancion.filename + ")'>Playlist</button><br>");
-        $("#inicio").append(" <div class='row' id='" + cancion.filename + "' onclick='agregarMiMusica(this)'><div class='col-xs-12'><div class='box'><div class='box-body table-responsive no-padding'><table class='table table-hove'><tr><td>" + cancion.nombre + "</td><td>" + cancion.artista + "</td><td>" + cancion.album + "</td><td>"+ cancion.genero+ "</td></tr></table></div></div></div></div><button class='btn btn-lg btn-success' onclick='uniraPlaylist(" + cancion.filename + ")'>Playlist</button><br><br>");
+        $("#inicio").append(" <div class='row' id='" + cancion.filename + "' onclick='agregarMiMusica(this)'><div class='col-xs-12'><div class='box'><div class='box-body table-responsive no-padding'><table class='table table-hove'><tr><td>" + cancion.nombre + "</td><td>" + cancion.artista + "</td><td>" + cancion.album + "</td><td>" + cancion.genero + "</td><button id='boton' class='btn btn-flat btn-success' onclick='uniraPlaylist(" + cancion.filename + ")'>Agregar a la Playlist</button><button id='boton' class='btn btn-flat btn-success' onclick='uniraPlaylist(" + cancion.filename + ")'>Agregar a mi musica</button></tr></table></div></div></div></div>");
        
 
 
@@ -375,72 +375,5 @@ $(document).ready(function () {
     document.getElementById("user1").innerHTML = pedirCampo('usuario');
     lista();
 
-    (function ($) {
-        "use strict";
-        var dlxPlayer = {
-            DOM: function () {
-                //Song Details
-                this.songTitle = $("#dlxPlayer_song_title");
-                this.songAlbum = $("#dlxPlayer_song_album");
-                this.songArtist = $("#dlxPlayer_song_artist");
-                //Controls
-                this.playerPlay = $("#dlxPlayer_play");
-                this.playerPause = $("#dlxPlayer_pause");
-                this.playerVol = $("#dlxPlayer_volume");
-                this.playerVolMuted = $("#dlxPlayer_volume_off");
-                this.playerSeeker = $("#dlxPlayer_seeker");
-                this.playerAudio = $("#dlxPlayer_audio");
-            },
-            events: function () {
-                this.playerPlay.on("click", this.playBtn.bind(this));
-                this.playerPause.on("click", this.pauseBtn.bind(this));
-                this.playerVol.on("click", this.muteBtn.bind(this));
-                this.playerVolMuted.on("click", this.muteBtn.bind(this));
-                this.playerAudio.on("ended", this.songEnded.bind(this));
-                this.playerAudio.on("timeupdate", this.progessPos.bind(this));
-            },
-            init: function () {
-                this.DOM();
-                this.events();
-            },
-            playBtn: function () {
-                this.playerPlay.hide();
-                this.playerPause.show();
-                this.playerAudio.trigger("play");
-            },
-            pauseBtn: function () {
-                this.playerPause.hide();
-                this.playerPlay.show();
-                this.playerAudio.trigger("pause");
-            },
-            muteBtn: function () {
-                var isMuted = this.playerAudio.prop("muted");
-                if (isMuted === true) {
-                    this.playerAudio.prop("muted", false);
-                    this.playerVolMuted.hide();
-                    this.playerVol.show();
-                } else {
-                    this.playerAudio.prop("muted", true);
-                    this.playerVol.hide();
-                    this.playerVolMuted.show();
-                }
-            },
-            songEnded: function () {
-                //    console.log("song ended");
-                this.playerAudio.trigger("pause");
-                this.playerPause.hide();
-                this.playerAudio.trigger("currentTime", 0);
-                this.playerPlay.show();
-            },
-            progessPos: function (audio) {
-                audio = audio.currentTarget;
-                var dur = audio.duration,
-                    curTime = audio.currentTime,
-                    seekerPos = (curTime / dur) * 100;
-                this.playerSeeker.css("right", (100 - seekerPos) + "%");
-            }
-        };
-
-        dlxPlayer.init();
-    }(jQuery));
+  
 });
