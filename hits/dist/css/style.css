@@ -18,7 +18,7 @@
     background-color:white;
 }
 
-#gamer,#crearPlaylist{
+#gamer,#crearPlaylist, #agregaraplaylist{
     display: none;
     z-index: 2000;
     position: absolute;
@@ -42,4 +42,5 @@ top: 0px;
 
 #boton{
     right:0;
+
 }
