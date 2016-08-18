@@ -59,7 +59,7 @@ namespace hits_server.Controllers
                     var datoscanciones = hits.Models.cancion.datoCancion(collectionCanciones,lista2);
                     var enviardatos = String.Join(">", datoscanciones.ToArray());
 
-                    return "hola";
+                    return enviardatos;
                     break;
                 
                 default:

@@ -1,6 +1,5 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
-using MongoDB.Driver.GridFS;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -26,7 +25,7 @@ namespace hits.Models
         public string _nick {  get {return nick;} set {nick=value;} }
         public string _email {  get {return email;} set {email=value;} }
 
-        public static String insertarUsuario(int num_usuario, string usuario, string contraseña, string nick, string email, MongoClient client, IMongoDatabase db, IMongoCollection<BsonDocument> collection, GridFSBucket bucket) {
+        public static String insertarUsuario(int num_usuario, string usuario, string contraseña, string nick, string email, MongoClient client, IMongoDatabase db, IMongoCollection<BsonDocument> collection) {
             var numero = collection.Count(new BsonDocument());
             var respuesta = "Registrado";
 

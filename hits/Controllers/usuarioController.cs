@@ -1,6 +1,5 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
-using MongoDB.Driver.GridFS;
 using System;
 using System.IO;
 using System.Web;
@@ -18,13 +17,6 @@ namespace hits_server.Controllers
             var client = new MongoClient("mongodb://localhost:27017");
             var db = client.GetDatabase("hitson");
             var collectionUsuarios = db.GetCollection<BsonDocument>("usuarios");
-            var bucket = new GridFSBucket(db, new GridFSBucketOptions
-            {
-                BucketName = "perfiles",
-                ChunkSizeBytes = 1048576,
-                WriteConcern = WriteConcern.WMajority,
-                ReadPreference = ReadPreference.Secondary,
-            });
 
             switch (Request["op"]) {
                 case "agregar":
@@ -42,7 +34,7 @@ namespace hits_server.Controllers
                         file.SaveAs(path + "/" + numero + ".png");
                     }
 
-                    var valor = hits.Models.usuario.insertarUsuario(numero, Request["user"], Request["pass"], Request["nick"], Request["email"], client, db, collectionUsuarios, bucket);
+                    var valor = hits.Models.usuario.insertarUsuario(numero, Request["user"], Request["pass"], Request["nick"], Request["email"], client, db, collectionUsuarios);
 
                     return valor;
                     break;
