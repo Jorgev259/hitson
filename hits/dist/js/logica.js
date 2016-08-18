@@ -172,10 +172,10 @@ function subirPlaylist() {
     }).done(function (result) {
         alert(result);
         mostrarCancion('crearPlaylist');
+        lista();
     }).fail(function (a, b, c) {
         console.log(a, b, c);
     });
-    lista();
 }
 
 function reproducir(id) {
