@@ -4,9 +4,14 @@ var numPlay;
 var reproductor;
 var contA = -1;
 var playlists;
-var url = "localhost:1657/temp/";
+divPlay = "";
 
 function lista() {
+    if (divPlay == "") {
+        divPlay = $("#sidebarPlaylist").clone();
+        console.log(divPlay);
+    }
+
     var data = new FormData();
     data.append('op', 'busqueda');
 
@@ -42,7 +47,6 @@ function lista() {
                 }
             }
             alert("base de datos de canciones actualizada");
-            miMusica();
         }).fail(function (a, b, c) {
             console.log(a, b, c);
         });
@@ -64,6 +68,8 @@ function lista() {
         }
 
         alert("playlists cargadas");
+
+        $("#sidebarPlaylist").replaceWith(divPlay.clone());
 
         playlists.forEach(function (play) {
             if (pedirCampo("num_usuario") == play.usuario) {
@@ -126,6 +132,26 @@ function subirCancion() {
     });
 }
 
+function datosCancion(listaId) {
+    var listaEnviar = JSON.stringify(listaId);
+    var data = new FormData;
+
+    data.append("lista", listaEnviar);
+    data.append("op", "datos");
+
+    $.ajax({
+        url: '/Api/cancion',
+        processData: false,
+        contentType: false,
+        data: data,
+        type: 'POST'
+    }).done(function (result) {
+        alert(result);
+    }).fail(function (a, b, c) {
+        console.log(a, b, c);
+    });
+}
+
 function subirPlaylist() {
     var data = new FormData();
     var nombre = document.getElementById('nombrePlaylist').value;
@@ -146,7 +172,6 @@ function subirPlaylist() {
     }).done(function (result) {
         alert(result);
         mostrarCancion('crearPlaylist');
-        $("#sidebarPlaylist").append("<li><a href='#'><i class='fa fa-link'></i><span>" + nombre + "</span></a></li>");
     }).fail(function (a, b, c) {
         console.log(a, b, c);
     });
@@ -154,7 +179,7 @@ function subirPlaylist() {
 }
 
 function reproducir(id) {
-    document.getElementById("player").src = url + id + ".mp3"
+    document.getElementById("player").src = "temp/" + id + ".mp3"
 }
 
 function busqueda() {
@@ -163,7 +188,12 @@ function busqueda() {
     var num = 0;
     var num2 = 0;
     var existe;
-    $("#listaMusica").html("");
+    $("#inicio").html("");
+
+    var nombre = "cancion";
+    var genero = "genero";
+    var artista = "arista";
+    var album = "album";
 
     canciones.forEach(function(s) {
         existe = false;
@@ -175,10 +205,13 @@ function busqueda() {
             num2++;
         })
 
-        var nombre = s.nombre.indexOf(cajaBusqueda);
-        var genero = s.genero.indexOf(cajaBusqueda);
-        var artista = s.artista.indexOf(cajaBusqueda);
-        var album = s.album.indexOf(cajaBusqueda);
+        //var nombre = s.nombre.indexOf(cajaBusqueda);
+        //var genero = s.genero.indexOf(cajaBusqueda);
+        //var artista = s.artista.indexOf(cajaBusqueda);
+        //var album = s.album.indexOf(cajaBusqueda);
+
+       
+        
 
         if (existe == false && (nombre !== -1 || genero !== -1 || artista !== -1 || album !== -1)) {
             listaBusqueda[num] = s;
@@ -189,18 +222,24 @@ function busqueda() {
     playlists.forEach(function(s) {
         num = 0;
 
-        if (s.nombre.indexOf(cajaBusqueda) !== -1) {
+        //if (s.nombre.indexOf(cajaBusqueda) !== -1) {
+        if (nombre.indexOf(cajaBusqueda) !== -1) {
             listaBusqueda[num] = s;
             num++;
         }
     })
 
-    document.getElementById("transparencia").style.display = "block";
-    document.getElementById("listaMusica").style.display = "block";
+    //document.getElementById("transparencia").style.display = "block";
+   
     //limpiar y poner nueva vista
+    $("#inicio").html("");
     listaBusqueda.forEach(function (cancion) {
         //agregar nuevo elemento dentro de un div
-        $("#listaMusica").append("<div id=" + cancion.filename +" onclick='agregarMiMusica(this)'>Nombre: " + cancion.nombre + "</div><button onclick='uniraPlaylist(" + cancion.filename + ")'>Playlist</button><br>");
+        //$("#inicio").append("<div id=" + cancion.filename +" onclick='agregarMiMusica(this)'>Nombre: " + cancion.nombre + "</div><button onclick='uniraPlaylist(" + cancion.filename + ")'>Playlist</button><br>");
+        $("#inicio").append(" <div class='row' id='" + cancion.filename + "' onclick='agregarMiMusica(this)'><div class='col-xs-12'><div class='box'><div class='box-body table-responsive no-padding'><table class='table table-hove'><tr><td>" + cancion.nombre + "</td><td>" + cancion.artista + "</td><td>" + cancion.album + "</td><td>"+ cancion.genero+ "</td></tr></table></div></div></div></div><button class='btn btn-lg btn-success' onclick='uniraPlaylist(" + cancion.filename + ")'>Playlist</button><br><br>");
+       
+
+
     })
 }
 

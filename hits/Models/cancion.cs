@@ -103,7 +103,6 @@ namespace hits.Models
             var lista = coleccion.Find(filtro).ToList();
 
             List<String> canciones = new List<string>();
-            var cuenta = lista.Count();
 
             var objeto = new BsonDocument { };
 
@@ -120,6 +119,26 @@ namespace hits.Models
             }
 
             return canciones;
+        }
+
+        public static List<String> datoCancion(IMongoCollection<BsonDocument> coleccion, List<String> listaId)
+        {
+            var filtro = new BsonDocument();
+            var lista = coleccion.Find(filtro).ToList();
+
+            List<String> datoscanciones = new List<string>();
+
+
+            for (int i = 0; i < lista.Count(); i++)
+            {
+                if (lista[i]["cancion"] == listaId[i]) {
+                    lista[i].Remove("_id");
+
+                    datoscanciones.Add(lista[i].ToJson());
+                } 
+            }
+
+            return datoscanciones;
         }
     }
 }

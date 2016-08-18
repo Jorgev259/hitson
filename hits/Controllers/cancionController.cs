@@ -1,9 +1,9 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
-using MongoDB.Driver.GridFS;
 using System;
 using System.Web;
 using System.Web.Http;
+using System.Linq;
 
 namespace hits_server.Controllers
 {
@@ -17,13 +17,6 @@ namespace hits_server.Controllers
             var client = new MongoClient("mongodb://localhost:27017");
             var db = client.GetDatabase("hitson");
             var collectionCanciones = db.GetCollection<BsonDocument>("canciones");
-            var bucket = new GridFSBucket(db, new GridFSBucketOptions
-            {
-                BucketName = "canciones",
-                ChunkSizeBytes = 1048576,
-                WriteConcern = WriteConcern.WMajority,
-                ReadPreference = ReadPreference.Secondary,
-            });
 
             switch (Request["op"]) {
                 case "agregar":
@@ -54,6 +47,19 @@ namespace hits_server.Controllers
                 case "agregarMiMusica":
                     var resp = hits.Models.cancion.agregarCancionUsuario(Request["id"], Request["cancion"], db);
                     return resp;
+                    break;
+
+                case "datos":
+                    var lista1 = Request["lista"];
+                    char[] corchetes = { '[', ']'};
+                    lista1 = lista1.Trim(corchetes);
+
+                    var lista2 = lista1.Split(',').ToList();
+
+                    var datoscanciones = hits.Models.cancion.datoCancion(collectionCanciones,lista2);
+                    var enviardatos = String.Join(">", datoscanciones.ToArray());
+
+                    return "hola";
                     break;
                 
                 default:
