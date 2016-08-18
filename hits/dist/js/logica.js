@@ -253,7 +253,7 @@ function busqueda() {
 
     listaBusqueda.forEach(function (cancion) {
         
-        $("#inicio").append(" <div class='row' id='" + datosCanciones[cancion.cancion]["nombre"] + "'><div class='col-xs-12'><div class='box'><div class='box-body table-responsive no-padding'><table class='table table-hove'><tr><td>" + datosCanciones[cancion.cancion]["nombre"] + "</td><td>" + datosCanciones[cancion.cancion]["artista"] + "</td><td>" + datosCanciones[cancion.cancion]["album"] + "</td><td>" + datosCanciones[cancion.cancion]["genero"] + "</td><button id='boton' class='btn btn-flat btn-success' onclick='uniraPlaylist(" + cancion.cancion + ")'>Agregar a la Playlist</button><button id='boton' class='btn btn-flat btn-success' onclick='agregarMiMusica(" + cancion.cancion + ")'>Agregar a mi musica</button></tr></table></div></div></div></div>");
+        $("#inicio").append(" <div class='row' id='" + datosCanciones[cancion.cancion]["nombre"] + "'><div class='col-xs-12'><div class='box'><div class='box-body table-responsive no-padding'><table class='table table-hove'><tr><th>Canción</th><th>Artista</th><th>Album</th><th>Género</th></tr><tr><td>" + datosCanciones[cancion.cancion]["nombre"] + "</td><td>" + datosCanciones[cancion.cancion]["artista"] + "</td><td>" + datosCanciones[cancion.cancion]["album"] + "</td><td>" + datosCanciones[cancion.cancion]["genero"] + "</td></tr><tr><button id='boton' class='btn btn-flat btn-success' onclick='uniraPlaylist(" + cancion.cancion + ")'>Agregar a la Playlist</button><button id='boton' class='btn btn-flat btn-success' onclick='agregarMiMusica(" + cancion.cancion + ")'>Agregar a mi musica</button></tr></table></div></div></div></div>");
        
 
 
@@ -337,6 +337,7 @@ function uniraPlaylist(id_cancion) {
     $("#listadeplaylist").html("");
     playlists.forEach(function (playl) {
         if (playl.usuario == pedirCampo("num_usuario")) {
+            
             $("#listadeplaylist").append("<div onclick='uniraPlaylist2(" + id_cancion + "," + playl.numero + ")'>" + playl.nombre + "</div>")
         };
     });
