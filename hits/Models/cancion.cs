@@ -127,15 +127,28 @@ namespace hits.Models
 
             List<String> datoscanciones = new List<string>();
 
-
-            for (int i = 0; i < lista.Count(); i++)
+            foreach (var id in listaId)
             {
-                if (lista[i]["cancion"] == listaId[i]) {
-                    lista[i].Remove("_id");
+                foreach (var cancion in lista)
+                {
+                    if (cancion["filename"].ToString() == id)
+                    {
+                        cancion.Remove("_id");
 
-                    datoscanciones.Add(lista[i].ToJson());
-                } 
+                        datoscanciones.Add(cancion.ToJson());
+                    } 
+                }
             }
+
+
+            //for (int i = 0; i < lista.Count(); i++)
+            //{
+            //    if (lista[i]["filename"].ToString() == listaId[i]) {
+            //        lista[i].Remove("_id");
+
+            //        datoscanciones.Add(lista[i].ToJson());
+            //    } 
+            //}
 
             return datoscanciones;
         }
