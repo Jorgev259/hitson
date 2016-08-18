@@ -31,6 +31,13 @@ function lista() {
             canciones[i] = JSON.parse(canciones[i]);
         }
 
+        var listaUpdate = [];
+        canciones.forEach(function (c) {
+            listaUpdate.push(c.cancion);
+        });
+
+        datosCancion(listaUpdate);
+
         $.ajax({
             url: '/Api/cancion',
             processData: false,
@@ -60,7 +67,9 @@ function lista() {
         data: data,
         type: 'POST'
     }).done(function (result) {
+
         playlists = result.split(">");
+        console.log
 
         for (i = 0; i < playlists.length; i++) {
             playlists[i] = JSON.parse(playlists[i]);
@@ -200,14 +209,14 @@ function busqueda() {
     var num = 0;
     var num2 = 0;
     var existe;
+    var nombre = "";
+    var genero = "";
+    var artista = "";
+    var album = "";
+    var id;
     $("#inicio").html("");
 
-    var nombre = "cancion";
-    var genero = "genero";
-    var artista = "arista";
-    var album = "album";
-
-    canciones.forEach(function(s) {
+    canciones.forEach(function (s) {
         existe = false;
         num2 = 0;
         listaBusqueda.forEach(function (s) {
@@ -216,39 +225,34 @@ function busqueda() {
             }
             num2++;
         })
-
-        //var nombre = s.nombre.indexOf(cajaBusqueda);
-        //var genero = s.genero.indexOf(cajaBusqueda);
-        //var artista = s.artista.indexOf(cajaBusqueda);
-        //var album = s.album.indexOf(cajaBusqueda);
-
-       
         
+        nombre = datosCanciones[s.cancion]["nombre"].indexOf(cajaBusqueda);
+        genero = datosCanciones[s.cancion]["genero"].indexOf(cajaBusqueda);
+        artista = datosCanciones[s.cancion]["artista"].indexOf(cajaBusqueda);
+        album = datosCanciones[s.cancion]["album"].indexOf(cajaBusqueda);
 
         if (existe == false && (nombre !== -1 || genero !== -1 || artista !== -1 || album !== -1)) {
             listaBusqueda[num] = s;
             num++;
+            console.log(listaBusqueda[num]);
         }
     })
 
-    playlists.forEach(function(s) {
-        num = 0;
+    //playlists.forEach(function(s) {
+    //    num = 0;
 
-        //if (s.nombre.indexOf(cajaBusqueda) !== -1) {
-        if (nombre.indexOf(cajaBusqueda) !== -1) {
-            listaBusqueda[num] = s;
-            num++;
-        }
-    })
+    //    //if (s.nombre.indexOf(cajaBusqueda) !== -1) {
+    //    if (nombre !== -1) {
+    //        listaBusqueda[num] = s;
+    //        num++;
+    //    }
+    //})
 
-    //document.getElementById("transparencia").style.display = "block";
-   
-    //limpiar y poner nueva vista
     $("#inicio").html("");
+
     listaBusqueda.forEach(function (cancion) {
-        //agregar nuevo elemento dentro de un div
-        //$("#inicio").append("<div id=" + cancion.filename +" onclick='agregarMiMusica(this)'>Nombre: " + cancion.nombre + "</div><button onclick='uniraPlaylist(" + cancion.filename + ")'>Playlist</button><br>");
-        $("#inicio").append(" <div class='row' id='" + cancion.filename + "'><div class='col-xs-12'><div class='box'><div class='box-body table-responsive no-padding'><table class='table table-hove'><tr><td>" + cancion.nombre + "</td><td>" + cancion.artista + "</td><td>" + cancion.album + "</td><td>" + cancion.genero + "</td><button id='boton' class='btn btn-flat btn-success' onclick='uniraPlaylist("+ cancion.id + ")'>Agregar a la Playlist</button><button id='boton' class='btn btn-flat btn-success' onclick='agregarMiMusica(this)'>Agregar a mi musica</button></tr></table></div></div></div></div>");
+        
+        $("#inicio").append(" <div class='row' id='" + datosCanciones[cancion.cancion]["nombre"] + "'><div class='col-xs-12'><div class='box'><div class='box-body table-responsive no-padding'><table class='table table-hove'><tr><td>" + datosCanciones[cancion.cancion]["nombre"] + "</td><td>" + datosCanciones[cancion.cancion]["artista"] + "</td><td>" + datosCanciones[cancion.cancion]["album"] + "</td><td>" + datosCanciones[cancion.cancion]["genero"] + "</td><button id='boton' class='btn btn-flat btn-success' onclick='uniraPlaylist(" + cancion.cancion + ")'>Agregar a la Playlist</button><button id='boton' class='btn btn-flat btn-success' onclick='agregarMiMusica(" + cancion.cancion + ")'>Agregar a mi musica</button></tr></table></div></div></div></div>");
        
 
 
@@ -308,7 +312,7 @@ function pedirCampo(campo) {
 
 function agregarMiMusica(objeto) {
     var data = new FormData();
-    data.append('cancion', objeto.id);
+    data.append('cancion', objeto);
     data.append('id', pedirCampo("num_usuario"));
     data.append('op', 'agregarMiMusica');
 
