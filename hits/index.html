@@ -40,7 +40,7 @@
 <body class="hold-transition skin-green sidebar-mini">
      <div id="transparencia" onclick="ocultarBusqueda()"></div>
     <div id="listaMusica">
-        <div id="agregaraplaylist">
+        
             <!-- Main content -->
             <section class="content">
 
@@ -51,24 +51,19 @@
                                 <h3 class="box-title">Agregar a playlist</h3>
 
                                 <div class="box-tools pull-right">
-                                    <button type="button" class="btn btn-box-tool" onclick="mostrarCancion('crearPlaylist')"><i class="fa fa-times"></i></button>
+                                    <button type="button" class="btn btn-box-tool" onclick="mostrarCancion('listaMusica')" ><i class="fa fa-times"></i></button>
                                 </div>
                                 <!-- /.box-tools -->
                             </div>
                             <!-- /.box-header -->
                             <div class="box-body">
-                                <div class="form-group">
-                                    <label for="exampleInputPassword1">Nombre</label>
-                                    <input type="text" class="form-control" id="nombrePlaylist" placeholder="Nombre">
-                                </div>
+                               <div id="listadeplaylist">
 
-                                <div class="form-group">
-                                    <label>Comentario</label>
-                                    <textarea class="form-control" id="comentarioPlaylist" rows="1" placeholder="Comentario"></textarea>
-                                </div>
+                               </div>
 
-                                <br />
-                                <a href="#" class="btn btn-default btn-flat" onclick="subirPlaylist()">Crear Playlist</a>
+                                
+
+                                
 
                             </div>
 
@@ -78,7 +73,7 @@
                     </div>
                 </div>
             </section>
-        </div>
+        
 
     </div>
     <!--nextC() "avanza a la asiguiente cancion"-->
@@ -467,8 +462,7 @@
   <!-- Add the sidebar's background. This div must be placed
        immediately after the control sidebar -->
   <div class="control-sidebar-bg"></div>
-</div>
-    
+
 <!-- ./wrapper -->
 
 

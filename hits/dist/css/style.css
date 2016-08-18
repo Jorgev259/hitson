@@ -18,7 +18,7 @@
     background-color:white;
 }
 
-#gamer,#crearPlaylist, #agregaraplaylist{
+#gamer,#crearPlaylist{
     display: none;
     z-index: 2000;
     position: absolute;
@@ -28,6 +28,8 @@
 top: 0px;
     
 }
+
+
 
 #transparencia{
      display: none;

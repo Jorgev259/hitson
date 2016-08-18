@@ -236,7 +236,7 @@ function busqueda() {
     listaBusqueda.forEach(function (cancion) {
         //agregar nuevo elemento dentro de un div
         //$("#inicio").append("<div id=" + cancion.filename +" onclick='agregarMiMusica(this)'>Nombre: " + cancion.nombre + "</div><button onclick='uniraPlaylist(" + cancion.filename + ")'>Playlist</button><br>");
-        $("#inicio").append(" <div class='row' id='" + cancion.filename + "'><div class='col-xs-12'><div class='box'><div class='box-body table-responsive no-padding'><table class='table table-hove'><tr><td>" + cancion.nombre + "</td><td>" + cancion.artista + "</td><td>" + cancion.album + "</td><td>" + cancion.genero + "</td><button id='boton' class='btn btn-flat btn-success' onclick='uniraPlaylist(" + cancion.id + ")'>Agregar a la Playlist</button><button id='boton' class='btn btn-flat btn-success' onclick='agregarMiMusica(this)'>Agregar a mi musica</button></tr></table></div></div></div></div>");
+        $("#inicio").append(" <div class='row' id='" + cancion.filename + "'><div class='col-xs-12'><div class='box'><div class='box-body table-responsive no-padding'><table class='table table-hove'><tr><td>" + cancion.nombre + "</td><td>" + cancion.artista + "</td><td>" + cancion.album + "</td><td>" + cancion.genero + "</td><button id='boton' class='btn btn-flat btn-success' onclick='uniraPlaylist("+ cancion.id + ")'>Agregar a la Playlist</button><button id='boton' class='btn btn-flat btn-success' onclick='agregarMiMusica(this)'>Agregar a mi musica</button></tr></table></div></div></div></div>");
        
 
 
@@ -315,18 +315,12 @@ function agregarMiMusica(objeto) {
 }
 
 function uniraPlaylist(id_cancion) {
-    //if (document.getElementById("agregaraplaylist").style.display == "none" || document.getElementById("agregaraplaylist").style.display == "") {
-    //    document.getElementById("agregaraplaylist").style.display = "block";
-    //    document.getElementById("transparencia").style.display = "block";
-    //} else {
-    //    document.getElementById("agregaraplaylist").style.display = "none";
-    //    document.getElementById("transparencia").style.display = "none";
-    //}
+    mostrarCancion("listaMusica");
 
-    $("#listaMusica").html("");
+    $("#listadeplaylist").html("");
     playlists.forEach(function (playl) {
         if (playl.usuario == pedirCampo("num_usuario")) {
-            $("#listaMusica").append("<div onclick='uniraPlaylist2(" + id_cancion + "," + playl.numero + ")'>" + playl.nombre + "</div>")
+            $("#listadeplaylist").append("<div onclick='uniraPlaylist2(" + id_cancion + "," + playl.numero + ")'>" + playl.nombre + "</div>")
         };
     });
 }
