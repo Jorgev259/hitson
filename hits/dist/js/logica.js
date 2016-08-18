@@ -1,5 +1,6 @@
 ﻿var canciones;
 var cancionesU;
+var datosCanciones = [];
 var numPlay;
 var reproductor;
 var contA = -1;
@@ -9,7 +10,6 @@ divPlay = "";
 function lista() {
     if (divPlay == "") {
         divPlay = $("#sidebarPlaylist").clone();
-        console.log(divPlay);
     }
 
     var data = new FormData();
@@ -38,7 +38,6 @@ function lista() {
             data: data2,
             type: 'POST'
         }).done(function (result) {
-            console.log(result);
             cancionesU = result.split(">");
             if (cancionesU[0] = "") {
                 console.log(cancionesU);
@@ -91,13 +90,6 @@ function mostrarCancion(id) {
     }
 }
 
-function ocultarBusqueda(){
-    if ($("#listaMusica").css("display") == "block") {
-        $("#listaMusica").css("display", "none");
-        $("#transparencia").css("display", "none");
-    }
-};
-
 function subirCancion() {
     var data = new FormData();
     var Files = $("#archivoCancion").get(0).files;
@@ -133,23 +125,43 @@ function subirCancion() {
 }
 
 function datosCancion(listaId) {
-    var listaEnviar = JSON.stringify(listaId);
-    var data = new FormData;
-
-    data.append("lista", listaEnviar);
-    data.append("op", "datos");
-
-    $.ajax({
-        url: '/Api/cancion',
-        processData: false,
-        contentType: false,
-        data: data,
-        type: 'POST'
-    }).done(function (result) {
-        alert(result);
-    }).fail(function (a, b, c) {
-        console.log(a, b, c);
+    datosCanciones.forEach(function (cancion) {
+        listaId.forEach(function (item) {
+            if (cancion["filename"] == item) {
+                var index = listaId.indexOf(cancion["filename"]);
+                listaId.splice(index, 1);
+            }
+        });
     });
+    
+    if (listaId != "") {
+        var listaEnviar = JSON.stringify(listaId);
+        var data = new FormData;
+
+        data.append("lista", listaEnviar);
+        data.append("op", "datos");
+
+        $.ajax({
+            url: '/Api/cancion',
+            processData: false,
+            contentType: false,
+            data: data,
+            type: 'POST'
+        }).done(function (result) {
+            var lista = result.split(">");
+
+            for (i = 0; i < lista.length; i++) {
+                lista[i] = JSON.parse(lista[i]);
+            }
+
+            lista.forEach(function (item) {
+                var numero = item["filename"]
+                datosCanciones[numero] = item;
+            })
+        }).fail(function (a, b, c) {
+            console.log(a, b, c);
+        });
+    } 
 }
 
 function subirPlaylist() {
