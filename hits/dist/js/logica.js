@@ -25,37 +25,38 @@ function lista() {
         data: data,
         type: 'POST'
     }).done(function (result) {
-        canciones = result.split(">");
+        if(result != ""){
+            canciones = result.split(">");
 
-        for (i = 0; i < canciones.length; i++) {
-            canciones[i] = JSON.parse(canciones[i]);
-        }
-
-        var listaUpdate = [];
-        canciones.forEach(function (c) {
-            listaUpdate.push(c.cancion);
-        });
-
-        datosCancion(listaUpdate);
-
-        $.ajax({
-            url: '/Api/cancion',
-            processData: false,
-            contentType: false,
-            data: data2,
-            type: 'POST'
-        }).done(function (result) {
-            cancionesU = result.split(">");
-            if (cancionesU[0] = "") {
-                console.log(cancionesU);
-                for (i = 0; i < cancionesU.length; i++) {
-                    cancionesU[i] = JSON.parse(cancionesU[i]);
-                }
+            for (i = 0; i < canciones.length; i++) {
+                canciones[i] = JSON.parse(canciones[i]);
             }
-            alert("base de datos de canciones actualizada");
-        }).fail(function (a, b, c) {
-            console.log(a, b, c);
-        });
+
+            var listaUpdate = [];
+            canciones.forEach(function (c) {
+                listaUpdate.push(c.cancion);
+            });
+
+            datosCancion(listaUpdate);
+
+            $.ajax({
+                url: '/Api/cancion',
+                processData: false,
+                contentType: false,
+                data: data2,
+                type: 'POST'
+            }).done(function (result) {
+                if(result != ""){
+                    cancionesU = result.split(">");
+                    for (i = 0; i < cancionesU.length; i++) {
+                        cancionesU[i] = JSON.parse(cancionesU[i]);
+                    }
+                    alert("base de datos de canciones actualizada");
+                }
+            }).fail(function (a, b, c) {
+                console.log(a, b, c);
+            });
+        }
     }).fail(function (a, b, c) {
         console.log(a, b, c);
     });
@@ -67,23 +68,23 @@ function lista() {
         data: data,
         type: 'POST'
     }).done(function (result) {
+        if(result != ""){
+            playlists = result.split(">");
 
-        playlists = result.split(">");
-        console.log
-
-        for (i = 0; i < playlists.length; i++) {
-            playlists[i] = JSON.parse(playlists[i]);
-        }
-
-        alert("playlists cargadas");
-
-        $("#sidebarPlaylist").replaceWith(divPlay.clone());
-
-        playlists.forEach(function (play) {
-            if (pedirCampo("num_usuario") == play.usuario) {
-                $("#sidebarPlaylist").append("<li onclick='cargarPlaylist(" + play.numero + ")'><a href='#'><i class='fa fa-link'></i><span>" + play.nombre + "</span></a></li>");
+            for (i = 0; i < playlists.length; i++) {
+                playlists[i] = JSON.parse(playlists[i]);
             }
-        });
+
+            alert("playlists cargadas");
+
+            $("#sidebarPlaylist").replaceWith(divPlay.clone());
+
+            playlists.forEach(function (play) {
+                if (pedirCampo("num_usuario") == play.usuario) {
+                    $("#sidebarPlaylist").append("<li onclick='cargarPlaylist(" + play.numero + ")'><a href='#'><i class='fa fa-link'></i><span>" + play.nombre + "</span></a></li>");
+                }
+            });
+        }
     }).fail(function (a, b, c) {
         console.log(a, b, c);
     });
