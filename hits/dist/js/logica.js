@@ -387,6 +387,5 @@ $(document).ready(function () {
     document.getElementById("nick2").innerHTML = campo;
     document.getElementById("user1").innerHTML = pedirCampo('usuario');
     lista();
-
-  
 });
+

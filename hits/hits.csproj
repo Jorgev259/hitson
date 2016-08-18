@@ -201,6 +201,7 @@
     <Content Include="dist\css\skins\_all-skins.css" />
     <Content Include="dist\css\skins\_all-skins.min.css" />
     <Content Include="dist\css\style.css" />
+    <Content Include="dist\css\style2.css" />
     <Content Include="dist\img\avatar.png" />
     <Content Include="dist\img\avatar04.png" />
     <Content Include="dist\img\avatar2.png" />
@@ -232,6 +233,7 @@
     <Content Include="dist\js\app.js" />
     <Content Include="dist\js\app.min.js" />
     <Content Include="dist\js\demo.js" />
+    <Content Include="dist\js\index.js" />
     <Content Include="dist\js\logica.js" />
     <Content Include="dist\js\logicaIndex.js" />
     <Content Include="dist\js\musica.js" />
