@@ -1,8 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <script src="dist/js/mediaelement-and-player.min.js"></script>
-    <link rel="stylesheet" href="dist/css/styleR.css" media="screen">
+  
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Hits-on | Perfil</title>
@@ -41,25 +40,7 @@
 </head>
 <body class="hold-transition skin-green sidebar-mini">
      <div id="transparencia" onclick="ocultarBusqueda()"></div>
-    <div id="reproductor">
-        <div class="audio-player">
-            <h1>Gorillaz - El manana</h1>
-            <img class="cover" src="dist/img/cover.png" alt="">
-            <audio id="audio-player" src="dist/demo.mp3" type="audio/mp3" controls="controls"></audio>
-        </div>
-    </div>
-
-    <script>
-        $(document).ready(function () {
-            $('#audio-player').mediaelementplayer({
-                alwaysShowControls: true,
-                features: ['playpause', 'volume', 'progress'],
-                audioVolume: 'horizontal',
-                audioWidth: 400,
-                audioHeight: 120,
-            });
-        });
-    </script>
+    <iframe id="reproductor" src="reproductorxd.html"></iframe>
 
     <div id="listaMusica">
             <!-- Main content -->
@@ -99,10 +80,7 @@
     </div>
     <!--nextC() "avanza a la asiguiente cancion"-->
     <!--http://designmodo.com/audio-player/-->   
-    <div id="reproductor">
-
-
-    </div>
+  
 
   <header class="main-header">
 

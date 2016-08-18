@@ -1,0 +1,35 @@
+<html>
+<head>
+    <title>Audio Player</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="dist/js/mediaelement-and-player.min.js"></script>
+    <link rel="stylesheet" href="dist/css/styleR.css" media="screen">
+
+</head>
+
+
+<body>
+
+
+	<div class="audio-player">
+    <h1>Gorillaz - El manana</h1>
+    <img class="cover" src="dist/img/cover.png" alt="">
+    <audio id="audio-player" src="dist/demo.mp3" type="audio/mp3" controls="controls"></audio>
+	</div>
+
+
+<script>
+    $(document).ready(function() {
+        $('#audio-player').mediaelementplayer({
+            alwaysShowControls: true,
+            features: ['playpause','volume','progress'],
+            audioVolume: 'horizontal',
+            audioWidth: 400,
+            audioHeight: 120,
+        });
+    });
+</script>
+
+
+</body>
+</html>
