@@ -200,7 +200,7 @@ function subirPlaylist() {
 }
 
 function reproducir(id) {
-    document.getElementById("player").src = "temp/" + id + ".mp3"
+    document.getElementById("audio").src = "temp/" + id + ".mp3"
 }
 
 function busqueda() {
@@ -391,6 +391,5 @@ $(document).ready(function () {
     document.getElementById("nick2").innerHTML = campo;
     document.getElementById("user1").innerHTML = pedirCampo('usuario');
     lista();
-
-  
 });
+

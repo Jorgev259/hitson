@@ -2,13 +2,6 @@
     display:block;
 }
 
-#reproductor{
-    position:absolute;
-    z-index:1800;
-    bottom:0;
-    left:0;
-}
-
 #listaMusica{
     z-index:1900;
     display:none;
@@ -44,5 +37,4 @@ top: 0px;
 
 #boton{
     right:0;
-
 }
