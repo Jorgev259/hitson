@@ -201,6 +201,7 @@
     <Content Include="dist\css\skins\_all-skins.css" />
     <Content Include="dist\css\skins\_all-skins.min.css" />
     <Content Include="dist\css\style.css" />
+    <Content Include="dist\css\styleR.css" />
     <Content Include="dist\demo.mp3" />
     <Content Include="dist\img\avatar.png" />
     <Content Include="dist\img\avatar04.png" />
