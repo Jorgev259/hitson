@@ -204,6 +204,7 @@ function reproducir(id) {
     var iframe = document.getElementById('reproductor');
     var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
     innerDoc.getElementById("audio-player").src = "temp/" + id + ".mp3";
+    innerDoc.getElementById("etiqueta").innerHTML = datosCanciones[id]["artista"] + " - " + datosCanciones[id]["nombre"];
 }
 
 function busqueda() {
@@ -253,12 +254,8 @@ function busqueda() {
 
     $("#inicio").html("");
 
-    listaBusqueda.forEach(function (cancion) {
-        
+    listaBusqueda.forEach(function (cancion) {       
         $("#inicio").append(" <div class='row' id='" + datosCanciones[cancion.cancion]["nombre"] + "'><div class='col-xs-12'><div class='box'><div class='box-body table-responsive no-padding'><table class='table table-hove'><tr><th>Canción</th><th>Artista</th><th>Album</th><th>Género</th></tr><tr><td>" + datosCanciones[cancion.cancion]["nombre"] + "</td><td>" + datosCanciones[cancion.cancion]["artista"] + "</td><td>" + datosCanciones[cancion.cancion]["album"] + "</td><td>" + datosCanciones[cancion.cancion]["genero"] + "</td></tr><tr><button id='boton' class='btn btn-flat btn-success' onclick='uniraPlaylist(" + cancion.cancion + ")'>Agregar a la Playlist</button><button id='boton' class='btn btn-flat btn-success' onclick='agregarMiMusica(" + cancion.cancion + ")'>Agregar a mi musica</button></tr></table></div></div></div></div>");
-       
-
-
     })
 }
 
