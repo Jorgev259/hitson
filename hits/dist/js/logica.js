@@ -272,22 +272,25 @@ function miMusica() {
     contA = -1;
     var cont = 0;
     reproductor = [];
-
-    canciones.forEach(function (c) {
-        if (c.user == id) {
-            reproductor[cont] = c.cancion;
-            cont++;
+    if(canciones != undefined){
+        canciones.forEach(function (c) {
+            if (c.user == id) {
+                reproductor[cont] = c.cancion;
+                cont++;
         }
-    })
+        })
+    }
 
     cont = 0;
 
-    //cancionesU.forEach(function (cU) {
-    //    if (cU.usuario == id) {
-    //        reproductor[cont] = cU.cancion;
-    //        cont++;
-    //    }
-    //})
+    if(cancionesU != undefined){
+        cancionesU.forEach(function (cU) {
+            if (cU.usuario == id) {
+                reproductor[cont] = cU.cancion;
+                cont++;
+            }
+        })
+    }
 
     nextC();
     contA = 0;
