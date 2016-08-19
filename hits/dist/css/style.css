@@ -42,9 +42,9 @@ top: 0px;
 #reproductor{
     z-index:999;
     position:absolute;
-    bottom:0;
-    left:0;
+    bottom: -11px;
+    left: -8px;
     width: 420px;
-    heigt: 120px;
+    height: 140px;
 }
 

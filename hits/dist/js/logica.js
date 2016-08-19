@@ -201,7 +201,9 @@ function subirPlaylist() {
 }
 
 function reproducir(id) {
-    document.getElementById("audio").src = "temp/" + id + ".mp3"
+    var iframe = document.getElementById('reproductor');
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    innerDoc.getElementById("audio-player").src = "temp/" + id + ".mp3";
 }
 
 function busqueda() {
@@ -280,12 +282,12 @@ function miMusica() {
 
     cont = 0;
 
-    cancionesU.forEach(function (cU) {
-        if (cU.usuario == id) {
-            reproductor[cont] = cU.cancion;
-            cont++;
-        }
-    })
+    //cancionesU.forEach(function (cU) {
+    //    if (cU.usuario == id) {
+    //        reproductor[cont] = cU.cancion;
+    //        cont++;
+    //    }
+    //})
 
     nextC();
     contA = 0;
@@ -394,4 +396,3 @@ $(document).ready(function () {
     document.getElementById("user1").innerHTML = pedirCampo('usuario');
     lista();
 });
-
