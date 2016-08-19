@@ -38,9 +38,9 @@
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
 </head>
-<body class="hold-transition skin-green sidebar-mini">
+<body class="hold-transition skin-green sidebar-mini" style="overflow:hidden">
      <div id="transparencia" onclick="ocultarBusqueda()"></div>
-    <iframe id="reproductor" src="reproductorxd.html" frameborder="0"></iframe>
+    <iframe id="reproductor" src="reproductorxd.html" frameborder="0" scrolling="no"></iframe>
 
     <div id="listaMusica">
             <!-- Main content -->
@@ -200,6 +200,7 @@
         <li class="header">Playlists</li>
         <!-- Optionally, you can add icons to the links -->
         <li class="active" onclick="mostrarCancion('crearPlaylist')"><a href="#"><i class="fa fa-link"></i> <span>Crear playlist</span></a></li>
+          <li class="active"><a href="#"><i class="fa fa-link"></i> <span onclick="miMusica()">Mi Musica</span><span onclick="mostrarMiMusica()">Ver</span></a></li>
         <!--<li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Albums</span> <i class="fa fa-angle-left pull-right"></i></a>
           <ul class="treeview-menu">

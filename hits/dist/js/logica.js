@@ -5,11 +5,16 @@ var numPlay;
 var reproductor;
 var contA = -1;
 var playlists;
-divPlay = "";
+var divPlay = "";
+var divInicio = "";
 
 function lista() {
     if (divPlay == "") {
         divPlay = $("#sidebarPlaylist").clone();
+    }
+
+    if (divInicio == "") {
+        divInicio = $("#inicio").clone();
     }
 
     var data = new FormData();
@@ -298,6 +303,35 @@ function miMusica() {
 
     contA = 0;
     alert("Canciones del usuario cargadas al reproductor");
+}
+
+function mostrarMiMusica() {
+    $("#inicio").html("");
+
+    var id = pedirCampo("num_usuario");
+    var lista = []
+
+    if (canciones != undefined) {
+        canciones.forEach(function (c) {
+            if (c.user == id) {
+                lista.push(c.cancion);
+            }
+        })
+    }
+
+    if (cancionesU != undefined) {
+        cancionesU.forEach(function (cU) {
+            if (cU.usuario == id) {
+                lista.push(cU.cancion);
+            }
+        })
+    }
+
+    console.log(lista);
+
+    lista.forEach(function (cancion) {
+        $("#inicio").append(" <div class='row' id='" + datosCanciones[cancion]["nombre"] + "'><div class='col-xs-12'><div class='box'><div class='box-body table-responsive no-padding'><table class='table table-hove'><tr><th>Canción</th><th>Artista</th><th>Album</th><th>Género</th></tr><tr><td>" + datosCanciones[cancion]["nombre"] + "</td><td>" + datosCanciones[cancion]["artista"] + "</td><td>" + datosCanciones[cancion]["album"] + "</td><td>" + datosCanciones[cancion]["genero"] + "</td></tr></table></div></div></div></div>");
+    })
 }
 
 function nextC() {
