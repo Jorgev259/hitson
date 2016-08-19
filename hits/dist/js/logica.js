@@ -95,6 +95,10 @@ function lista() {
     });
 }
 
+function inicio() {
+    $("#inicio").replaceWith(divInicio.clone());
+}
+
 function mostrarCancion(id) {
     if (document.getElementById(id).style.display == "none" || document.getElementById(id).style.display == "") {
         document.getElementById(id).style.display = "block";
