@@ -289,7 +289,13 @@ function miMusica() {
         })
     }
 
+
     nextC();
+
+    var iframe = document.getElementById('reproductor');
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    innerDoc.getElementById("audio-player").addEventListener("ended", nextC, false)
+
     contA = 0;
     alert("Canciones del usuario cargadas al reproductor");
 }
