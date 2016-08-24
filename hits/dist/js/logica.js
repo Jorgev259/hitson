@@ -136,10 +136,10 @@ function subirCancion() {
         type: 'POST'
     }).done(function (result) {
         alert(result);
-        mostrarCancion();
+        mostrarCancion("gamer");
     }).fail(function (a, b, c) {
         console.log(a, b, c);
-        mostrarCancion();
+        mostrarCancion("gamer");
     });
 }
 
