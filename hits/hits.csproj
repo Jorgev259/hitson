@@ -242,6 +242,7 @@
     <Content Include="dist\js\app.min.js" />
     <Content Include="dist\js\demo.js" />
     <Content Include="dist\js\flashmediaelement.swf" />
+    <Content Include="dist\js\jsmediatags.js" />
     <Content Include="dist\js\logica.js" />
     <Content Include="dist\js\logicaIndex.js" />
     <Content Include="dist\js\mediaelement-and-player.min.js" />
