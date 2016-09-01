@@ -225,7 +225,7 @@ function reproducir(id) {
 }
 
 function busqueda() {
-    var cajaBusqueda = document.getElementById("busquedaMusica").value;
+    var cajaBusqueda = document.getElementById("busquedaMusica").value.toLowerCase();
     var listaBusqueda = [];
     var num = 0;
     var num2 = 0;
@@ -247,10 +247,10 @@ function busqueda() {
             num2++;
         })
         
-        nombre = datosCanciones[s.cancion]["nombre"].indexOf(cajaBusqueda);
-        genero = datosCanciones[s.cancion]["genero"].indexOf(cajaBusqueda);
-        artista = datosCanciones[s.cancion]["artista"].indexOf(cajaBusqueda);
-        album = datosCanciones[s.cancion]["album"].indexOf(cajaBusqueda);
+        nombre = datosCanciones[s.cancion]["nombre"].toLowerCase().indexOf(cajaBusqueda);
+        genero = datosCanciones[s.cancion]["genero"].toLowerCase().indexOf(cajaBusqueda);
+        artista = datosCanciones[s.cancion]["artista"].toLowerCase().indexOf(cajaBusqueda);
+        album = datosCanciones[s.cancion]["album"].toLowerCase().indexOf(cajaBusqueda);
 
         if (existe == false && (nombre !== -1 || genero !== -1 || artista !== -1 || album !== -1)) {
             listaBusqueda[num] = s;
