@@ -48,3 +48,14 @@ top: 0px;
     height: 140px;
 }
 
+#carga{
+    width: 300px;
+    position: absolute;
+    height: 100px;
+    text-align: center;
+    z-index: 2000;
+    left: 40%;
+    top: 40%;
+    display:none;
+}
+

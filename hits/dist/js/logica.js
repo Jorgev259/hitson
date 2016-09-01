@@ -9,6 +9,11 @@ var divPlay = "";
 var divInicio = "";
 
 function lista() {
+    document.getElementById("carga").style.display = "block";
+    document.getElementById("transparencia").style.display = "block";
+    $("#carga2").append("<div id='base'>Preparando Canciones</div>");
+    $("#carga2").append("<div id='play'>Preparando Playlists</div>");
+
     if (divPlay == "") {
         divPlay = $("#sidebarPlaylist").clone();
     }
@@ -56,7 +61,10 @@ function lista() {
                     for (i = 0; i < cancionesU.length; i++) {
                         cancionesU[i] = JSON.parse(cancionesU[i]);
                     }
-                    alert("base de datos de canciones actualizada");
+                    $("#base").remove();
+
+                    document.getElementById("carga").style.display = "none";
+                    document.getElementById("transparencia").style.display = "none";
                 }
             }).fail(function (a, b, c) {
                 console.log(a, b, c);
@@ -80,7 +88,13 @@ function lista() {
                 playlists[i] = JSON.parse(playlists[i]);
             }
 
-            alert("playlists cargadas");
+            $("#play").remove();
+            console.log(document.getElementById("carga2").innerHTML);
+
+            if (document.getElementById("carga2").innerHTML == "") {
+                document.getElementById("carga").style.display = "none";
+                document.getElementById("transparencia").style.display = "none";
+            }
 
             $("#sidebarPlaylist").replaceWith(divPlay.clone());
 
