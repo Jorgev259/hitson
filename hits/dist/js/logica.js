@@ -274,10 +274,16 @@ function pedirImagen(id, src) {
 
 function logout() {
 
-    sessionStorage.datosUsuario = null;
-    alert("Adiooos");
+    sessionStorage.clear();
+    alert("Adiooos :3");
     document.location.href = "login.html";
 
+}
+
+function verificar() {
+    if (sessionStorage == null || sessionStorage == "" || sessionStorage.length == 0) {
+        document.location.href = "login.html";
+    }
 }
 
 function miMusica() {
