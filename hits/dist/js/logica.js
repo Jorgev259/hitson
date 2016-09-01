@@ -106,6 +106,14 @@ function mostrarCancion(id) {
     } else {
         document.getElementById(id).style.display = "none";
         document.getElementById("transparencia").style.display = "none";
+
+        if (id == "gamer") {
+            document.getElementById("generoCancion").value = "";
+            document.getElementById("nombreCancion").value = "";
+            document.getElementById("artistaCancion").value = "";
+            document.getElementById("albumCancion").value = "";
+            document.getElementById("comentarioCancion").value = "";
+        }
     }
 }
 
@@ -446,5 +454,23 @@ $(document).ready(function () {
     document.getElementById("nick1").innerHTML = campo;
     document.getElementById("nick2").innerHTML = campo;
     document.getElementById("user1").innerHTML = pedirCampo('usuario');
+    var inputTypeFile = document.getElementById("archivoCancion");
+
+    inputTypeFile.addEventListener("change", function (event) {
+        var file = event.target.files[0];
+
+        jsmediatags.read(file, {
+            onSuccess: function (tag) {
+                document.getElementById("generoCancion").value = tag.tags.genre;
+                document.getElementById("nombreCancion").value = tag.tags.title;
+                document.getElementById("artistaCancion").value = tag.tags.artist;
+                document.getElementById("albumCancion").value = tag.tags.album;
+                document.getElementById("comentarioCancion").value = tag.tags.comment;
+            },
+            onError: function (error) {
+                console.log(error);
+            }
+        });
+    }, false);
     lista();
 });
