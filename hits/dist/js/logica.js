@@ -272,6 +272,14 @@ function pedirImagen(id, src) {
     document.getElementById(src).src = "temp/" + id + ".png";
 }
 
+function logout() {
+
+    sessionStorage.datosUsuario = null;
+    alert("Adiooos");
+    document.location.href = "login.html";
+
+}
+
 function miMusica() {
     var id = pedirCampo("num_usuario");
 

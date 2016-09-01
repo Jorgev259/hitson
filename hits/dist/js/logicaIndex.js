@@ -36,6 +36,7 @@
     }
 };
 
+
 function login() {
     var data = new FormData();
     var user = $("#user").val();
