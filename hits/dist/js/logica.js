@@ -89,12 +89,6 @@ function lista() {
             }
 
             $("#play").remove();
-            console.log(document.getElementById("carga2").innerHTML);
-
-            if (document.getElementById("carga2").innerHTML == "") {
-                document.getElementById("carga").style.display = "none";
-                document.getElementById("transparencia").style.display = "none";
-            }
 
             $("#sidebarPlaylist").replaceWith(divPlay.clone());
 
