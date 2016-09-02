@@ -4,6 +4,8 @@ using System;
 using System.Web;
 using System.Web.Http;
 using System.Linq;
+using System.Web.Script.Serialization;
+using Newtonsoft.Json;
 
 namespace hits_server.Controllers
 {
@@ -31,7 +33,18 @@ namespace hits_server.Controllers
                     return valor;
                     break;
 
+                case "album":
+                    int i = 0;
+                    JavaScriptSerializer js = new JavaScriptSerializer();
+                   
 
+                    foreach (var archivo in Request.Files)
+                    {
+                        var datos = JsonConvert.DeserializeObject<dynamic>(Request["datos"]);
+                        i++;
+                    }
+                    return "hola";
+                    break;
                 case "busqueda":
                     var listaCanciones = hits.Models.cancion.listaCanciones(collectionCanciones);
                     var enviar = String.Join(">", listaCanciones.ToArray());

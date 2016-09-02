@@ -200,38 +200,54 @@ function datosCancion(listaId) {
 }
 
 function subirAlbum() {
-    var archivos = document.getElementById('archivoAlbum').files;
-    var nombre = $("#nombreAlbum").val();
+    var archivos = $("#archivoAlbum").get(0).files;
     var data = new FormData;
-    data.append("op", subirAlbum);
-    data.append("Files", archivos);
+    var lista = [];
+    data.append("op", "album");
 
-    for(i=0;i<archivos.length;i++) {
+    for (i = 0; i < archivos.length; i++) {
+
+        data.append("Files" + i, archivos[i]);
+
         jsmediatags.read(archivos[i], {
             onSuccess: function (tag) {
+                var dato = {};
+
+                if(tag.tags.title == undefined || tag.tags.title == ""){
+                    dato["nombre"] = archivos[i].name;
+                }else{
+                    dato["nombre"] = tag.tags.title;
+                }
                 
-                data.append("datos" + i, JSON.stringify(tag));
-                //document.getElementById("generoCancion").value = tag.tags.genre;
+                lista.push(JSON.stringify(dato));
+                
+                if (i == archivos.length - 1) {
+                    data.append("datos", JSON.stringify(lista));
+                    $.ajax({
+                        url: '/Api/cancion',
+                        processData: false,
+                        contentType: false,
+                        data: data,
+                        type: 'POST'
+                    }).done(function (result) {
+                        alert(result);
+                        mostrarCancion("subirAlbum");
+                    }).fail(function (a, b, c) {
+                        console.log(a, b, c);
+                        mostrarCancion("SubirAlbum");
+                    });
+                }
+
             },
             onError: function (error) {
                 console.log(error);
             }
         });      
     };
+
+    console.log(lista);
+
     
-    $.ajax({
-        url: '/Api/cancion',
-        processData: false,
-        contentType: false,
-        data: data,
-        type: 'POST'
-    }).done(function (result) {
-        alert(result);
-        mostrarCancion("subirAlbum");
-    }).fail(function (a, b, c) {
-        console.log(a, b, c);
-        mostrarCancion("SubirAlbum");
-    });
 }
 
 function subirPlaylist() {
