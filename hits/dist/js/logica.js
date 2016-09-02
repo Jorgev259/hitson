@@ -199,6 +199,41 @@ function datosCancion(listaId) {
     } 
 }
 
+function subirAlbum() {
+    var archivos = document.getElementById('archivoAlbum').files;
+    var nombre = $("#nombreAlbum").val();
+    var data = new FormData;
+    data.append("op", subirAlbum);
+    data.append("Files", archivos);
+
+    for(i=0;i<archivos.length;i++) {
+        jsmediatags.read(archivos[i], {
+            onSuccess: function (tag) {
+                
+                data.append("datos" + i, JSON.stringify(tag));
+                //document.getElementById("generoCancion").value = tag.tags.genre;
+            },
+            onError: function (error) {
+                console.log(error);
+            }
+        });      
+    };
+    
+    $.ajax({
+        url: '/Api/cancion',
+        processData: false,
+        contentType: false,
+        data: data,
+        type: 'POST'
+    }).done(function (result) {
+        alert(result);
+        mostrarCancion("subirAlbum");
+    }).fail(function (a, b, c) {
+        console.log(a, b, c);
+        mostrarCancion("SubirAlbum");
+    });
+}
+
 function subirPlaylist() {
     var data = new FormData();
     var nombre = document.getElementById('nombrePlaylist').value;
