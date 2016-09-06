@@ -140,16 +140,6 @@ namespace hits.Models
                 }
             }
 
-
-            //for (int i = 0; i < lista.Count(); i++)
-            //{
-            //    if (lista[i]["filename"].ToString() == listaId[i]) {
-            //        lista[i].Remove("_id");
-
-            //        datoscanciones.Add(lista[i].ToJson());
-            //    } 
-            //}
-
             return datoscanciones;
         }
     }
