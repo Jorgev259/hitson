@@ -206,6 +206,7 @@ function subirAlbum() {
     var data = new FormData;
     var lista = [];
     var num = 0;
+    var user = pedirCampo("num_usuario");
     data.append("op", "album");
 
     for (i = 0; i < archivos.length; i++) {
@@ -221,7 +222,15 @@ function subirAlbum() {
                 }else{
                     dato["nombre"] = tag.tags.title;
                 }
-                
+
+                dato["genero"] = tag.tags.genre;
+                dato["artista"] = tag.tags.artist;
+                dato["album"] = $("#nombreAlbum").val();
+                dato["com"] = tag.tags.comment;
+                dato["usuario"] = user;
+
+                console.log(dato);
+
                 lista.push(JSON.stringify(dato));
 
                 if (num == archivos.length - 1) {

@@ -35,22 +35,25 @@ namespace hits_server.Controllers
 
                 case "album":
                     int i = 0;
-                    var datos = JsonConvert.DeserializeObject<dynamic>(Request["datos"]);
-                   
-                    foreach(var dato in datos)
+                    int numero2 = unchecked((int)collectionCanciones.Count(new BsonDocument()));
+
+                    JavaScriptSerializer serializer = new JavaScriptSerializer();
+                    var datos = JsonConvert.DeserializeObject<string[]>(Request["datos"]);
+
+                    foreach (var dato in datos)
                     {
+                        var dato2 = JsonConvert.DeserializeObject<dynamic>(dato);
+
                         var archivo = Request.Files[i];
-                        var datos2 = dato["nombre"];
+                        file = archivo;
+                        path = HttpContext.Current.Server.MapPath(string.Format("~/temp"));
+                        file.SaveAs(path + "/" + numero2 + ".mp3");
+
+                        var respuesta = hits.Models.cancion.insertarCancion(numero2,Convert.ToString(dato2["nombre"]), Convert.ToString(dato2["genero"]), Convert.ToString(dato2["artista"]), Convert.ToString(dato2["album"]), Convert.ToString(dato2["com"]), Convert.ToString(dato2["usuario"]),client,db,collectionCanciones);
                         i++;
-
                     }
 
-                    foreach (var archivo in Request.Files)
-                    {
-
-                    }
-
-                    return "hola";
+                    return "Album subido";
                     break;
 
                 case "busqueda":
