@@ -205,6 +205,7 @@ function subirAlbum() {
     var archivos = $("#archivoAlbum").get(0).files;
     var data = new FormData;
     var lista = [];
+    var num = 0;
     data.append("op", "album");
 
     for (i = 0; i < archivos.length; i++) {
@@ -222,8 +223,8 @@ function subirAlbum() {
                 }
                 
                 lista.push(JSON.stringify(dato));
-                
-                if (i == archivos.length - 1) {
+
+                if (num == archivos.length - 1) {
                     data.append("datos", JSON.stringify(lista));
                     $.ajax({
                         url: '/Api/cancion',
@@ -240,16 +241,13 @@ function subirAlbum() {
                     });
                 }
 
+                num++;
             },
             onError: function (error) {
                 console.log(error);
             }
         });      
-    };
-
-    console.log(lista);
-
-    
+    };    
 }
 
 function subirPlaylist() {
@@ -417,8 +415,6 @@ function mostrarMiMusica() {
             }
         })
     }
-
-    console.log(lista);
 
     lista.forEach(function (cancion) {
         $("#inicio").append(" <div class='row' id='" + datosCanciones[cancion]["nombre"] + "'><div class='col-xs-12'><div class='box'><div class='box-body table-responsive no-padding'><table class='table table-hove'><tr><th>Canción</th><th>Artista</th><th>Album</th><th>Género</th></tr><tr><td>" + datosCanciones[cancion]["nombre"] + "</td><td>" + datosCanciones[cancion]["artista"] + "</td><td>" + datosCanciones[cancion]["album"] + "</td><td>" + datosCanciones[cancion]["genero"] + "</td></tr></table></div></div></div></div>");

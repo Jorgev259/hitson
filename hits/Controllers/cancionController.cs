@@ -35,16 +35,24 @@ namespace hits_server.Controllers
 
                 case "album":
                     int i = 0;
-                    JavaScriptSerializer js = new JavaScriptSerializer();
+                    var datos = JsonConvert.DeserializeObject<dynamic>(Request["datos"]);
                    
+                    foreach(var dato in datos)
+                    {
+                        var archivo = Request.Files[i];
+                        var datos2 = dato["nombre"];
+                        i++;
+
+                    }
 
                     foreach (var archivo in Request.Files)
                     {
-                        var datos = JsonConvert.DeserializeObject<dynamic>(Request["datos"]);
-                        i++;
+
                     }
+
                     return "hola";
                     break;
+
                 case "busqueda":
                     var listaCanciones = hits.Models.cancion.listaCanciones(collectionCanciones);
                     var enviar = String.Join(">", listaCanciones.ToArray());
