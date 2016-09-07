@@ -114,6 +114,34 @@ function lista() {
     }).fail(function (a, b, c) {
         console.log(a, b, c);
     });
+    var playlistcancion = new FormData();
+    $.ajax({
+        url: '/Api/playlist',
+        processData: false,
+        contentType: false,
+        data: playlistcancion,
+        type: 'POST'
+    }).done(function (result) {
+        if (result != "") {
+            playlists = result.split(">");
+
+            for (i = 0; i < playlists.length; i++) {
+                playlists[i] = JSON.parse(playlists[i]);
+            }
+
+            $("#play").remove();
+
+            $("#sidebarPlaylist").replaceWith(divPlay.clone());
+
+            playlists.forEach(function (play) {
+                if (pedirCampo("num_usuario") == play.usuario) {
+                    $("#sidebarPlaylist").append("<li onclick='cargarPlaylist(" + play.numero + ")'><a href='#'><i class='fa fa-link'></i><span>" + play.nombre + "</span></a></li>");
+                }
+            });
+        }
+    }).fail(function (a, b, c) {
+        console.log(a, b, c);
+    });
 }
 
 function inicio() {
@@ -371,9 +399,9 @@ function busqueda() {
     })
     console.log(listaPlaylist);
     console.log(playlists);
-
+    var Id_usuario = pedirCampo("num_usuario");
     listaPlaylist.forEach(function (playlist) {
-        $("#inicio").append(" <div class='row' id='" + playlists[playlist.numero]["numero"] + "'><div class='col-xs-12'><div class='box'><div class='box-body table-responsive no-padding'><table class='table table-hove'><tr><th>Playlist</th><th>Creador</th><th>Comentario</th></tr><tr><td>" + playlists[playlist.numero]["nombre"] + "</td><td>" + playlists[playlist.numero]["usuario"] + "</td><td>" + playlists[playlist.numero]["comentario"] + "</td></tr><tr><button id='boton' class='btn btn-flat btn-success' onclick='unirPlaylist(" + playlists.numero + ")'>Agregar a mis Playlists</button></tr></table></div></div></div></div>");
+        $("#inicio").append(" <div class='row' id='" + playlists[playlist.numero]["numero"] + "'><div class='col-xs-12'><div class='box'><div class='box-body table-responsive no-padding'><table class='table table-hove'><tr><th>Playlist</th><th>Creador</th><th>Comentario</th></tr><tr><td>" + playlists[playlist.numero]["nombre"] + "</td><td>" + playlists[playlist.numero]["usuario"] + "</td><td>" + playlists[playlist.numero]["comentario"] + "</td></tr><tr><button id='boton' class='btn btn-flat btn-success' onclick='unirPlaylist(" + playlists[playlist.numero]["numero"] + "," + Id_usuario + ")'>Agregar a mis Playlists</button></tr></table></div></div></div></div>");
     })
 
     quitarMensaje();
@@ -502,17 +530,10 @@ function agregarMiMusica(objeto) {
     });
 }
 
-function uniraPlaylist(id_cancion) {
-    mostrarCancion("listaMusica");
 
-    $("#listadeplaylist").html("");
-    playlists.forEach(function (playl) {
-        if (playl.usuario == pedirCampo("num_usuario")) {
-            
-            $("#listadeplaylist").append("<div onclick='uniraPlaylist2(" + id_cancion + "," + playl.numero + ")'>" + playl.nombre + "</div>")
-        };
-    });
-}
+
+
+
 
 function uniraPlaylist2(id_cancion,id_playlist) {
     var data = new FormData();
@@ -531,6 +552,27 @@ function uniraPlaylist2(id_cancion,id_playlist) {
         mostrarCancion("listaMusica");
     });
 }
+
+function unirPlaylist(id_playlist, id_usuario) {
+    var data = new FormData();
+    data.append("op", "unirPlaylist");
+    data.append("id_playlist", id_playlist);
+    data.append("id_usuario", id_usuario);
+
+    $.ajax({
+        url: '/Api/playlist',
+        processData: false,
+        contentType: false,
+        data: data,
+        type: 'POST'
+       
+    }).done(function (result) {
+        alert(result);
+        lista();
+       
+    });
+}
+
 
 function cargarPlaylist(id_playlist) {
     var data = new FormData();
