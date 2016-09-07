@@ -32,7 +32,7 @@ namespace hits.Controllers
                     respuesta = Models.playlist.unirCancion(Request["id_cancion"],Request["id_playlist"],coleccion2);
                     break;
 
-                default:
+                case "reproducir":
                     var lista = Models.playlist.reproPlaylist(Request["id_playlist"],coleccion2);
                     respuesta = String.Join(">", lista.ToArray());
                     break;
