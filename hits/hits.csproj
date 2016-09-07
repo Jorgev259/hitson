@@ -129,6 +129,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="NewFolder1\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -1189,6 +1190,9 @@
     <Content Include="plugins\datatables\extensions\TableTools\Readme.md" />
     <Content Include="plugins\input-mask\phone-codes\phone-be.json" />
     <Content Include="plugins\input-mask\phone-codes\phone-codes.json" />
+    <Content Include="dist\fonts\fontawesome-webfont.woff2" />
+    <Content Include="dist\fonts\fontawesome-webfont.ttf" />
+    <Content Include="dist\fonts\fontawesome-webfont.woff" />
     <None Include="Properties\PublishProfiles\hits.pubxml" />
     <None Include="Properties\PublishProfiles\hits2.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
