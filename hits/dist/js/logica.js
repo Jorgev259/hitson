@@ -290,6 +290,8 @@ function subirPlaylist() {
     data.append('usuario', user);
     data.append('op', 'agregar');
 
+    mensaje("Agregando Playlist","");
+
     $.ajax({
         url: '/Api/playlist',
         data: data,
@@ -299,6 +301,7 @@ function subirPlaylist() {
     }).done(function (result) {
         alert(result);
         mostrarCancion('crearPlaylist');
+        quitarMensaje();
         lista();
     }).fail(function (a, b, c) {
         console.log(a, b, c);
@@ -324,6 +327,8 @@ function busqueda() {
     var album = "";
     var id;
     $("#inicio").html("");
+
+    mensaje("Realizando Busqueda");
 
     canciones.forEach(function (s) {
         existe = false;
@@ -364,6 +369,8 @@ function busqueda() {
     listaBusqueda.forEach(function (cancion) {       
         $("#inicio").append(" <div class='row' id='" + datosCanciones[cancion.cancion]["nombre"] + "'><div class='col-xs-12'><div class='box'><div class='box-body table-responsive no-padding'><table class='table table-hove'><tr><th>Canción</th><th>Artista</th><th>Album</th><th>Género</th></tr><tr><td>" + datosCanciones[cancion.cancion]["nombre"] + "</td><td>" + datosCanciones[cancion.cancion]["artista"] + "</td><td>" + datosCanciones[cancion.cancion]["album"] + "</td><td>" + datosCanciones[cancion.cancion]["genero"] + "</td></tr><tr><button id='boton' class='btn btn-flat btn-success' onclick='uniraPlaylist(" + cancion.cancion + ")'>Agregar a la Playlist</button><button id='boton' class='btn btn-flat btn-success' onclick='agregarMiMusica(" + cancion.cancion + ")'>Agregar a mi musica</button></tr></table></div></div></div></div>");
     })
+
+    quitarMensaje();
 
     //Codigo para mostrar playlists de la busqueda
 }
