@@ -107,7 +107,7 @@ function lista() {
 
             playlists.forEach(function (play) {
                 if (pedirCampo("num_usuario") == play.usuario) {
-                    $("#sidebarPlaylist").append("<li onclick='cargarPlaylist(" + play.numero + ")'><a href='#'><i class='fa fa-link'></i><span>" + play.nombre + "</span></a></li>");
+                    $("#sidebarPlaylist").append("<li ><a><i class='fa fa-link'></i><span>" + play.nombre + "</span><i class='fa fa-fw fa-play' onclick='cargarPlaylist(" + play.numero + ")'></i></a></li>");
                 }
             });
         }
@@ -538,17 +538,23 @@ function cargarPlaylist(id_playlist) {
         data: data,
         type: 'POST'
     }).done(function (result) {
-        var lista = result.split(">");
-        var cancionesP = [];
-        reproductor = [];
+        if (result == "") {
+            alert("Playlist vacia");
+        }else{
+            var lista = result.split(">");
+            var cancionesP = [];
+            reproductor = [];
 
-        for (i = 0; i < lista.length; i++) {
-            cancionesP[i] = JSON.parse(lista[i]);
-            reproductor[i] = cancionesP[i].cancion;
+            for (i = 0; i < lista.length; i++) {
+                cancionesP[i] = JSON.parse(lista[i]);
+                reproductor[i] = cancionesP[i].cancion;
+            }
+
+            contA = -1;
+            nextC();
+        
+            alert("playlists cargada al reproductor");
         }
-        nextC();
-        contA = 0;
-        alert("playlists cargada al reproductor");
     });
 }
 
