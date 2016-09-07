@@ -41,7 +41,7 @@ top: 0px;
 
 #reproductor{
     z-index:999;
-    position:absolute;
+    position:relative;
     bottom: -11px;
     left: -8px;
     width: 420px;
@@ -59,3 +59,18 @@ top: 0px;
     display:none;
 }
 
+#next{
+    position:relative;
+    z-index: 9000;
+    left: -15px;
+    bottom: 40px;
+}
+
+#reproductorlml{
+    z-index:999;
+    position:absolute;
+    bottom: -11px;
+    left: -8px;
+    width: 800px;
+    height: 140px;
+}
