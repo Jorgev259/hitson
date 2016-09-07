@@ -14,6 +14,7 @@ namespace hits.Controllers
             var client = new MongoClient("mongodb://localhost:27017");
             var coleccion = client.GetDatabase("hitson").GetCollection<BsonDocument>("playlists");
             var coleccion2 = client.GetDatabase("hitson").GetCollection<BsonDocument>("playlist.cancion");
+            var coleccion3 = client.GetDatabase("hitson").GetCollection<BsonDocument>("playlist.usuario");
             var Request = HttpContext.Current.Request;
             var respuesta = "";
 
@@ -31,6 +32,12 @@ namespace hits.Controllers
                 case "unir":
                     respuesta = Models.playlist.unirCancion(Request["id_cancion"],Request["id_playlist"],coleccion2);
                     break;
+
+                case "unirPlaylist":
+                    respuesta = Models.playlist.unirPlaylist(Request["id_playlist"], Request["id_usuario"], coleccion3);
+                    break;
+
+              
 
                 default:
                     var lista = Models.playlist.reproPlaylist(Request["id_playlist"],coleccion2);

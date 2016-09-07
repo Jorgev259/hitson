@@ -26,6 +26,7 @@ namespace hits.Models
 
             return "Playlist Creada";
         }
+        
 
         public static List<String> listaPlaylist(IMongoCollection<BsonDocument> coleccion)
         {
@@ -57,6 +58,19 @@ namespace hits.Models
             return "Se agrego la cancion " + id_cancion + " a la playlist " + id_playlist;
         }
 
+        public static String unirPlaylist(string id_playlist, string id_usuario, IMongoCollection<BsonDocument> coleccion3)
+        {
+
+            var playlist = new BsonDocument
+                {
+                    {"playlist", id_playlist.ToString() },
+                    {"usuario", id_usuario.ToString()},
+                };
+
+            coleccion3.InsertOne(playlist);
+
+            return "Se agrego la playlist " + id_playlist + " al usuario " + id_usuario;
+        }
         public static List<String> reproPlaylist(string id_playlist, IMongoCollection<BsonDocument> coleccion)
         {
             var filtro = Builders<BsonDocument>.Filter.Eq("playlist", id_playlist);
