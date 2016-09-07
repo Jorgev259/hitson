@@ -8,6 +8,7 @@ var contA = -1;
 var playlists;
 var divPlay = "";
 var divInicio = "";
+var listaRandom = [];
 
 function mensaje(text1, text2) {
     document.getElementById("carga").style.display = "block";
@@ -108,7 +109,7 @@ function lista() {
 
             playlists.forEach(function (play) {
                 if (pedirCampo("num_usuario") == play.usuario) {
-                    $("#sidebarPlaylist").append("<li onclick='cargarPlaylist(" + play.numero + ")'><a href='#'><i class='fa fa-link'></i><span>" + play.nombre + "</span></a></li>");
+                    $("#sidebarPlaylist").append("<li ><a><i class='fa fa-link'></i><span>" + play.nombre + "</span><i class='fa fa-fw fa-play' onclick='cargarPlaylist(" + play.numero + ")'></i></a></li>");
                 }
             });
         }
@@ -428,7 +429,19 @@ function verificar() {
     }
 }
 
-function miMusica() {
+function miMusica(modo) {
+    listaRandom = [];
+
+    if (modo == "normal") {
+        if ($("#random").length) {
+            $("#random").prop("id", modo);
+        }
+    } else {
+        if ($("#normal").length) {
+            $("#normal").prop("id", "random");
+        }
+    }
+    
     var id = pedirCampo("num_usuario");
 
     contA = -1;
@@ -454,14 +467,15 @@ function miMusica() {
         })
     }
 
+    contA = -1;
 
-    nextC();
+    nextC(modo);
 
     var iframe = document.getElementById('reproductor');
     var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
     innerDoc.getElementById("audio-player").addEventListener("ended", nextC, false)
 
-    contA = 0;
+
     alert("Canciones del usuario cargadas al reproductor");
 }
 
@@ -492,13 +506,37 @@ function mostrarMiMusica() {
     })
 }
 
-function nextC() {
-    contA++;
-    if (contA == reproductor.length) {
-        contA = 0;
-        alert("la lista se reinicio porque llego a su final");
-    };
-    reproducir(reproductor[contA]);
+function nextC(id) {
+    if(id=="normal"){
+        contA++;
+        if (contA == reproductor.length) {
+            contA = 0;
+            alert("la lista se reinicio porque llego a su final");
+        };
+        reproducir(reproductor[contA]);
+    } else if (id == "random") {
+        if (listaRandom.length == reproductor.length) {
+            listaRandom = [];
+        }
+
+        var numero = 99;
+        var max = reproductor.length - 1;
+        var min = 0;
+        var reproducida = false;
+        
+        do {
+            numero = Math.floor(Math.random() * (max - min + 1) + min);
+            reproducida = false;
+            listaRandom.forEach(function (numero2) {
+                if (numero == numero2) {
+                    reproducida = true;
+                }
+            });
+        } while (reproducida == true);
+
+        listaRandom.push(numero);
+        reproducir(reproductor[numero]);
+    }
 }
 
 function asignarImagen(id) {
@@ -587,17 +625,23 @@ function cargarPlaylist(id_playlist) {
         data: data,
         type: 'POST'
     }).done(function (result) {
-        var lista = result.split(">");
-        var cancionesP = [];
-        reproductor = [];
+        if (result == "") {
+            alert("Playlist vacia");
+        }else{
+            var lista = result.split(">");
+            var cancionesP = [];
+            reproductor = [];
 
-        for (i = 0; i < lista.length; i++) {
-            cancionesP[i] = JSON.parse(lista[i]);
-            reproductor[i] = cancionesP[i].cancion;
+            for (i = 0; i < lista.length; i++) {
+                cancionesP[i] = JSON.parse(lista[i]);
+                reproductor[i] = cancionesP[i].cancion;
+            }
+
+            contA = -1;
+            nextC();
+        
+            alert("playlists cargada al reproductor");
         }
-        nextC();
-        contA = 0;
-        alert("playlists cargada al reproductor");
     });
 }
 

@@ -40,6 +40,7 @@ namespace hits.Controllers
               
 
                 default:
+                case "reproducir":
                     var lista = Models.playlist.reproPlaylist(Request["id_playlist"],coleccion2);
                     respuesta = String.Join(">", lista.ToArray());
                     break;

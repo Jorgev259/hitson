@@ -39,181 +39,181 @@
     <script src="dist/js/demo.js"></script>
 </head>
 <body class="hold-transition skin-green sidebar-mini" style="overflow:hidden" onload="verificar()">
-    <div id="transparencia" onclick="ocultarBusqueda()"></div>
+     <div id="transparencia" onclick="ocultarBusqueda()"></div>
 
     <div id="listaMusica">
-        <!-- Main content -->
-        <section class="content">
+            <!-- Main content -->
+            <section class="content">
 
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="box box-success">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Agregar a playlist</h3>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box box-success">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Agregar a playlist</h3>
 
-                            <div class="box-tools pull-right">
+                                <div class="box-tools pull-right">
                                 <button type="button" class="btn btn-box-tool" onclick="mostrarCancion('listaMusica')"><i class="fa fa-times"></i></button>
+                                </div>
+                                <!-- /.box-tools -->
                             </div>
-                            <!-- /.box-tools -->
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
-                            <div id="listadeplaylist">
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                               <div id="listadeplaylist">
 
+                               </div>
                             </div>
-                        </div>
 
-                        <!-- /.box-body -->
+                            <!-- /.box-body -->
+                        </div>
+                        <!-- /.box -->
                     </div>
-                    <!-- /.box -->
                 </div>
-            </div>
-        </section>
-
+            </section>
+        
 
     </div>
     <!--nextC() "avanza a la asiguiente cancion"-->
-    <!--http://designmodo.com/audio-player/-->
+    <!--http://designmodo.com/audio-player/-->   
+  
 
+  <header class="main-header">
 
-    <header class="main-header">
+    <!-- Logo -->
+   <a onclick="inicio()" class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><b>H</b>-On</span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg"><b>Hits</b>-On</span>
+    </a>
 
-        <!-- Logo -->
-        <a onclick="inicio()" class="logo">
-            <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini"><b>H</b>-On</span>
-            <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b>Hits</b>-On</span>
-        </a>
-
-        <!-- Header Navbar -->
-        <nav class="navbar navbar-static-top" role="navigation">
-            <!-- Sidebar toggle button-->
-            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-                <span class="sr-only">Toggle navigation</span>
-            </a>
-            <!-- Navbar Right Menu -->
-            <div class="navbar-custom-menu">
-                <ul class="nav navbar-nav">
-                    <!-- Messages: style can be found in dropdown.less-->
-
-                    <li>
-                        <ul>
-                            <button type="button" class="btn btn-block btn-success btn-lg" onclick='mostrarCancion("gamer")'>Subir canción</button>
-                        </ul>
-                    </li>
-
-                    <li>
-                        <ul>
-                            <button type="button" class="btn btn-block btn-success btn-lg" onclick='mostrarCancion("subirAlbum")'>Subir album</button>
-                        </ul>
-                    </li>
-
-
-                    <!-- User Account Menu -->
-                    <li class="dropdown user user-menu">
-                        <!-- Menu Toggle Button -->
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <!-- The user image in the navbar-->
-                            <img src="dist/img/user2-160x160.jpg" id="imgP1" onload="asignarImagen('imgP1')" class="user-image" alt="User Image">
-                            <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                            <span class="hidden-xs" id="user1"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <!-- The user image in the menu -->
-                            <li class="user-header">
-                                <img src="dist/img/user2-160x160.jpg" id="imgP2" onload="asignarImagen('imgP2')" class="img-circle" alt="User Image">
-
-                                <p>
-                                    José Andrés Ulloa - Old School Gamer
-                                    <small>Miembro dede 2016</small>
-                                </p>
-                            </li>
-                            <!-- Menu Body -->
-                            <li class="user-body">
-                                <div class="row">
-                                    <div class="col-xs-4 text-center">
-                                        <a href="#">Seguidores</a>
-                                    </div>
-                                    <div class="col-xs-4 text-center">
-                                        <a href="#">Musica</a>
-                                    </div>
-                                    <div class="col-xs-4 text-center">
-                                        <a href="#">Amigos</a>
-                                    </div>
-                                </div>
-                                <!-- /.row -->
-                            </li>
-                            <!-- Menu Footer-->
-                            <li class="user-footer">
-                                <div class="pull-left">
-                                    <a href="#" class="btn btn-default btn-flat">Perfil</a>
-                                </div>
-                                <div class="pull-right">
-                                    <a href="#" class="btn btn-default btn-flat" onclick="logout()">Cerrar sesión</a>
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
-                    <!-- Control Sidebar Toggle Button -->
-                    <li>
-                        <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-                    </li>
+    <!-- Header Navbar -->
+    <nav class="navbar navbar-static-top" role="navigation">
+      <!-- Sidebar toggle button-->
+      <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+        <span class="sr-only">Toggle navigation</span>
+      </a>
+      <!-- Navbar Right Menu -->
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <!-- Messages: style can be found in dropdown.less-->
+          
+            <li>
+                <ul>
+                    <button type="button" class="btn btn-block btn-success btn-lg" onclick='mostrarCancion("gamer")'>Subir canción</button>                    
                 </ul>
-            </div>
-        </nav>
-    </header>
-    <!-- Left side column. contains the logo and sidebar -->
+            </li>
 
-    <aside class="main-sidebar">
+            <li>
+                <ul>
+                    <button type="button" class="btn btn-block btn-success btn-lg" onclick='mostrarCancion("subirAlbum")'>Subir album</button>
+                </ul>
+            </li>
+      
+        
+          <!-- User Account Menu -->
+          <li class="dropdown user user-menu">
+            <!-- Menu Toggle Button -->
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <!-- The user image in the navbar-->
+              <img src="dist/img/user2-160x160.jpg" id="imgP1" onload="asignarImagen('imgP1')" class="user-image" alt="User Image">
+              <!-- hidden-xs hides the username on small devices so only the image appears. -->
+              <span class="hidden-xs" id="user1"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <!-- The user image in the menu -->
+              <li class="user-header">
+                  <img src="dist/img/user2-160x160.jpg" id="imgP2" onload="asignarImagen('imgP2')" class="img-circle" alt="User Image">
 
-        <!-- sidebar: style can be found in sidebar.less -->
-        <section class="sidebar">
-
-            <!-- Sidebar user panel (optional) -->
-            <div class="user-panel">
-                <div class="pull-left image">
-                    <img src="dist/img/user2-160x160.jpg" id="imgP3" onload="asignarImagen('imgP3')" class="img-circle" alt="User Image">
+                <p>
+                  José Andrés Ulloa - Old School Gamer
+                  <small>Miembro dede 2016</small>
+                </p>
+              </li>
+              <!-- Menu Body -->
+              <li class="user-body">
+                <div class="row">
+                  <div class="col-xs-4 text-center">
+                    <a href="#">Seguidores</a>
+                  </div>
+                  <div class="col-xs-4 text-center">
+                    <a href="#">Musica</a>
+                  </div>
+                  <div class="col-xs-4 text-center">
+                    <a href="#">Amigos</a>
+                  </div>
                 </div>
-                <div class="pull-left info">
-                    <p id="nick2"></p>
-                    <!-- Status -->
-                    <a href="#"><i class="fa fa-circle text-success"></i> Conectado</a>
+                <!-- /.row -->
+              </li>
+              <!-- Menu Footer-->
+              <li class="user-footer">
+                <div class="pull-left">
+                  <a href="#" class="btn btn-default btn-flat">Perfil</a>
                 </div>
-            </div>
+                <div class="pull-right">
+                  <a href="#" class="btn btn-default btn-flat" onclick="logout()">Cerrar sesión</a>
+                </div>
+              </li>
+            </ul>
+          </li>
+          <!-- Control Sidebar Toggle Button -->
+          <li>
+            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+  <!-- Left side column. contains the logo and sidebar -->
+   
+  <aside class="main-sidebar">
 
-            <!-- search form (Optional) -->
-            <form class="sidebar-form" action="javascript:busqueda()">
-                <div class="input-group">
-                    <input type="text" id="busquedaMusica" class="form-control" placeholder="Buscar...">
-                    <span class="input-group-btn">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel">
+        <div class="pull-left image">
+            <img src="dist/img/user2-160x160.jpg" id="imgP3" onload="asignarImagen('imgP3')" class="img-circle" alt="User Image">
+        </div>
+        <div class="pull-left info">
+          <p id="nick2"></p>
+          <!-- Status -->
+          <a href="#"><i class="fa fa-circle text-success"></i> Conectado</a>
+        </div>
+      </div>
+
+      <!-- search form (Optional) -->
+      <form class="sidebar-form" action="javascript:busqueda()">
+        <div class="input-group">
+          <input type="text" id="busquedaMusica" class="form-control" placeholder="Buscar...">
+              <span class="input-group-btn">
                         <button type="submit" name="search" id="search-btn" class="btn btn-flat">
                             <i class="fa fa-search"></i>
-                        </button>
-                    </span>
-                </div>
-            </form>
-            <!-- /.search form -->
-            <!-- Sidebar Menu -->
-            <ul class="sidebar-menu" id="sidebarPlaylist">
-                <li class="header">Playlists</li>
-                <!-- Optionally, you can add icons to the links -->
-                <li class="active" onclick="mostrarCancion('crearPlaylist')"><a href="#"><i class="fa fa-link"></i> <span>Crear playlist</span></a></li>
-                <li class="active"><a href="#"><i class="fa fa-link"></i> <span onclick="miMusica()">Mi Musica</span><span onclick="mostrarMiMusica()">Ver</span></a></li>
-                <!--<li class="treeview">
-                  <a href="#"><i class="fa fa-link"></i> <span>Albums</span> <i class="fa fa-angle-left pull-right"></i></a>
-                  <ul class="treeview-menu">
-                    <li><a href="#">Meteora</a></li>
-                    <li><a href="#">living thinghs</a></li>
-                  </ul>
-                </li>-->
-            </ul>
-            <!-- /.sidebar-menu -->
-        </section>
-        <!-- /.sidebar -->
-    </aside>
+                </button>
+              </span>
+        </div>
+      </form>
+      <!-- /.search form -->
+      <!-- Sidebar Menu -->
+      <ul class="sidebar-menu" id="sidebarPlaylist">
+        <li class="header">Playlists</li>
+        <!-- Optionally, you can add icons to the links -->
+        <li class="active" onclick="mostrarCancion('crearPlaylist')"><a href="#"><i class="fa fa-link"></i> <span>Crear playlist</span></a></li>
+          <li class="active"><a><i class="fa fa-link"></i> <span onclick="mostrarMiMusica()">Mi Musica</span><i onclick="miMusica('normal')" class='fa fa-fw fa-play'></i><i onclick="miMusica('random')" class='fa fa-fw fa-random'></i></a></li>
+        <!--<li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Albums</span> <i class="fa fa-angle-left pull-right"></i></a>
+          <ul class="treeview-menu">
+            <li><a href="#">Meteora</a></li>
+            <li><a href="#">living thinghs</a></li>
+          </ul>
+        </li>-->
+      </ul>
+      <!-- /.sidebar-menu -->
+    </section>
+    <!-- /.sidebar -->
+  </aside>
 
-    <!-- Content Wrapper. Contains page content -->
+  <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper" id="inicio">
         <!-- Content Header (Page header) -->
         <section class="content-header">
@@ -253,7 +253,7 @@
                             </ul>
 
                             <a href="#" class="btn btn-success btn-block"><b>Seguir</b></a>
-
+                             
                         </div>
                         <!-- /.box-body -->
                     </div>
@@ -346,10 +346,10 @@
             <!-- /.row -->
 
         </section>
-        <!-- /.content -->
+        <!-- /.content -->     
     </div>
     <div id="gamer" class="formulario">
-
+       
         <!--Div formulario subir cancion-->
         <!-- Main content -->
         <section class="content">
@@ -427,7 +427,7 @@
                                 <label for="exampleInputPassword1">Nombre</label>
                                 <input type="text" class="form-control" id="nombreAlbum" placeholder="Nombre">
                             </div>
-
+                           
                             <div class="form-group">
                                 <label for="exampleInputFile">Seleccione las canciones del Album</label>
                                 <input type="file" id="archivoAlbum" multiple="multiple">
@@ -446,7 +446,7 @@
         </section>
     </div>
     <div id="reproductorlml"><iframe id="reproductor" src="reproductorxd.html" frameborder="0" scrolling="no"></iframe><a class="btn btn-app" id="next"><i class="fa fa-forward"></i>next</a></div>
-
+   
     <div id="crearPlaylist" class="formulario">
         <!-- Main content -->
         <section class="content">
@@ -492,7 +492,7 @@
             <h3 class="box-title" id="carga1">Cargando Informacion</h3>
         </div>
         <div class="box-body" id="carga2">
-
+            
         </div>
         <!-- /.box-body -->
         <!-- Loading (remove the following to stop the loading)-->
@@ -501,12 +501,12 @@
         </div>
         <!-- end loading -->
     </div>
-    <!-- Control Sidebar -->
-    <!-- /.control-sidebar -->
-    <!-- Add the sidebar's background. This div must be placed
-         immediately after the control sidebar -->
-    <div class="control-sidebar-bg"></div>
+  <!-- Control Sidebar -->
+  <!-- /.control-sidebar -->
+  <!-- Add the sidebar's background. This div must be placed
+       immediately after the control sidebar -->
+  <div class="control-sidebar-bg"></div>
 
-    <!-- ./wrapper -->
+<!-- ./wrapper -->
 </body>
 </html>

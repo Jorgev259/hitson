@@ -59,7 +59,7 @@ top: 0px;
     display:none;
 }
 
-#next{
+.next{
     position:relative;
     z-index: 9000;
     left: -15px;
