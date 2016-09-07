@@ -1,4 +1,5 @@
-﻿var canciones;
+﻿//variables globales
+var canciones;
 var cancionesU;
 var datosCanciones = [];
 var numPlay;
