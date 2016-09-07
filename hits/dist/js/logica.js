@@ -7,6 +7,7 @@ var contA = -1;
 var playlists;
 var divPlay = "";
 var divInicio = "";
+var listaRandom = [];
 
 function mensaje(text1, text2) {
     document.getElementById("carga").style.display = "block";
@@ -393,7 +394,19 @@ function verificar() {
     }
 }
 
-function miMusica() {
+function miMusica(modo) {
+    listaRandom = [];
+
+    if (modo == "normal") {
+        if ($("#random").length) {
+            $("#random").prop("id", modo);
+        }
+    } else {
+        if ($("#normal").length) {
+            $("#normal").prop("id", "random");
+        }
+    }
+    
     var id = pedirCampo("num_usuario");
 
     contA = -1;
@@ -419,14 +432,15 @@ function miMusica() {
         })
     }
 
+    contA = -1;
 
-    nextC();
+    nextC(modo);
 
     var iframe = document.getElementById('reproductor');
     var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
     innerDoc.getElementById("audio-player").addEventListener("ended", nextC, false)
 
-    contA = 0;
+
     alert("Canciones del usuario cargadas al reproductor");
 }
 
@@ -457,13 +471,37 @@ function mostrarMiMusica() {
     })
 }
 
-function nextC() {
-    contA++;
-    if (contA == reproductor.length) {
-        contA = 0;
-        alert("la lista se reinicio porque llego a su final");
-    };
-    reproducir(reproductor[contA]);
+function nextC(id) {
+    if(id=="normal"){
+        contA++;
+        if (contA == reproductor.length) {
+            contA = 0;
+            alert("la lista se reinicio porque llego a su final");
+        };
+        reproducir(reproductor[contA]);
+    } else if (id == "random") {
+        if (listaRandom.length == reproductor.length) {
+            listaRandom = [];
+        }
+
+        var numero = 99;
+        var max = reproductor.length - 1;
+        var min = 0;
+        var reproducida = false;
+        
+        do {
+            numero = Math.floor(Math.random() * (max - min + 1) + min);
+            reproducida = false;
+            listaRandom.forEach(function (numero2) {
+                if (numero == numero2) {
+                    reproducida = true;
+                }
+            });
+        } while (reproducida == true);
+
+        listaRandom.push(numero);
+        reproducir(reproductor[numero]);
+    }
 }
 
 function asignarImagen(id) {
