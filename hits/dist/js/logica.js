@@ -15,6 +15,13 @@ function mensaje(text1, text2) {
     $("#carga2").append("<div id='play'>" + text2 + "</div>");
 }
 
+function quitarMensaje() {
+    $("#play").remove();
+    $("#base").remove();
+    document.getElementById("carga").style.display = "none";
+    document.getElementById("transparencia").style.display = "none";
+}
+
 function lista() {
     mensaje("Preparando Canciones", "Preparando Playlists");
 
@@ -150,6 +157,8 @@ function subirCancion() {
     data.append('usuario', user);
     data.append('op', 'agregar');
 
+    mensaje("Subiendo Cancion", "");
+
     $.ajax({
         url: '/Api/cancion',
         processData: false,
@@ -157,6 +166,7 @@ function subirCancion() {
         data: data,
         type: 'POST'
     }).done(function (result) {
+        quitarMensaje();
         alert(result);
         mostrarCancion("gamer");
         lista();
