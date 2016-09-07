@@ -8,11 +8,15 @@ var playlists;
 var divPlay = "";
 var divInicio = "";
 
-function lista() {
+function mensaje(text1, text2) {
     document.getElementById("carga").style.display = "block";
     document.getElementById("transparencia").style.display = "block";
-    $("#carga2").append("<div id='base'>Preparando Canciones</div>");
-    $("#carga2").append("<div id='play'>Preparando Playlists</div>");
+    $("#carga2").append("<div id='base'>" + text1 + "</div>");
+    $("#carga2").append("<div id='play'>" + text2 + "</div>");
+}
+
+function lista() {
+    mensaje("Preparando Canciones", "Preparando Playlists");
 
     if (divPlay == "") {
         divPlay = $("#sidebarPlaylist").clone();
@@ -155,6 +159,7 @@ function subirCancion() {
     }).done(function (result) {
         alert(result);
         mostrarCancion("gamer");
+        lista();
     }).fail(function (a, b, c) {
         console.log(a, b, c);
         mostrarCancion("gamer");
@@ -229,7 +234,11 @@ function subirAlbum() {
                 dato["com"] = tag.tags.comment;
                 dato["usuario"] = user;
 
-                console.log(dato);
+                $.each(dato, function (key, value) {
+                    if (value == "" || value == undefined) {
+                        dato[key] = "Desconocido";
+                    }
+                });
 
                 lista.push(JSON.stringify(dato));
 
@@ -244,6 +253,7 @@ function subirAlbum() {
                     }).done(function (result) {
                         alert(result);
                         mostrarCancion("subirAlbum");
+                        lista();
                     }).fail(function (a, b, c) {
                         console.log(a, b, c);
                         mostrarCancion("SubirAlbum");
