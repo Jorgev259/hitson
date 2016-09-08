@@ -26,9 +26,25 @@ namespace hits.Models
 
             return "Playlist Creada";
         }
-        
+
 
         public static List<String> listaPlaylist(IMongoCollection<BsonDocument> coleccion)
+        {
+            var filtro = new BsonDocument();
+            var lista = coleccion.Find(filtro).ToList();
+
+            List<String> canciones = new List<string>();
+
+            for (int i = 0; i < lista.Count(); i++)
+            {
+                lista[i].Remove("_id");
+                canciones.Add(lista[i].ToJson());
+            }
+
+            return canciones;
+        }
+
+        public static List<String> listaPlaylistUsuario(IMongoCollection<BsonDocument> coleccion,string id_usuario)
         {
             var filtro = new BsonDocument();
             var lista = coleccion.Find(filtro).ToList();

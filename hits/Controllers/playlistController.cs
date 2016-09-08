@@ -29,11 +29,16 @@ namespace hits.Controllers
                     respuesta = String.Join(">", listaCanciones.ToArray());
                     break;
 
+                case "busquedaUsuario":
+                    var listaPlaylists = hits.Models.playlist.listaPlaylistUsuario(coleccion3,Request["id_usuario"]);
+                    respuesta = String.Join(">", listaPlaylists.ToArray());
+                    break;
+
                 case "unir":
                     respuesta = Models.playlist.unirCancion(Request["id_cancion"],Request["id_playlist"],coleccion2);
                     break;
 
-                case "unirPlaylist":
+                case "unirAUsuario":
                     respuesta = Models.playlist.unirPlaylist(Request["id_playlist"], Request["id_usuario"], coleccion3);
                     break;
 
