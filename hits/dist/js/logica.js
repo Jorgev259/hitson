@@ -225,45 +225,51 @@ function subirCancion() {
 }
 //Fin funcion para subir una cancion
 
+//Funcion para actualizar la lista canciones
 function datosCancion(listaId) {
-    datosCanciones.forEach(function (cancion) {
-        listaId.forEach(function (item) {
-            if (cancion["filename"] == item) {
+    datosCanciones.forEach(function (cancion) { //Revisa cada uno de los datos de las canciones
+        listaId.forEach(function (item) { //Revisa cada uno de los ids recibidos
+            if (cancion["filename"] == item) { //si el id ya existia en canciones
+                //lo elimina de la lista recibida
                 var index = listaId.indexOf(cancion["filename"]);
                 listaId.splice(index, 1);
             }
         });
     });
     
-    if (listaId != "") {
-        var listaEnviar = JSON.stringify(listaId);
-        var data = new FormData;
+    if (listaId != "") { //Revisa si la lista esta vacia para evitar procesar datos nulos
+        var listaEnviar = JSON.stringify(listaId); //Convierte la lista en un JSON string para envio
 
+        //Crea el form data correspondiente y agrega los datos necesarios
+        var data = new FormData;
         data.append("lista", listaEnviar);
         data.append("op", "datos");
 
+        //Ajax para recibir los datos de las canciones nuevas
         $.ajax({
             url: '/Api/cancion',
             processData: false,
             contentType: false,
             data: data,
             type: 'POST'
-        }).done(function (result) {
-            var lista = result.split(">");
+        }).done(function (result) { //Cuando el query se termine
+            var lista = result.split(">"); //Divide los datos recibidos en lista
 
-            for (i = 0; i < lista.length; i++) {
-                lista[i] = JSON.parse(lista[i]);
+            for (i = 0; i < lista.length; i++) { //Revisa cada uno de los elementos en lista
+                lista[i] = JSON.parse(lista[i]); //Los convierte en JSON's
             }
 
-            lista.forEach(function (item) {
-                var numero = item["filename"]
+            lista.forEach(function (item) { //Revisa cada elemento de lista
+                var numero = item["filename"];
                 datosCanciones[numero] = item;
             })
         }).fail(function (a, b, c) {
             console.log(a, b, c);
         });
+        //Fin Ajax para recibir los datos de las canciones nuevas
     } 
 }
+//Fin Funcion para actualizar la lista canciones
 
 function subirAlbum() {
     var archivos = $("#archivoAlbum").get(0).files;
