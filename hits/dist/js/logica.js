@@ -10,6 +10,7 @@ var divPlay = "";
 var divInicio = "";
 var listaRandom = [];
 
+//funcion para crear una alerta en pantalla
 function mensaje(text1, text2) {
     document.getElementById("carga").style.display = "block";
     document.getElementById("transparencia").style.display = "block";
@@ -17,6 +18,7 @@ function mensaje(text1, text2) {
     $("#carga2").append("<div id='play'>" + text2 + "</div>");
 }
 
+//funcion para quitar alerta de pantalla
 function quitarMensaje() {
     $("#play").remove();
     $("#base").remove();
@@ -24,23 +26,25 @@ function quitarMensaje() {
     document.getElementById("transparencia").style.display = "none";
 }
 
+//funcion para actualizar datos locales sobre canciones, playlists y otros datos relacionados
 function lista() {
     mensaje("Preparando Canciones", "Preparando Playlists");
 
+    //Revisa el contenido de la variable para guardar una copia de la barra lateral
     if (divPlay == "") {
         divPlay = $("#sidebarPlaylist").clone();
     }
 
+    //Revisa el contenido de la variable para guardar una copia de la pantalla de inicio
     if (divInicio == "") {
         divInicio = $("#inicio").clone();
     }
 
+    //FormData usado para la descarga de los datos de las canciones y datos de las playlists
     var data = new FormData();
     data.append('op', 'busqueda');
 
-    var data2 = new FormData();
-    data2.append('op', 'busqueda2');
-
+    //Ajax para la descarga de los datos de las canciones
     $.ajax({
         url: '/Api/cancion',
         processData: false,
@@ -48,21 +52,27 @@ function lista() {
         data: data,
         type: 'POST'
     }).done(function (result) {
+        //Revisa el contenido devuelto por el servidor para evita procesar datos vacios
+        if (result != "") {
+            canciones = result.split(">"); //Divide en la lista canciones cada uno de los grupos de datos de las canciones
 
-        if(result != ""){
-            canciones = result.split(">");
-
-            for (i = 0; i < canciones.length; i++) {
+            for (i = 0; i < canciones.length; i++) { //Revisa cada uno de los datos y convierte los strings en JSON's
                 canciones[i] = JSON.parse(canciones[i]);
             }
 
             var listaUpdate = [];
-            canciones.forEach(function (c) {
+            canciones.forEach(function (c) { //Agrega cada id de cancion a una lista para actualizar la lista local
                 listaUpdate.push(c.cancion);
             });
 
-            datosCancion(listaUpdate);
+            datosCancion(listaUpdate); //Compara los ids recibidos con los ids ya descargados y agrega los que no estaban
+           //Fin ajax para la descarga de los datos de las canciones
 
+
+            //FormData usado para la descarga de las asociaciones Cancion-Usuario
+            var data2 = new FormData();
+            data2.append('op', 'busqueda2');
+            //Ajax para la descarga de las asociaciones Cancion-Usuario
             $.ajax({
                 url: '/Api/cancion',
                 processData: false,
@@ -70,9 +80,10 @@ function lista() {
                 data: data2,
                 type: 'POST'
             }).done(function (result) {
+                //Revisa el contenido devuelto por el servidor para evita procesar datos vacios
                 if(result != ""){
-                    cancionesU = result.split(">");
-                    for (i = 0; i < cancionesU.length; i++) {
+                    cancionesU = result.split(">"); //Divide en la lista cancionesU cada uno de las asociaciones Cancion-Usuario
+                    for (i = 0; i < cancionesU.length; i++) { //Revisa cada uno de los datos y convierte los strings en JSON's
                         cancionesU[i] = JSON.parse(cancionesU[i]);
                     }
 
@@ -84,11 +95,13 @@ function lista() {
             }).fail(function (a, b, c) {
                 console.log(a, b, c);
             });
+            //Fin Ajax para la descarga de las asociaciones Cancion-Usuario
         }
     }).fail(function (a, b, c) {
         console.log(a, b, c);
     });
 
+    //Ajax para la descarga de datos de la playlist
     $.ajax({
         url: '/Api/playlist',
         processData: false,
@@ -96,10 +109,10 @@ function lista() {
         data: data,
         type: 'POST'
     }).done(function (result) {
-        if(result != ""){
-            playlists = result.split(">");
-            console.log(playlists);
-            for (i = 0; i < playlists.length; i++) {
+        if (result != "") { //Revisa el contenido devuelto por el servidor para evita procesar datos vacios
+            playlists = result.split(">"); //Divide en la lista playlists cada uno de lo grupos de datos de las playlists
+
+            for (i = 0; i < playlists.length; i++) { //Revisa cada uno de los datos y convierte los strings en JSON's
                 playlists[i] = JSON.parse(playlists[i]);
             }
 
@@ -107,12 +120,13 @@ function lista() {
 
             $("#sidebarPlaylist").replaceWith(divPlay.clone());
 
-            playlists.forEach(function (play) {
-                if (pedirCampo("num_usuario") == play.usuario) {
+            playlists.forEach(function (play) { //Revisa cada una de las playlists
+                if (pedirCampo("num_usuario") == play.usuario) { //Compara con el id del usuario actual para agregar esa playlist a la barra lateral
                     $("#sidebarPlaylist").append("<li ><a><i class='fa fa-link'></i><span>" + play.nombre + "</span><i class='fa fa-fw fa-play' onclick='cargarPlaylist(" + play.numero + ")'></i></a></li>");
                 }
             });
         }
+        //Fin Ajax para la descarga de datos de la playlist
 
         var playlistUsuario = new FormData();
         playlistUsuario.append("op", "busquedaUsuario");
@@ -127,12 +141,9 @@ function lista() {
         }).done(function (result) {
             if (result != "") {
                 var list = result.split(">");
-                console.log(list);
                 for (i = 0; i < list.length; i++) {
                     list[i] = JSON.parse(list[i]);
                 }
-
-                console.log(list);
 
                 list.forEach(function (play) {
                     if (pedirCampo("num_usuario") == play.usuario) {
