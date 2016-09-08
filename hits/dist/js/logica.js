@@ -163,10 +163,12 @@ function lista() {
 }
 //Fin funcion para actualizar datos locales sobre canciones, playlists y otros datos relacionados
 
+//Funcion para devolver el inicio al estado original
 function inicio() {
     $("#inicio").replaceWith(divInicio.clone());
 }
 
+//Funcion para mostrar u ocultar los formularios
 function mostrarCancion(id) {
     if (document.getElementById(id).style.display == "none" || document.getElementById(id).style.display == "") {
         document.getElementById(id).style.display = "block";
@@ -185,23 +187,19 @@ function mostrarCancion(id) {
     }
 }
 
+//Funcion para subir una cancion
 function subirCancion() {
+    //Crea el form data correspondiente y le agrega los valores necesarios
     var data = new FormData();
     var Files = $("#archivoCancion").get(0).files;
-    var nombre = document.getElementById('nombreCancion').value;
-    var genero = document.getElementById('generoCancion').value;
-    var album = document.getElementById('albumCancion').value;
-    var artista = document.getElementById('artistaCancion').value;
-    var com = document.getElementById('comentarioCancion').value;
-    var user = pedirCampo("num_usuario");
 
     data.append('Files', Files[0]);
-    data.append('nombre', nombre);
-    data.append('genero', genero);
-    data.append('artista', artista);
-    data.append('album', album);
-    data.append('com', com);
-    data.append('usuario', user);
+    data.append('nombre', document.getElementById('nombreCancion').value);
+    data.append('genero', document.getElementById('generoCancion').value);
+    data.append('artista', document.getElementById('artistaCancion').value);
+    data.append('album', document.getElementById('albumCancion').value);
+    data.append('com', document.getElementById('comentarioCancion').value);
+    data.append('usuario', pedirCampo("num_usuario"));
     data.append('op', 'agregar');
 
     mensaje("Subiendo Cancion", "");
@@ -222,6 +220,7 @@ function subirCancion() {
         mostrarCancion("gamer");
     });
 }
+//Fin funcion para subir una cancion
 
 function datosCancion(listaId) {
     datosCanciones.forEach(function (cancion) {
