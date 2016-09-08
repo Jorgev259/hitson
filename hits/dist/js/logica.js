@@ -202,23 +202,26 @@ function subirCancion() {
     data.append('usuario', pedirCampo("num_usuario"));
     data.append('op', 'agregar');
 
+    //Crea mensaje para el usuario
     mensaje("Subiendo Cancion", "");
 
+    //Ajax para subir cancion
     $.ajax({
         url: '/Api/cancion',
         processData: false,
         contentType: false,
         data: data,
         type: 'POST'
-    }).done(function (result) {
-        quitarMensaje();
-        alert(result);
-        mostrarCancion("gamer");
-        lista();
+    }).done(function (result) { //Cuando el query se termine
+        quitarMensaje(); //Quita la alerta del usuario
+        alert(result); //Devuelve el mensaje del servidor
+        mostrarCancion("gamer"); //Oculta el formulario
+        lista(); //Actualiza los datos
     }).fail(function (a, b, c) {
         console.log(a, b, c);
         mostrarCancion("gamer");
     });
+    //Fin Ajax para subir cancion
 }
 //Fin funcion para subir una cancion
 
