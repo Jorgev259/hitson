@@ -128,10 +128,12 @@ function lista() {
         }
         //Fin Ajax para la descarga de datos de la playlist
 
+        //FormData usado para la descarga de las asociaciones Playlist-Usuario
         var playlistUsuario = new FormData();
         playlistUsuario.append("op", "busquedaUsuario");
         playlistUsuario.append("id_usuario", pedirCampo("num_usuario"));
 
+        //Ajax para la descarga de las asociaciones Playlist-Usuario
         $.ajax({
             url: '/Api/playlist',
             processData: false,
@@ -139,14 +141,14 @@ function lista() {
             data: playlistUsuario,
             type: 'POST'
         }).done(function (result) {
-            if (result != "") {
-                var list = result.split(">");
-                for (i = 0; i < list.length; i++) {
+            if (result != "") { //Revisa el contenido devuelto por el servidor para evita procesar datos vacios
+                var list = result.split(">"); //Divide en la lista playlists cada uno de las asociaciones Playlist-Usuario
+                for (i = 0; i < list.length; i++) { //Revisa cada uno de los datos y convierte los strings en JSON's
                     list[i] = JSON.parse(list[i]);
                 }
 
-                list.forEach(function (play) {
-                    if (pedirCampo("num_usuario") == play.usuario) {
+                list.forEach(function (play) { //Revisa cada una de las playlists
+                    if (pedirCampo("num_usuario") == play.usuario) { //Compara con el id del usuario actual para agregar esa playlist a la barra lateral
                         $("#sidebarPlaylist").append("<li ><a><i class='fa fa-link'></i><span>" + playlists[play.playlist].nombre + "</span><i class='fa fa-fw fa-play' onclick='cargarPlaylist(" + playlists[play.playlist].numero + ")'></i></a></li>");
                     }
                 });
@@ -157,8 +159,9 @@ function lista() {
     }).fail(function (a, b, c) {
         console.log(a, b, c);
     });
-
+    //Fin Ajax para la descarga de las asociaciones Playlist-Usuario
 }
+//Fin funcion para actualizar datos locales sobre canciones, playlists y otros datos relacionados
 
 function inicio() {
     $("#inicio").replaceWith(divInicio.clone());
