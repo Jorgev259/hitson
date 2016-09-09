@@ -153,7 +153,9 @@ function lista() {
 
                 list.forEach(function (play) { //Revisa cada una de las playlists
                     if (pedirCampo("num_usuario") == play.usuario) { //Compara con el id del usuario actual para agregar esa playlist a la barra lateral
-                        $("#sidebarPlaylist").append("<li ><a><i class='fa fa-link'></i><span>" + playlists[play.playlist].nombre + "</span><i class='fa fa-fw fa-play' onclick='cargarPlaylist(" + playlists[play.playlist].numero + ")'></i></a></li>");
+                        $("#sidebarPlaylist").append("<li ><a><i class='fa fa-link'></i><span>" + playlists[play.playlist].nombre + "</span><i id='p21" + playlists[play.playlist].numero + "' class='fa fa-fw fa-play'></i><i id='p22" + playlists[play.playlist].numero + "' class='fa fa-fw fa-random'></i></a></li>");
+                        $('#p21' + playlists[play.playlist].numero).attr('onClick', 'cargarPlaylist(' + playlists[play.playlist].numero + ',"normal")');
+                        $('#p22' + playlists[play.playlist].numero).attr('onClick', 'cargarPlaylist(' + playlists[play.playlist].numero + ',"random")');
                     }
                 });
             }
@@ -428,9 +430,6 @@ function busqueda() {
     listaBusqueda.forEach(function (cancion) {       
         $("#inicio").append(" <div class='row' id='" + datosCanciones[cancion.cancion]["nombre"] + "'><div class='col-xs-12'><div class='box'><div class='box-body table-responsive no-padding'><table class='table table-hove'><tr><th>Canción</th><th>Artista</th><th>Album</th><th>Género</th></tr><tr><td>" + datosCanciones[cancion.cancion]["nombre"] + "</td><td>" + datosCanciones[cancion.cancion]["artista"] + "</td><td>" + datosCanciones[cancion.cancion]["album"] + "</td><td>" + datosCanciones[cancion.cancion]["genero"] + "</td></tr><tr><button id='boton' class='btn btn-flat btn-success' onclick='uniraPlaylist(" + cancion.cancion + ")'>Agregar a la Playlist</button><button id='boton' class='btn btn-flat btn-success' onclick='agregarMiMusica(" + cancion.cancion + ")'>Agregar a mi musica</button></tr></table></div></div></div></div>");
     })
-
-    console.log(listaPlaylist);
-    console.log(playlists);
 
     var Id_usuario = pedirCampo("num_usuario");
     listaPlaylist.forEach(function (playlist) {

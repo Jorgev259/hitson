@@ -1,5 +1,7 @@
 ﻿#inicio{
     display:block;
+        height: 100vh;
+    overflow-y: auto;
 }
 
 #listaMusica{
