@@ -412,11 +412,11 @@ function busqueda() {
     })
 
     var listaPlaylist = [];
+    var user = pedirCampo("num_usuario");
 
     playlists.forEach(function(s) {
         num = 0;
-        if (s["nombre"].indexOf(cajaBusqueda) !== -1) {
-        //if (nombre !== -1) {
+        if (s["nombre"].indexOf(cajaBusqueda) !== -1 && s.usuario != user) {
             listaPlaylist[num] = s;
             num++;
         }
