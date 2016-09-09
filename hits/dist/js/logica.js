@@ -124,8 +124,9 @@ function lista() {
 
             playlists.forEach(function (play) { //Revisa cada una de las playlists
                 if (pedirCampo("num_usuario") == play.usuario) { //Compara con el id del usuario actual para agregar esa playlist a la barra lateral
-                    $("#sidebarPlaylist").append("<li ><a><i class='fa fa-link'></i><span>" + play.nombre + "</span><i id='p" + play.numero + "' class='fa fa-fw fa-play'></i></a></li>");
-                    $('#p' + play.numero).attr('onClick', 'cargarPlaylist('+ play.numero +',"normal")');
+                    $("#sidebarPlaylist").append("<li ><a><i class='fa fa-link'></i><span>" + play.nombre + "</span><i id='p1" + play.numero + "' class='fa fa-fw fa-play'></i><i id='p2" + play.numero + "' class='fa fa-fw fa-random'></i></a></li>");
+                    $('#p1' + play.numero).attr('onClick', 'cargarPlaylist(' + play.numero + ',"normal")');
+                    $('#p2' + play.numero).attr('onClick', 'cargarPlaylist(' + play.numero + ',"random")');
                 }
             });
         }
@@ -598,6 +599,18 @@ function agregarMiMusica(objeto) {
         console.log(a, b, c);
     });
 }
+
+function uniraPlaylist(id_cancion) {
+    mostrarCancion("listaMusica");
+
+    $("#listadeplaylist").html("");
+    playlists.forEach(function (playl) {
+        if (playl.usuario == pedirCampo("num_usuario")) {
+            $("#listadeplaylist").append("<div onclick='uniraPlaylist2(" + id_cancion + "," + playl.numero + ")'>" + playl.nombre + "</div>")
+        };
+    });
+}
+
 
 function uniraPlaylist2(id_cancion,id_playlist) {
     var data = new FormData();
