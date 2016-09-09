@@ -120,9 +120,12 @@ function lista() {
 
             $("#sidebarPlaylist").replaceWith(divPlay.clone());
 
+            var parametros = "'normal'";
+
             playlists.forEach(function (play) { //Revisa cada una de las playlists
                 if (pedirCampo("num_usuario") == play.usuario) { //Compara con el id del usuario actual para agregar esa playlist a la barra lateral
-                    $("#sidebarPlaylist").append("<li ><a><i class='fa fa-link'></i><span>" + play.nombre + "</span><i class='fa fa-fw fa-play' onclick='cargarPlaylist(" + play.numero + ")'></i></a></li>");
+                    $("#sidebarPlaylist").append("<li ><a><i class='fa fa-link'></i><span>" + play.nombre + "</span><i id='p" + play.numero + "' class='fa fa-fw fa-play'></i></a></li>");
+                    $('#p' + play.numero).attr('onClick', 'cargarPlaylist('+ play.numero +',"normal")');
                 }
             });
         }
@@ -596,11 +599,6 @@ function agregarMiMusica(objeto) {
     });
 }
 
-
-
-
-
-
 function uniraPlaylist2(id_cancion,id_playlist) {
     var data = new FormData();
     data.append("op", "unir");
@@ -639,7 +637,17 @@ function unirPlaylist(id_playlist, id_usuario) {
 }
 
 
-function cargarPlaylist(id_playlist) {
+function cargarPlaylist(id_playlist,modo) {
+    if (modo == "normal") {
+        if ($("#random").length) {
+            $("#random").prop("id", modo);
+        }
+    } else {
+        if ($("#normal").length) {
+            $("#normal").prop("id", "random");
+        }
+    }
+
     var data = new FormData();
     data.append("op", "reproducir");
     data.append("id_playlist", id_playlist);
@@ -664,7 +672,7 @@ function cargarPlaylist(id_playlist) {
             }
 
             contA = -1;
-            nextC();
+            nextC(modo);
         
             alert("playlists cargada al reproductor");
         }
