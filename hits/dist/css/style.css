@@ -1,4 +1,15 @@
-﻿#inicio{
+﻿@media only screen and (max-device-width: 480px){
+    .boton_sup{
+        display:none !important;
+    }
+}
+
+.btn-app{
+    top: 0%;
+    transform: translateY(-50%);
+}
+
+#inicio{
     display:block;
         height: 100vh;
     overflow-y: auto;
