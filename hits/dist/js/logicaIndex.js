@@ -1,4 +1,22 @@
-﻿function registro() {
+﻿function mensaje(text1, text2) {
+    document.getElementById("carga").style.display = "block";
+    document.getElementById("transparencia").style.display = "block";
+    $("#carga2").append("<div id='base'>" + text1 + "</div>");
+    $("#carga2").append("<div id='play'>" + text2 + "</div>");
+}
+
+//funcion para quitar alerta de pantalla
+function quitarMensaje(opcion) {
+    $("#play").remove();
+    $("#base").remove();
+    document.getElementById("carga").style.display = "none";
+    if(opcion != "true"){
+        document.getElementById("transparencia").style.display = "none";
+    }
+}
+
+function registro() {
+    mensaje("Registrando", "Por favor espere");
     if ($("#password").val() == $("#password2").val()) {
         var data = new FormData();
         var user = $("#user").val();
@@ -28,16 +46,20 @@
         }).done(function (result) {
             alert(result);
             document.location.href = "login.html";
+            quitarMensaje();
         }).fail(function (a, b, c) {
             console.log(a, b, c);
+            quitarMensaje();
         });
     } else {
         alert("Contraseñas no concuerdan");
+        quitarMensaje();
     }
 };
 
 
 function login() {
+    mensaje("logeando","");
     var data = new FormData();
     var user = $("#user").val();
     var pass = $("#pass").val();
@@ -59,11 +81,14 @@ function login() {
             sessionStorage.datosUsuario = JSON.stringify(usuario);
             console.log(sessionStorage.datosUsuario);
             document.location.href = "index.html";
+            quitarMensaje("");
         } else {
+            quitarMensaje("");
             alert(usuario.estado);
         }
 
     }).fail(function (a, b, c) {
+        quitarMensaje("");
         console.log(a, b, c);
     });
 };
