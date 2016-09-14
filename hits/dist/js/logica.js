@@ -9,6 +9,9 @@ var playlists;
 var divPlay = "";
 var divInicio = "";
 var listaRandom = [];
+var meta = [];
+var archivosMeta;
+var metaNum = 0;
 
 //funcion para crear una alerta en pantalla
 function mensaje(text1, text2) {
@@ -19,11 +22,13 @@ function mensaje(text1, text2) {
 }
 
 //funcion para quitar alerta de pantalla
-function quitarMensaje() {
+function quitarMensaje(opcion) {
     $("#play").remove();
     $("#base").remove();
     document.getElementById("carga").style.display = "none";
-    document.getElementById("transparencia").style.display = "none";
+    if(opcion != "true"){
+        document.getElementById("transparencia").style.display = "none";
+    }
 }
 
 //funcion para actualizar datos locales sobre canciones, playlists y otros datos relacionados
@@ -190,6 +195,10 @@ function mostrarCancion(id) {
             document.getElementById("albumCancion").value = "";
             document.getElementById("comentarioCancion").value = "";
         }
+
+        if (id == "opcionMasiva") {
+            meta = [];
+        }
     }
 }
 
@@ -219,7 +228,7 @@ function subirCancion() {
         data: data,
         type: 'POST'
     }).done(function (result) { //Cuando el query se termine
-        quitarMensaje(); //Quita la alerta del usuario
+        quitarMensaje(""); //Quita la alerta del usuario
         alert(result); //Devuelve el mensaje del servidor
         mostrarCancion("gamer"); //Oculta el formulario
         lista(); //Actualiza los datos
@@ -362,7 +371,7 @@ function subirPlaylist() {
     }).done(function (result) {
         alert(result);
         mostrarCancion('crearPlaylist');
-        quitarMensaje();
+        quitarMensaje("");
         lista();
     }).fail(function (a, b, c) {
         console.log(a, b, c);
@@ -436,7 +445,7 @@ function busqueda() {
         $("#inicio").append(" <div class='row' id='" + playlists[playlist.numero]["numero"] + "'><div class='col-xs-12'><div class='box'><div class='box-body table-responsive no-padding'><table class='table table-hove'><tr><th>Playlist</th><th>Creador</th><th>Comentario</th></tr><tr><td>" + playlists[playlist.numero]["nombre"] + "</td><td>" + playlists[playlist.numero]["usuario"] + "</td><td>" + playlists[playlist.numero]["comentario"] + "</td></tr><tr><button id='boton' class='btn btn-flat btn-success' onclick='unirPlaylist(" + playlists[playlist.numero]["numero"] + "," + Id_usuario + ")'>Agregar a mis Playlists</button></tr></table></div></div></div></div>");
     })
 
-    quitarMensaje();
+    quitarMensaje("");
 
     //Codigo para mostrar playlists de la busqueda
 }
@@ -691,12 +700,101 @@ function cargarPlaylist(id_playlist,modo) {
     });
 }
 
+function subidaMasivaModificar() {
+    if (metaNum == 0) {
+        mostrarCancion("opcionMasiva");
+        mostrarCancion("cancionMasiva");
+    } else {
+            var elemento = [];
+            elemento.genero = document.getElementById("generoCancionM").value;
+            elemento.cancion = document.getElementById("nombreCancionM").value;
+            elemento.artista = document.getElementById("artistaCancionM").value;
+            elemento.album = document.getElementById("albumCancionM").value;
+            elemento.comentario = document.getElementById("comentarioCancionM").value;
+            meta.push(elemento);
+            mostrarCancion("cancionMasiva");
+            mostrarCancion("cancionMasiva");
+    }
+    
+    if (metaNum == archivosMeta.length) {
+        mostrarCancion("cancionMasiva");
+        mensaje("Subiendo las canciones");
+        var archivos = $("#archivoAlbum").get(0).files;
+        var data = new FormData;
+        var listaC = [];
+        var user = pedirCampo("num_usuario");
+        data.append("op", "masiva");
+
+        for (i = 0; i < archivosMeta.length; i++) {
+            var dato = {};
+            console.log(meta[i]);
+            data.append("Files" + i, archivosMeta[i]);
+            dato["genero"] = meta[i].genero;
+            dato["nombre"] = meta[i].cancion;
+            dato["artista"] = meta[i].artista;
+            dato["album"] = meta[i].album;
+            dato["com"] = meta[i].comentario;
+            dato["usuario"] = user;
+
+            $.each(dato, function (key, value) {
+                if (value == "" || value == undefined) {
+                    dato[key] = "Desconocido";
+                }
+            });
+
+            listaC.push(JSON.stringify(dato));
+
+        };
+
+        data.append("datos", JSON.stringify(listaC));
+
+        $.ajax({
+            url: '/Api/cancion',
+            processData: false,
+            contentType: false,
+            data: data,
+            type: 'POST'
+        }).done(function (result) {
+            alert(result);
+            quitarMensaje("");
+            lista();
+            meta = [];
+            archivosMeta=[];
+        }).fail(function (a, b, c) {
+            console.log(a, b, c);
+            quitarMensaje("");
+        });
+
+    } else {
+        var paso = archivosMeta[metaNum];
+        mensaje("cargando datos", "");
+        jsmediatags.read(paso, {
+            onSuccess: function (tag) {
+                quitarMensaje("true");
+                document.getElementById("generoCancionM").value = tag.tags.genre;
+                document.getElementById("nombreCancionM").value = tag.tags.title;
+                document.getElementById("artistaCancionM").value = tag.tags.artist;
+                document.getElementById("albumCancionM").value = tag.tags.album;
+                document.getElementById("comentarioCancionM").value = tag.tags.comment;
+            },
+            onError: function (error) {
+                console.log(error);
+            }
+        });
+        metaNum++;
+    }
+}
+
+function subidaMasiva() {
+
+}
+
 $(document).ready(function () {
     var campo = pedirCampo('nickname');
     document.getElementById("nick1").innerHTML = campo;
     document.getElementById("nick2").innerHTML = campo;
     document.getElementById("user1").innerHTML = pedirCampo('usuario');
-    var inputTypeFile = document.getElementById("archivoCancion");
+    var inputTypeFile = document.getElementById("archivoCancion");   
 
     inputTypeFile.addEventListener("change", function (event) {
         var file = event.target.files[0];
@@ -713,6 +811,15 @@ $(document).ready(function () {
                 console.log(error);
             }
         });
+    }, false);
+
+    document.getElementById("archivosMasivos").addEventListener("change", function (event) {
+        archivosMeta = event.target.files;
+
+        if ($('#modo').prop('checked')) {
+            meta = [];
+            archivosMeta = [];
+        }        
     }, false);
     lista();
 });

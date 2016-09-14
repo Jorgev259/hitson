@@ -50,6 +50,7 @@ namespace hits_server.Controllers
                         file.SaveAs(path + "/" + numero2 + ".mp3");
 
                         var respuesta = hits.Models.cancion.insertarCancion(numero2,Convert.ToString(dato2["nombre"]), Convert.ToString(dato2["genero"]), Convert.ToString(dato2["artista"]), Convert.ToString(dato2["album"]), Convert.ToString(dato2["com"]), Convert.ToString(dato2["usuario"]),client,db,collectionCanciones);
+                        numero2++;
                         i++;
                     }
 
@@ -84,6 +85,31 @@ namespace hits_server.Controllers
                     var enviardatos = String.Join(">", datoscanciones.ToArray());
 
                     return enviardatos;
+                    break;
+
+                case "masiva":
+                    i = 0;
+                    numero2 = unchecked((int)collectionCanciones.Count(new BsonDocument()));
+
+                    serializer = new JavaScriptSerializer();
+                    datos = JsonConvert.DeserializeObject<string[]>(Request["datos"]);
+
+                    foreach (var dato in datos)
+                    {
+                        var dato2 = JsonConvert.DeserializeObject<dynamic>(dato);
+
+                        var archivo = Request.Files[i];
+                        file = archivo;
+                        path = HttpContext.Current.Server.MapPath(string.Format("~/temp"));
+                        file.SaveAs(path + "/" + numero2 + ".mp3");
+
+                        var respuesta = hits.Models.cancion.insertarCancion(numero2, Convert.ToString(dato2["nombre"]), Convert.ToString(dato2["genero"]), Convert.ToString(dato2["artista"]), Convert.ToString(dato2["album"]), Convert.ToString(dato2["com"]), Convert.ToString(dato2["usuario"]), client, db, collectionCanciones);
+                        numero2++;
+                        i++;
+                    }
+
+                    return "Canciones subidas";
+                    return "";
                     break;
                 
                 default:
