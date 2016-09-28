@@ -455,11 +455,9 @@ function pedirImagen(id, src) {
 }
 
 function logout() {
-
     sessionStorage.clear();
     alert("Adiooos :3");
     document.location.href = "login.html";
-
 }
 
 function verificar() {
@@ -786,7 +784,67 @@ function subidaMasivaModificar() {
 }
 
 function subidaMasiva() {
+    mostrarCancion("opcionMasiva");
+    mensaje("Subiendo Cancione","");
+    var data = new FormData;
+    var listaC = [];
+    var num = 0;
+    var user = pedirCampo("num_usuario");
+    data.append("op", "album");
 
+    for (i = 0; i < archivosMeta.length; i++) {
+
+        data.append("Files" + i, archivosMeta[i]);
+
+        jsmediatags.read(archivosMeta[i], {
+            onSuccess: function (tag) {
+                var dato = {};
+
+                if (tag.tags.title == undefined || tag.tags.title == "") {
+                    dato["nombre"] = archivosMeta[i].name;
+                } else {
+                    dato["nombre"] = tag.tags.title;
+                }
+
+                dato["genero"] = tag.tags.genre;
+                dato["artista"] = tag.tags.artist;
+                dato["album"] = tag.tags.album;
+                dato["com"] = tag.tags.comment;
+                dato["usuario"] = user;
+
+                $.each(dato, function (key, value) {
+                    if (value == "" || value == undefined) {
+                        dato[key] = "Desconocido";
+                    }
+                });
+
+                listaC.push(JSON.stringify(dato));
+
+                if (num == archivosMeta.length - 1) {
+                    data.append("datos", JSON.stringify(listaC));
+                    $.ajax({
+                        url: '/Api/cancion',
+                        processData: false,
+                        contentType: false,
+                        data: data,
+                        type: 'POST'
+                    }).done(function (result) {
+                        alert("Canciones Subidas");
+                        quitarMensaje("");
+                        lista();
+                    }).fail(function (a, b, c) {
+                        console.log(a, b, c);
+                        quitarMensaje("");
+                    });
+                }
+
+                num++;
+            },
+            onError: function (error) {
+                console.log(error);
+            }
+        });
+    };
 }
 
 $(document).ready(function () {
