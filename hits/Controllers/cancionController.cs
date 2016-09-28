@@ -109,9 +109,12 @@ namespace hits_server.Controllers
                     }
 
                     return "Canciones subidas";
+                    break;
+
+                case "eliminar":
+                    var respuesta3 = hits.Models.cancion.eliminarCancion(Request["numero"],db);
                     return "";
                     break;
-                
                 default:
                     return "opa";
                     break;

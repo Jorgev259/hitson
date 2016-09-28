@@ -57,16 +57,23 @@ function lista() {
         data: data,
         type: 'POST'
     }).done(function (result) {
+        quitarMensaje();
         //Revisa el contenido devuelto por el servidor para evita procesar datos vacios
         if (result != "") {
             canciones = result.split(">"); //Divide en la lista canciones cada uno de los grupos de datos de las canciones
-
-            for (i = 0; i < canciones.length; i++) { //Revisa cada uno de los datos y convierte los strings en JSON's
-                canciones[i] = JSON.parse(canciones[i]);
-            }
+            var i = 0;
+            canciones.forEach(function (c) { //Revisa cada uno de los datos y convierte los strings en JSON's
+                if (i != canciones.length - 1) {
+                    canciones[JSON.parse(c).cancion] = JSON.parse(c);
+                } else {
+                    canciones[c.cancion] = c;
+                }
+                i++
+            })
 
             var listaUpdate = [];
             canciones.forEach(function (c) { //Agrega cada id de cancion a una lista para actualizar la lista local
+                console.log(c);
                 listaUpdate.push(c.cancion);
             });
 
@@ -88,14 +95,17 @@ function lista() {
                 //Revisa el contenido devuelto por el servidor para evita procesar datos vacios
                 if(result != ""){
                     cancionesU = result.split(">"); //Divide en la lista cancionesU cada uno de las asociaciones Cancion-Usuario
-                    for (i = 0; i < cancionesU.length; i++) { //Revisa cada uno de los datos y convierte los strings en JSON's
-                        cancionesU[i] = JSON.parse(cancionesU[i]);
-                    }
 
+                    cancionesU.forEach(function (c) { //Revisa cada uno de los datos y convierte los strings en JSON's
+                        cancionesU[JSON.parse(c).cancion] = JSON.parse(c);
+                    })
+
+                    console.log(cancionesU);
                     $("#base").remove();
 
                     document.getElementById("carga").style.display = "none";
                     document.getElementById("transparencia").style.display = "none";
+
                 }
             }).fail(function (a, b, c) {
                 console.log(a, b, c);
@@ -117,9 +127,9 @@ function lista() {
         if (result != "") { //Revisa el contenido devuelto por el servidor para evita procesar datos vacios
             playlists = result.split(">"); //Divide en la lista playlists cada uno de lo grupos de datos de las playlists
 
-            for (i = 0; i < playlists.length; i++) { //Revisa cada uno de los datos y convierte los strings en JSON's
-                playlists[i] = JSON.parse(playlists[i]);
-            }
+            playlists.forEach(function (c) { //Revisa cada uno de los datos y convierte los strings en JSON's
+                playlists[JSON.parse(c).numero] = JSON.parse(c);
+            })
 
             $("#play").remove();
 
@@ -152,9 +162,10 @@ function lista() {
         }).done(function (result) {
             if (result != "") { //Revisa el contenido devuelto por el servidor para evita procesar datos vacios
                 var list = result.split(">"); //Divide en la lista playlists cada uno de las asociaciones Playlist-Usuario
-                for (i = 0; i < list.length; i++) { //Revisa cada uno de los datos y convierte los strings en JSON's
-                    list[i] = JSON.parse(list[i]);
-                }
+
+                list.forEach(function (c) { //Revisa cada uno de los datos y convierte los strings en JSON's
+                   list[JSON.parse(c).playlist] = JSON.parse(c);
+                })
 
                 list.forEach(function (play) { //Revisa cada una de las playlists
                     if (pedirCampo("num_usuario") == play.usuario) { //Compara con el id del usuario actual para agregar esa playlist a la barra lateral
@@ -270,9 +281,9 @@ function datosCancion(listaId) {
         }).done(function (result) { //Cuando el query se termine
             var lista = result.split(">"); //Divide los datos recibidos en lista
 
-            for (i = 0; i < lista.length; i++) { //Revisa cada uno de los elementos en lista
-                lista[i] = JSON.parse(lista[i]); //Los convierte en JSON's
-            }
+           lista.forEach(function (c) { //Revisa cada uno de los datos y convierte los strings en JSON's
+                lista[JSON.parse(c).filename] = JSON.parse(c);
+            })
 
             lista.forEach(function (item) { //Revisa cada elemento de lista
                 var numero = item["filename"];
@@ -524,7 +535,9 @@ function mostrarMiMusica() {
 
     if (canciones != undefined) {
         canciones.forEach(function (c) {
+            console.log(c);
             if (c.user == id) {
+                
                 lista.push(c.cancion);
             }
         })
@@ -537,9 +550,9 @@ function mostrarMiMusica() {
             }
         })
     }
-
+    console.log(lista);
     lista.forEach(function (cancion) {
-        $("#inicio").append(" <div class='row' id='" + datosCanciones[cancion]["nombre"] + "'><div class='col-xs-12'><div class='box'><div class='box-body table-responsive no-padding'><table class='table table-hove'><tr><th>Canción</th><th>Artista</th><th>Album</th><th>Género</th></tr><tr><td>" + datosCanciones[cancion]["nombre"] + "</td><td>" + datosCanciones[cancion]["artista"] + "</td><td>" + datosCanciones[cancion]["album"] + "</td><td>" + datosCanciones[cancion]["genero"] + "</td></tr></table></div></div></div></div>");
+        $("#inicio").append(" <div class='row' id='" + datosCanciones[cancion]["nombre"] + "'><div class='col-xs-12'><div class='box'><div class='box-body table-responsive no-padding'><table class='table table-hove'><tr><th>Canción</th><th>Artista</th><th>Album</th><th>Género</th><th></th></tr><tr><td>" + datosCanciones[cancion]["nombre"] + "</td><td>" + datosCanciones[cancion]["artista"] + "</td><td>" + datosCanciones[cancion]["album"] + "</td><td>" + datosCanciones[cancion]["genero"] + "</td><td onclick='eliminarC(" + datosCanciones[cancion]["filename"] + ")'>Eliminar</td></tr></table></div></div></div></div>");
     })
 }
 
@@ -735,7 +748,7 @@ function subidaMasivaModificar() {
             dato["usuario"] = user;
 
             $.each(dato, function (key, value) {
-                if (value == "" || value == undefined) {
+                if ((value == "" || value == undefined) && key != "usuario") {
                     dato[key] = "Desconocido";
                 }
             });
@@ -813,7 +826,7 @@ function subidaMasiva() {
                 dato["usuario"] = user;
 
                 $.each(dato, function (key, value) {
-                    if (value == "" || value == undefined) {
+                    if ((value == "" || value == undefined) && key != "usuario") {
                         dato[key] = "Desconocido";
                     }
                 });
@@ -845,6 +858,28 @@ function subidaMasiva() {
             }
         });
     };
+}
+
+function eliminarC(numero) {
+    var dataEC = new FormData;
+    dataEC.append("numero", numero);
+    dataEC.append("op", "eliminar");
+    mensaje("eliminando cancion","")
+    $.ajax({
+        url: '/Api/cancion',
+        processData: false,
+        contentType: false,
+        data: dataEC,
+        type: 'POST'
+    }).done(function (result) {
+        quitarMensaje("");
+        inicio();
+        lista();
+
+    }).fail(function (a, b, c) {
+        console.log(a, b, c);
+        quitarMensaje("");
+    });
 }
 
 $(document).ready(function () {

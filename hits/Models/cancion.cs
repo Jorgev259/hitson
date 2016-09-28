@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -33,6 +34,12 @@ namespace hits.Models
         public static String insertarCancion(int num_cancion, string nombre, string genero, string artista, string album, string comentario, string usuario, MongoClient client, IMongoDatabase db, IMongoCollection<BsonDocument> collection) {
 
             byte[] file = File.ReadAllBytes(AppDomain.CurrentDomain.BaseDirectory + "temp\\" + num_cancion + ".mp3");
+
+            var filter = new BsonDocument();
+            var cursor = collection.Find(filter).ToList();
+
+            num_cancion = Convert.ToInt32(cursor[num_cancion - 1]["filename"]) + 1;
+
 
             var documento = new BsonDocument
             {
@@ -79,17 +86,28 @@ namespace hits.Models
             };
 
             List<String> canciones = new List<string>();
-            for(int i = 0; i < lista.Count();i++)
+            foreach (var elemento in lista)
             {
                 objeto = new BsonDocument { };
-                var id_c = lista[i]["filename"];
-                var id_user = lista[i]["usuario"];
+                var id_c = lista["filename"];
+                var id_user = lista["usuario"];
 
                 objeto.Add("cancion", id_c);
                 objeto.Add("user", id_user);
 
                 canciones.Add(objeto.ToJson());
             }
+            //for(int i = 0; i < lista.Count();i++)
+            //{
+            //    objeto = new BsonDocument { };
+            //    var id_c = lista[i]["filename"];
+            //    var id_user = lista[i]["usuario"];
+
+            //    objeto.Add("cancion", id_c);
+            //    objeto.Add("user", id_user);
+
+            //    canciones.Add(objeto.ToJson());
+            //}
               
             return canciones;
         }
@@ -141,6 +159,19 @@ namespace hits.Models
             }
 
             return datoscanciones;
+        }
+
+        public static string eliminarCancion(string numero, IMongoDatabase db)
+        {
+            File.Delete(AppDomain.CurrentDomain.BaseDirectory + "temp\\" + numero + ".mp3");
+
+            var filter = Builders<BsonDocument>.Filter.Eq("filename", Convert.ToInt32(numero));
+            db.GetCollection<BsonDocument>("canciones").DeleteMany(filter);
+            filter = Builders<BsonDocument>.Filter.Eq("cancion", Convert.ToInt32(numero));
+            db.GetCollection<BsonDocument>("playlist.cancion").DeleteMany(filter);
+            db.GetCollection<BsonDocument>("cancion.usuario").DeleteMany(filter);
+
+            return "";
         }
     }
 }
