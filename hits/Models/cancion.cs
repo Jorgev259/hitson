@@ -89,26 +89,14 @@ namespace hits.Models
             foreach (var elemento in lista)
             {
                 objeto = new BsonDocument { };
-                var id_c = lista["filename"];
-                var id_user = lista["usuario"];
+                var id_c = elemento["filename"];
+                var id_user = elemento["usuario"];
 
                 objeto.Add("cancion", id_c);
                 objeto.Add("user", id_user);
 
                 canciones.Add(objeto.ToJson());
             }
-            //for(int i = 0; i < lista.Count();i++)
-            //{
-            //    objeto = new BsonDocument { };
-            //    var id_c = lista[i]["filename"];
-            //    var id_user = lista[i]["usuario"];
-
-            //    objeto.Add("cancion", id_c);
-            //    objeto.Add("user", id_user);
-
-            //    canciones.Add(objeto.ToJson());
-            //}
-              
             return canciones;
         }
 

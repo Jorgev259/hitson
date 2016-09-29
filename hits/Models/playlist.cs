@@ -2,6 +2,7 @@
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace hits.Models
@@ -102,5 +103,21 @@ namespace hits.Models
 
             return canciones;
         }
+        public static string eliminarPlay(string numero, IMongoDatabase db)
+        {
+            var filter = Builders<BsonDocument>.Filter.Eq("playlist", numero);
+            db.GetCollection<BsonDocument>("playlist.usuario").DeleteMany(filter);
+            filter = Builders<BsonDocument>.Filter.Eq("playlist", numero);
+
+            return "";
+        }
+
+        public static string eliminarPlayC(string numero,string cancion, IMongoDatabase db)
+        {
+            var filter = new BsonDocument { { "playlist", numero }, { "cancion", cancion} };
+            db.GetCollection<BsonDocument>("playlist.cancion").DeleteMany(filter);
+            return "";
+        }
+
     }
 }

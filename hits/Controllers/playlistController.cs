@@ -42,7 +42,13 @@ namespace hits.Controllers
                     respuesta = Models.playlist.unirPlaylist(Request["id_playlist"], Request["id_usuario"], coleccion3);
                     break;
 
-              
+                case "eliminar":
+                    respuesta = Models.playlist.eliminarPlay(Request["numero"], client.GetDatabase("hitson"));
+                    break;
+
+                case "eliminarC":
+                    respuesta = Models.playlist.eliminarPlayC(Request["numeroP"], Request["numeroC"], client.GetDatabase("hitson"));
+                    break;
 
                 default:
                 case "reproducir":

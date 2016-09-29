@@ -58,22 +58,18 @@ function lista() {
         type: 'POST'
     }).done(function (result) {
         quitarMensaje();
+        console.log(result);
         //Revisa el contenido devuelto por el servidor para evita procesar datos vacios
         if (result != "") {
             canciones = result.split(">"); //Divide en la lista canciones cada uno de los grupos de datos de las canciones
-            var i = 0;
+            var i=0;
             canciones.forEach(function (c) { //Revisa cada uno de los datos y convierte los strings en JSON's
-                if (i != canciones.length - 1) {
-                    canciones[JSON.parse(c).cancion] = JSON.parse(c);
-                } else {
-                    canciones[c.cancion] = c;
-                }
+                    canciones[i] = JSON.parse(c);
                 i++
             })
 
             var listaUpdate = [];
             canciones.forEach(function (c) { //Agrega cada id de cancion a una lista para actualizar la lista local
-                console.log(c);
                 listaUpdate.push(c.cancion);
             });
 
@@ -139,7 +135,7 @@ function lista() {
 
             playlists.forEach(function (play) { //Revisa cada una de las playlists
                 if (pedirCampo("num_usuario") == play.usuario) { //Compara con el id del usuario actual para agregar esa playlist a la barra lateral
-                    $("#sidebarPlaylist").append("<li ><a><i class='fa fa-link'></i><span>" + play.nombre + "</span><i id='p1" + play.numero + "' class='fa fa-fw fa-play'></i><i id='p2" + play.numero + "' class='fa fa-fw fa-random'></i></a></li>");
+                    $("#sidebarPlaylist").append("<li ><a><i class='fa fa-link'></i><span onclick='mostrarPlay(" + play.numero +")'>" + play.nombre + "</span><i id='p1" + play.numero + "' class='fa fa-fw fa-play'></i><i id='p2" + play.numero + "' class='fa fa-fw fa-random'></i></a></li>");
                     $('#p1' + play.numero).attr('onClick', 'cargarPlaylist(' + play.numero + ',"normal")');
                     $('#p2' + play.numero).attr('onClick', 'cargarPlaylist(' + play.numero + ',"random")');
                 }
@@ -169,7 +165,7 @@ function lista() {
 
                 list.forEach(function (play) { //Revisa cada una de las playlists
                     if (pedirCampo("num_usuario") == play.usuario) { //Compara con el id del usuario actual para agregar esa playlist a la barra lateral
-                        $("#sidebarPlaylist").append("<li ><a><i class='fa fa-link'></i><span>" + playlists[play.playlist].nombre + "</span><i id='p21" + playlists[play.playlist].numero + "' class='fa fa-fw fa-play'></i><i id='p22" + playlists[play.playlist].numero + "' class='fa fa-fw fa-random'></i></a></li>");
+                        $("#sidebarPlaylist").append("<li ><a><i class='fa fa-link'></i><span onclick='mostrarPlay(" + playlists[play.playlist].numero + ")'>" + playlists[play.playlist].nombre + "</span><i id='p21" + playlists[play.playlist].numero + "' class='fa fa-fw fa-play'></i><i id='p22" + playlists[play.playlist].numero + "' class='fa fa-fw fa-random'></i><i class='fa fa-fw fa-ban' onclick='eliminarPlay(" + playlists[play.playlist].numero + ")'></i></a></li>");
                         $('#p21' + playlists[play.playlist].numero).attr('onClick', 'cargarPlaylist(' + playlists[play.playlist].numero + ',"normal")');
                         $('#p22' + playlists[play.playlist].numero).attr('onClick', 'cargarPlaylist(' + playlists[play.playlist].numero + ',"random")');
                     }
@@ -280,9 +276,10 @@ function datosCancion(listaId) {
             type: 'POST'
         }).done(function (result) { //Cuando el query se termine
             var lista = result.split(">"); //Divide los datos recibidos en lista
-
+            var i = 0;
            lista.forEach(function (c) { //Revisa cada uno de los datos y convierte los strings en JSON's
-                lista[JSON.parse(c).filename] = JSON.parse(c);
+               lista[i] = JSON.parse(c);
+               i++
             })
 
             lista.forEach(function (item) { //Revisa cada elemento de lista
@@ -436,14 +433,15 @@ function busqueda() {
     var listaPlaylist = [];
     var user = pedirCampo("num_usuario");
 
-    playlists.forEach(function(s) {
+    playlists.forEach(function (s) {
         num = 0;
-        if (s["nombre"].indexOf(cajaBusqueda) !== -1 && s.usuario != user) {
+        console.log(s);
+        if (s["nombre"].toLowerCase().indexOf(cajaBusqueda) !== -1 && s.usuario != user) {
             listaPlaylist[num] = s;
             num++;
         }
-    })
-
+    });
+    console.log(listaPlaylist);
 
     $("#inicio").html("");
 
@@ -457,8 +455,6 @@ function busqueda() {
     })
 
     quitarMensaje("");
-
-    //Codigo para mostrar playlists de la busqueda
 }
 
 function pedirImagen(id, src) {
@@ -554,6 +550,46 @@ function mostrarMiMusica() {
     lista.forEach(function (cancion) {
         $("#inicio").append(" <div class='row' id='" + datosCanciones[cancion]["nombre"] + "'><div class='col-xs-12'><div class='box'><div class='box-body table-responsive no-padding'><table class='table table-hove'><tr><th>Canción</th><th>Artista</th><th>Album</th><th>Género</th><th></th></tr><tr><td>" + datosCanciones[cancion]["nombre"] + "</td><td>" + datosCanciones[cancion]["artista"] + "</td><td>" + datosCanciones[cancion]["album"] + "</td><td>" + datosCanciones[cancion]["genero"] + "</td><td onclick='eliminarC(" + datosCanciones[cancion]["filename"] + ")'>Eliminar</td></tr></table></div></div></div></div>");
     })
+}
+
+function mostrarPlay(numero) {
+    $("#inicio").html("");
+
+    var id = pedirCampo("num_usuario");
+    var lista = []
+
+    var data = new FormData();
+    data.append("op", "reproducir");
+    data.append("id_playlist", numero);
+
+    $.ajax({
+        url: '/Api/playlist',
+        processData: false,
+        contentType: false,
+        data: data,
+        type: 'POST'
+    }).done(function (result) {
+        if (result == "") {
+            alert("Playlist vacia");
+        } else {
+            var lista = result.split(">");
+
+            var i=0;
+
+            lista.forEach(function (c) {
+                lista[i] = JSON.parse(c).cancion;
+                i++;
+            })
+
+            console.log(lista);
+            lista.forEach(function (cancion) {
+                console.log(cancion);
+                $("#inicio").append(" <div class='row' id='" + datosCanciones[cancion]["nombre"] + "'><div class='col-xs-12'><div class='box'><div class='box-body table-responsive no-padding'><table class='table table-hove'><tr><th>Canción</th><th>Artista</th><th>Album</th><th>Género</th><th></th></tr><tr><td>" + datosCanciones[cancion]["nombre"] + "</td><td>" + datosCanciones[cancion]["artista"] + "</td><td>" + datosCanciones[cancion]["album"] + "</td><td>" + datosCanciones[cancion]["genero"] + "</td><td onclick='eliminarCPlay(" + datosCanciones[cancion]["filename"] + ", " + numero + ")'>Eliminar</td></tr></table></div></div></div></div>");
+            })
+        }
+    });
+
+    
 }
 
 function nextC(id) {
@@ -876,6 +912,49 @@ function eliminarC(numero) {
         inicio();
         lista();
 
+    }).fail(function (a, b, c) {
+        console.log(a, b, c);
+        quitarMensaje("");
+    });
+}
+
+function eliminarCPlay(numero,play) {
+    var dataEC = new FormData;
+    dataEC.append("numeroC", numero);
+    dataEC.append("numeroP", play);
+    dataEC.append("op", "eliminarC");
+    mensaje("eliminando cancion", "")
+    $.ajax({
+        url: '/Api/playlist',
+        processData: false,
+        contentType: false,
+        data: dataEC,
+        type: 'POST'
+    }).done(function (result) {
+        quitarMensaje("");
+        inicio();
+        lista();
+    }).fail(function (a, b, c) {
+        console.log(a, b, c);
+        quitarMensaje("");
+    });
+}
+
+
+function eliminarPlay(numero) {
+    var dataEC = new FormData;
+    dataEC.append("numero", numero);
+    dataEC.append("op", "eliminar");
+    mensaje("eliminando playlist", "")
+    $.ajax({
+        url: '/Api/playlist',
+        processData: false,
+        contentType: false,
+        data: dataEC,
+        type: 'POST'
+    }).done(function (result) {
+        quitarMensaje("");
+        lista();
     }).fail(function (a, b, c) {
         console.log(a, b, c);
         quitarMensaje("");
